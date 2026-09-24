@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="room3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFDF9"/>
+      <stop offset="1" stop-color="#F4EBDC"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#room3)"/>
+  <rect y="660" width="1600" height="240" fill="#EAD9BC"/>
+  <rect y="660" width="1600" height="10" fill="#DCC7A4"/>
+  <!-- window -->
+  <g>
+    <rect x="1130" y="150" width="330" height="320" rx="12" fill="#DFF1FC" stroke="#0F4C81" stroke-width="9"/>
+    <line x1="1295" y1="150" x2="1295" y2="470" stroke="#0F4C81" stroke-width="7"/>
+    <circle cx="1210" cy="230" r="30" fill="#FFE9A8"/>
+    <ellipse cx="1390" cy="260" rx="46" ry="14" fill="#FFFFFF" opacity="0.9"/>
+    <polygon points="1150,465 1450,465 1560,760 1050,760" fill="#FFF6DC" opacity="0.5"/>
+  </g>
+  <!-- wall shelf -->
+  <rect x="250" y="210" width="360" height="18" rx="9" fill="#C9A97C"/>
+  <g>
+    <rect x="290" y="160" width="46" height="50" rx="6" fill="#0F4C81"/>
+    <rect x="350" y="150" width="46" height="60" rx="6" fill="#F5B301"/>
+    <rect x="410" y="168" width="46" height="42" rx="6" fill="#3FA173"/>
+    <circle cx="530" cy="182" r="24" fill="#E8B04B"/>
+  </g>
+  <!-- bunk bed -->
+  <g>
+    <!-- posts -->
+    <rect x="330" y="230" width="34" height="450" rx="10" fill="#0F4C81"/>
+    <rect x="950" y="230" width="34" height="450" rx="10" fill="#0F4C81"/>
+    <!-- top bunk -->
+    <rect x="364" y="300" width="586" height="26" rx="10" fill="#8A6B47"/>
+    <rect x="364" y="240" width="586" height="70" rx="14" fill="#FFFFFF" stroke="#0F4C81" stroke-opacity="0.15" stroke-width="4"/>
+    <rect x="364" y="268" width="586" height="44" rx="10" fill="#4D8BC2"/>
+    <rect x="390" y="240" width="104" height="40" rx="10" fill="#F5B301"/>
+    <!-- safety rail -->
+    <rect x="364" y="180" width="586" height="14" rx="7" fill="#0F4C81"/>
+    <g stroke="#0F4C81" stroke-width="10" stroke-linecap="round">
+      <line x1="420" y1="194" x2="420" y2="240"/><line x1="540" y1="194" x2="540" y2="240"/>
+      <line x1="660" y1="194" x2="660" y2="240"/><line x1="780" y1="194" x2="780" y2="240"/>
+      <line x1="900" y1="194" x2="900" y2="240"/>
+    </g>
+    <!-- bottom bunk -->
+    <rect x="364" y="520" width="586" height="26" rx="10" fill="#8A6B47"/>
+    <rect x="364" y="460" width="586" height="70" rx="14" fill="#FFFFFF" stroke="#0F4C81" stroke-opacity="0.15" stroke-width="4"/>
+    <rect x="364" y="488" width="586" height="44" rx="10" fill="#F5B301"/>
+    <rect x="390" y="460" width="104" height="40" rx="10" fill="#FFFFFF"/>
+    <!-- ladder -->
+    <g stroke="#F5B301" stroke-width="14" stroke-linecap="round">
+      <line x1="1000" y1="300" x2="1060" y2="660"/>
+      <line x1="1080" y1="296" x2="1140" y2="656"/>
+    </g>
+    <g stroke="#F5B301" stroke-width="12" stroke-linecap="round">
+      <line x1="1012" y1="380" x2="1092" y2="376"/>
+      <line x1="1030" y1="470" x2="1110" y2="466"/>
+      <line x1="1048" y1="560" x2="1128" y2="556"/>
+    </g>
+  </g>
+  <!-- storage boxes -->
+  <g>
+    <rect x="150" y="560" width="130" height="100" rx="10" fill="#E8B04B"/>
+    <rect x="150" y="560" width="130" height="26" rx="10" fill="#D99E00"/>
+    <rect x="160" y="500" width="110" height="60" rx="8" fill="#9CCBEA"/>
+  </g>
+  <ellipse cx="760" cy="770" rx="320" ry="48" fill="#F5B301" opacity="0.15"/>
+</svg>

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="room4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFDF9"/>
+      <stop offset="1" stop-color="#F3EADA"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#room4)"/>
+  <rect y="620" width="1600" height="280" fill="#EAD9BC"/>
+  <rect y="620" width="1600" height="10" fill="#DCC7A4"/>
+  <!-- ceiling beams + lights -->
+  <g stroke="#D9C19B" stroke-width="8" opacity="0.7">
+    <line x1="0" y1="90" x2="1600" y2="90"/>
+    <line x1="0" y1="60" x2="1600" y2="60"/>
+  </g>
+  <g>
+    <line x1="400" y1="90" x2="400" y2="170" stroke="#8A6B47" stroke-width="6"/>
+    <path d="M370 170 h60 l-8 30 h-44 z" fill="#0F4C81"/>
+    <circle cx="400" cy="215" r="26" fill="#FFE9A8" opacity="0.85"/>
+    <line x1="800" y1="90" x2="800" y2="170" stroke="#8A6B47" stroke-width="6"/>
+    <path d="M770 170 h60 l-8 30 h-44 z" fill="#0F4C81"/>
+    <circle cx="800" cy="215" r="26" fill="#FFE9A8" opacity="0.85"/>
+    <line x1="1200" y1="90" x2="1200" y2="170" stroke="#8A6B47" stroke-width="6"/>
+    <path d="M1170 170 h60 l-8 30 h-44 z" fill="#0F4C81"/>
+    <circle cx="1200" cy="215" r="26" fill="#FFE9A8" opacity="0.85"/>
+  </g>
+  <!-- tall windows row -->
+  <g fill="#DFF1FC" stroke="#0F4C81" stroke-width="8">
+    <rect x="130" y="180" width="200" height="380" rx="10"/>
+    <rect x="380" y="180" width="200" height="380" rx="10"/>
+    <rect x="1020" y="180" width="200" height="380" rx="10"/>
+    <rect x="1270" y="180" width="200" height="380" rx="10"/>
+  </g>
+  <g fill="#FFE9A8">
+    <circle cx="230" cy="260" r="22" opacity="0.9"/>
+    <circle cx="480" cy="300" r="18" opacity="0.9"/>
+    <circle cx="1120" cy="250" r="20" opacity="0.9"/>
+    <circle cx="1370" cy="310" r="18" opacity="0.9"/>
+  </g>
+  <!-- light pools -->
+  <ellipse cx="230" cy="700" rx="200" ry="40" fill="#FFF6DC" opacity="0.55"/>
+  <ellipse cx="480" cy="700" rx="190" ry="36" fill="#FFF6DC" opacity="0.5"/>
+  <ellipse cx="1120" cy="700" rx="200" ry="40" fill="#FFF6DC" opacity="0.55"/>
+  <ellipse cx="1370" cy="700" rx="180" ry="36" fill="#FFF6DC" opacity="0.5"/>
+  <!-- column -->
+  <rect x="770" y="120" width="60" height="560" fill="#F6EFE2" stroke="#C9A97C" stroke-width="5"/>
+  <rect x="756" y="110" width="88" height="26" rx="10" fill="#C9A97C"/>
+  <rect x="756" y="666" width="88" height="26" rx="10" fill="#C9A97C"/>
+  <!-- long table + chairs (shared hall) -->
+  <g>
+    <rect x="330" y="520" width="420" height="26" rx="10" fill="#C9A97C"/>
+    <rect x="360" y="546" width="22" height="110" fill="#8A6B47"/>
+    <rect x="698" y="546" width="22" height="110" fill="#8A6B47"/>
+    <g fill="#0F4C81">
+      <rect x="330" y="600" width="70" height="16" rx="8"/>
+      <rect x="680" y="600" width="70" height="16" rx="8"/>
+    </g>
+  </g>
+  <!-- seating corner -->
+  <g>
+    <rect x="1090" y="540" width="300 " height="90" rx="18" fill="#0F4C81"/>
+    <rect x="1090" y="516" width="300" height="44" rx="16" fill="#4D8BC2"/>
+    <rect x="1120" y="500" width="90" height="34" rx="10" fill="#F5B301"/>
+    <rect x="1230" y="500" width="90" height="34" rx="10" fill="#FFFFFF"/>
+  </g>
+  <!-- plant -->
+  <g>
+    <path d="M80 600 c-8 -64 -40 -86 -60 -94 c10 46 24 74 36 94" fill="#3FA173"/>
+    <path d="M88 600 c4 -70 32 -98 56 -108 c-6 50 -22 82 -36 108" fill="#2F7D5B"/>
+    <rect x="48" y="596" width="82" height="76" rx="12" fill="#E8B04B"/>
+  </g>
+  <ellipse cx="800" cy="800" rx="420" ry="52" fill="#F5B301" opacity="0.13"/>
+</svg>

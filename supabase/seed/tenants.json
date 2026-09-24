@@ -1,0 +1,200 @@
+[
+  {
+    "code": "T001",
+    "full_name": "Derrick Senyange",
+    "phone": "0527554096",
+    "email": "senyangederrick@hotmail.com",
+    "emergency_contact": null,
+    "entry_date": null,
+    "monthly_rent": 1100,
+    "status": "exited",
+    "space_type": "Partition"
+  },
+  {
+    "code": "T002",
+    "full_name": "Shakirah Nakiyemba",
+    "phone": "0559412875",
+    "email": "Shakirahnakiyemba@gmail.com",
+    "emergency_contact": "0525768546",
+    "entry_date": "2026-01-01",
+    "monthly_rent": 2300,
+    "status": "active",
+    "space_type": "Bedspace"
+  },
+  {
+    "code": "T003",
+    "full_name": "Kisakye Daniel",
+    "phone": "0557870860",
+    "email": "kisakyedaniel15@gmail.com",
+    "emergency_contact": null,
+    "entry_date": null,
+    "monthly_rent": 1300,
+    "status": "active",
+    "space_type": "Shared Bed for 2"
+  },
+  {
+    "code": "T004",
+    "full_name": "Koshaba Prim",
+    "phone": "0556723494",
+    "email": "Primkoshaba80@gmail.com",
+    "emergency_contact": null,
+    "entry_date": null,
+    "monthly_rent": null,
+    "status": "exited",
+    "space_type": "Bedspace"
+  },
+  {
+    "code": "T005",
+    "full_name": "Nakanwagi Gorret",
+    "phone": "0553427767",
+    "email": "nakanwaginakanwangi7@gmail.com",
+    "emergency_contact": null,
+    "entry_date": null,
+    "monthly_rent": 700,
+    "status": "exited",
+    "space_type": "Bedspace"
+  },
+  {
+    "code": "T006",
+    "full_name": "Hamuza Ssebayiga",
+    "phone": "0582653312",
+    "email": "hamzassebayiga6@gmail.com",
+    "emergency_contact": "0526765207",
+    "entry_date": null,
+    "monthly_rent": 800,
+    "status": "exited",
+    "space_type": "Bedbunk for 2"
+  },
+  {
+    "code": "T007",
+    "full_name": "Warren Mpamizo",
+    "phone": "0524901831",
+    "email": "mpamizowarren873@gmail.com",
+    "emergency_contact": "0524901831",
+    "entry_date": null,
+    "monthly_rent": 500,
+    "status": "exited",
+    "space_type": "Bedspace"
+  },
+  {
+    "code": "T008",
+    "full_name": "Nkalubo Jackson",
+    "phone": "0526328480",
+    "email": "Jacksonnkalubo@gmail.com",
+    "emergency_contact": "0525063778",
+    "entry_date": null,
+    "monthly_rent": 800,
+    "status": "exited",
+    "space_type": "Partition"
+  },
+  {
+    "code": "T009",
+    "full_name": "Nankya Caroline",
+    "phone": "0551441526",
+    "email": "carolnankya55@gmail.com",
+    "emergency_contact": null,
+    "entry_date": null,
+    "monthly_rent": 1150,
+    "status": "exited",
+    "space_type": "Partition"
+  },
+  {
+    "code": "T010",
+    "full_name": "Shamim Namuli & Nabukenya Brenda",
+    "phone": "0566597982 & 0565506894",
+    "email": "fikrahharunah9@gmail.com / nabukenyabrenda@gailm.com",
+    "emergency_contact": null,
+    "entry_date": null,
+    "monthly_rent": null,
+    "status": "exited",
+    "space_type": "Shared Bed for 2"
+  },
+  {
+    "code": "T011",
+    "full_name": "Ibrahim Ssebunnya",
+    "phone": "586678858",
+    "email": null,
+    "emergency_contact": "3.78388988",
+    "entry_date": "2026-03-01",
+    "monthly_rent": 2300,
+    "status": "active",
+    "space_type": "Private Room"
+  },
+  {
+    "code": "T012",
+    "full_name": "Nakiwewa Max",
+    "phone": "5",
+    "email": null,
+    "emergency_contact": null,
+    "entry_date": null,
+    "monthly_rent": 2100,
+    "status": "active",
+    "space_type": "Private Room"
+  },
+  {
+    "code": "T013",
+    "full_name": "Nakyambade Daphine",
+    "phone": "971522254605",
+    "email": "nnakyambaddedaphine33@gmail.com",
+    "emergency_contact": null,
+    "entry_date": null,
+    "monthly_rent": null,
+    "status": "exited",
+    "space_type": "Private Room"
+  },
+  {
+    "code": "T014",
+    "full_name": "Tonny",
+    "phone": null,
+    "email": null,
+    "emergency_contact": null,
+    "entry_date": null,
+    "monthly_rent": 1300,
+    "status": "active",
+    "space_type": "shared room for 2"
+  },
+  {
+    "code": "T015",
+    "full_name": "Danny",
+    "phone": null,
+    "email": null,
+    "emergency_contact": null,
+    "entry_date": null,
+    "monthly_rent": 1200,
+    "status": "active",
+    "space_type": "Partition"
+  },
+  {
+    "code": "T016",
+    "full_name": "Akoyoyo Esther",
+    "phone": "971542414722",
+    "email": "akoyoyiesther03@gmail.com",
+    "emergency_contact": null,
+    "entry_date": null,
+    "monthly_rent": 1200,
+    "status": "exited",
+    "space_type": "Partition"
+  },
+  {
+    "code": "T017",
+    "full_name": "Nabukera Esther",
+    "phone": "97523120793",
+    "email": "Keeraseba5@gmail.com",
+    "emergency_contact": null,
+    "entry_date": "2026-05-05",
+    "monthly_rent": 2300,
+    "status": "exited",
+    "space_type": "Private Room"
+  },
+  {
+    "code": "T018",
+    "full_name": "SHAKIRAH KALUNJI",
+    "phone": "971563455256",
+    "email": null,
+    "emergency_contact": null,
+    "entry_date": "2026-06-01",
+    "monthly_rent": 1150,
+    "status": "active",
+    "space_type": "Partition"
+  }
+]

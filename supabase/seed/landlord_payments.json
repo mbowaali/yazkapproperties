@@ -1,0 +1,18 @@
+[
+  {
+    "year": 2026,
+    "month": "January",
+    "date": "2026-01-01",
+    "amount": 5800,
+    "method": "Bank Transfer",
+    "note": "Rent to Ahmed Nady"
+  },
+  {
+    "year": 2026,
+    "month": "February",
+    "date": "2026-02-01",
+    "amount": 5800,
+    "method": "Bank Transfer",
+    "note": "Rent to Ahmed Nady"
+  }
+]

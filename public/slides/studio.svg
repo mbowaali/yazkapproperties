@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="room" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFDF9"/>
+      <stop offset="1" stop-color="#F6EDDD"/>
+    </linearGradient>
+    <linearGradient id="winSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#BFE0F7"/>
+      <stop offset="1" stop-color="#EAF6FE"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#room)"/>
+  <!-- floor -->
+  <rect y="640" width="1600" height="260" fill="#EAD9BC"/>
+  <rect y="640" width="1600" height="10" fill="#DCC7A4"/>
+  <g stroke="#D9C19B" stroke-width="3" opacity="0.6">
+    <line x1="200" y1="900" x2="420" y2="640"/><line x1="500" y1="900" x2="640" y2="640"/>
+    <line x1="800" y1="900" x2="860" y2="640"/><line x1="1100" y1="900" x2="1080" y2="640"/>
+    <line x1="1400" y1="900" x2="1300" y2="640"/>
+  </g>
+  <!-- back wall panel -->
+  <rect x="180" y="120" width="1240" height="520" fill="#FBF5EA" stroke="#0F4C81" stroke-opacity="0.08" stroke-width="4"/>
+  <!-- big window with light -->
+  <g>
+    <rect x="960" y="180" width="380" height="330" rx="14" fill="url(#winSky)" stroke="#0F4C81" stroke-width="10"/>
+    <line x1="1150" y1="180" x2="1150" y2="510" stroke="#0F4C81" stroke-width="8"/>
+    <line x1="960" y1="345" x2="1340" y2="345" stroke="#0F4C81" stroke-width="8"/>
+    <circle cx="1060" cy="260" r="34" fill="#FFE9A8"/>
+    <ellipse cx="1250" cy="290" rx="52" ry="16" fill="#FFFFFF" opacity="0.9"/>
+    <!-- light rays -->
+    <polygon points="980,500 1330,500 1460,760 900,760" fill="#FFF6DC" opacity="0.55"/>
+  </g>
+  <!-- wall art -->
+  <g>
+    <rect x="300" y="200" width="150" height="110" rx="10" fill="#FFFFFF" stroke="#0F4C81" stroke-opacity="0.25" stroke-width="5"/>
+    <circle cx="345" cy="240" r="18" fill="#F5B301"/>
+    <path d="M320 290 L375 250 L420 290" stroke="#3FA173" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <rect x="490" y="220" width="110" height="90" rx="10" fill="#EAF2F9" stroke="#0F4C81" stroke-opacity="0.2" stroke-width="5"/>
+    <path d="M505 285 L540 250 L575 285" stroke="#0F4C81" stroke-width="7" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- bed -->
+  <g>
+    <rect x="240" y="520" width="520" height="34" rx="10" fill="#C9A97C"/>
+    <rect x="240" y="430" width="520" height="100" rx="18" fill="#FFFFFF" stroke="#0F4C81" stroke-opacity="0.12" stroke-width="4"/>
+    <rect x="240" y="470" width="520" height="70" rx="14" fill="#0F4C81"/>
+    <rect x="270" y="430" width="120" height="52" rx="12" fill="#F5B301"/>
+    <rect x="228" y="418" width="40" height="150" rx="10" fill="#8A6B47"/>
+    <rect x="212" y="540" width="576" height="14" rx="7" fill="#0F4C81" opacity="0.1"/>
+  </g>
+  <!-- side table + lamp -->
+  <g>
+    <rect x="820" y="540" width="90" height="80" rx="10" fill="#F6EFE2" stroke="#C9A97C" stroke-width="4"/>
+    <rect x="852" y="480" width="26" height="60" rx="6" fill="#C9A97C"/>
+    <path d="M835 480 h60 l-10 -44 h-40 z" fill="#F5B301"/>
+    <circle cx="865" cy="452" r="30" fill="#FFE9A8" opacity="0.5"/>
+  </g>
+  <!-- plant -->
+  <g>
+    <path d="M1430 620 c-8 -60 -40 -80 -58 -88 c10 44 22 70 34 88" fill="#3FA173"/>
+    <path d="M1436 620 c4 -66 30 -92 52 -102 c-6 48 -20 78 -34 102" fill="#2F7D5B"/>
+    <rect x="1400" y="616" width="76" height="70" rx="12" fill="#E8B04B"/>
+    <rect x="1394" y="608" width="88" height="18" rx="9" fill="#D99E00"/>
+  </g>
+  <!-- rug -->
+  <ellipse cx="700" cy="770" rx="300" ry="52" fill="#F5B301" opacity="0.18"/>
+  <ellipse cx="700" cy="770" rx="220" ry="36" fill="#F5B301" opacity="0.18"/>
+</svg>

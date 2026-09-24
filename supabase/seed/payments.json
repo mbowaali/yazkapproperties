@@ -1,0 +1,4991 @@
+[
+  {
+    "year": 2022,
+    "month": "December",
+    "tenant_name": "JOHNTIBALEKE",
+    "amount": 1000,
+    "date": "2022-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "November",
+    "tenant_name": "SAMUEL",
+    "amount": 550,
+    "date": "2022-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "December",
+    "tenant_name": "SAMUEL",
+    "amount": 550,
+    "date": "2022-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "November",
+    "tenant_name": "STELLA",
+    "amount": 550,
+    "date": "2022-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "December",
+    "tenant_name": "STELLA",
+    "amount": 550,
+    "date": "2022-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "October",
+    "tenant_name": "PRISCILA",
+    "amount": 600,
+    "date": "2022-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "November",
+    "tenant_name": "PRISCILA",
+    "amount": 500,
+    "date": "2022-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "December",
+    "tenant_name": "PRISCILA",
+    "amount": 500,
+    "date": "2022-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "October",
+    "tenant_name": "AISHA",
+    "amount": 600,
+    "date": "2022-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "November",
+    "tenant_name": "AISHA",
+    "amount": 600,
+    "date": "2022-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "December",
+    "tenant_name": "AISHA",
+    "amount": 600,
+    "date": "2022-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "August",
+    "tenant_name": "PETRA",
+    "amount": 450,
+    "date": "2022-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "September",
+    "tenant_name": "PETRA",
+    "amount": 450,
+    "date": "2022-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "October",
+    "tenant_name": "PETRA",
+    "amount": 450,
+    "date": "2022-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "November",
+    "tenant_name": "PETRA",
+    "amount": 450,
+    "date": "2022-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "December",
+    "tenant_name": "PETRA",
+    "amount": 450,
+    "date": "2022-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "June",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 600,
+    "date": "2022-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "July",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 600,
+    "date": "2022-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "August",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 650,
+    "date": "2022-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "September",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 650,
+    "date": "2022-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "October",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 700,
+    "date": "2022-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "November",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 700,
+    "date": "2022-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "December",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 700,
+    "date": "2022-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "March",
+    "tenant_name": "PATRICK",
+    "amount": 1000,
+    "date": "2022-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "April",
+    "tenant_name": "PATRICK",
+    "amount": 1000,
+    "date": "2022-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "May",
+    "tenant_name": "PATRICK",
+    "amount": 1000,
+    "date": "2022-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "June",
+    "tenant_name": "PATRICK",
+    "amount": 1000,
+    "date": "2022-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "July",
+    "tenant_name": "PATRICK",
+    "amount": 1000,
+    "date": "2022-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "August",
+    "tenant_name": "PATRICK",
+    "amount": 1000,
+    "date": "2022-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "September",
+    "tenant_name": "PATRICK",
+    "amount": 1000,
+    "date": "2022-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "October",
+    "tenant_name": "PATRICK",
+    "amount": 1000,
+    "date": "2022-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "November",
+    "tenant_name": "PATRICK",
+    "amount": 1000,
+    "date": "2022-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "December",
+    "tenant_name": "PATRICK",
+    "amount": 1000,
+    "date": "2022-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "February",
+    "tenant_name": "CLAIRE NALULE",
+    "amount": 430,
+    "date": "2022-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "March",
+    "tenant_name": "CLAIRE NALULE",
+    "amount": 400,
+    "date": "2022-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "April",
+    "tenant_name": "CLAIRE NALULE",
+    "amount": 400,
+    "date": "2022-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "May",
+    "tenant_name": "CLAIRE NALULE",
+    "amount": 400,
+    "date": "2022-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "June",
+    "tenant_name": "CLAIRE NALULE",
+    "amount": 400,
+    "date": "2022-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "July",
+    "tenant_name": "CLAIRE NALULE",
+    "amount": 400,
+    "date": "2022-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "August",
+    "tenant_name": "CLAIRE NALULE",
+    "amount": 400,
+    "date": "2022-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "September",
+    "tenant_name": "CLAIRE NALULE",
+    "amount": 400,
+    "date": "2022-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "October",
+    "tenant_name": "CLAIRE NALULE",
+    "amount": 400,
+    "date": "2022-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "November",
+    "tenant_name": "CLAIRE NALULE",
+    "amount": 400,
+    "date": "2022-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "December",
+    "tenant_name": "CLAIRE NALULE",
+    "amount": 200,
+    "date": "2022-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "January",
+    "tenant_name": "DAVID",
+    "amount": 1000,
+    "date": "2022-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "February",
+    "tenant_name": "DAVID",
+    "amount": 1000,
+    "date": "2022-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "March",
+    "tenant_name": "DAVID",
+    "amount": 200,
+    "date": "2022-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "April",
+    "tenant_name": "DAVID",
+    "amount": 1000,
+    "date": "2022-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "May",
+    "tenant_name": "DAVID",
+    "amount": 1000,
+    "date": "2022-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "June",
+    "tenant_name": "DAVID",
+    "amount": 1000,
+    "date": "2022-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "July",
+    "tenant_name": "DAVID",
+    "amount": 1000,
+    "date": "2022-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "August",
+    "tenant_name": "DAVID",
+    "amount": 1000,
+    "date": "2022-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "September",
+    "tenant_name": "DAVID",
+    "amount": 1000,
+    "date": "2022-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "October",
+    "tenant_name": "DAVID",
+    "amount": 1150,
+    "date": "2022-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "November",
+    "tenant_name": "DAVID",
+    "amount": 1000,
+    "date": "2022-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "December",
+    "tenant_name": "DAVID",
+    "amount": 1000,
+    "date": "2022-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "January",
+    "tenant_name": "MOSES GYM",
+    "amount": 800,
+    "date": "2022-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "February",
+    "tenant_name": "MOSES GYM",
+    "amount": 1000,
+    "date": "2022-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "March",
+    "tenant_name": "MOSES GYM",
+    "amount": 1000,
+    "date": "2022-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "April",
+    "tenant_name": "MOSES GYM",
+    "amount": 1000,
+    "date": "2022-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "May",
+    "tenant_name": "MOSES GYM",
+    "amount": 1100,
+    "date": "2022-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "June",
+    "tenant_name": "MOSES GYM",
+    "amount": 1100,
+    "date": "2022-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "July",
+    "tenant_name": "MOSES GYM",
+    "amount": 1100,
+    "date": "2022-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "August",
+    "tenant_name": "MOSES GYM",
+    "amount": 1100,
+    "date": "2022-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "September",
+    "tenant_name": "MOSES GYM",
+    "amount": 1000,
+    "date": "2022-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "October",
+    "tenant_name": "MOSES GYM",
+    "amount": 1100,
+    "date": "2022-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "November",
+    "tenant_name": "MOSES GYM",
+    "amount": 1000,
+    "date": "2022-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "December",
+    "tenant_name": "MOSES GYM",
+    "amount": 1000,
+    "date": "2022-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "January",
+    "tenant_name": "ABDUL KASENKE",
+    "amount": 520,
+    "date": "2022-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "February",
+    "tenant_name": "ABDUL KASENKE",
+    "amount": 800,
+    "date": "2022-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "March",
+    "tenant_name": "ABDUL KASENKE",
+    "amount": 850,
+    "date": "2022-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "April",
+    "tenant_name": "ABDUL KASENKE",
+    "amount": 1000,
+    "date": "2022-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "May",
+    "tenant_name": "ABDUL KASENKE",
+    "amount": 900,
+    "date": "2022-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "June",
+    "tenant_name": "ABDUL KASENKE",
+    "amount": 850,
+    "date": "2022-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "July",
+    "tenant_name": "ABDUL KASENKE",
+    "amount": 850,
+    "date": "2022-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "August",
+    "tenant_name": "ABDUL KASENKE",
+    "amount": 850,
+    "date": "2022-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "September",
+    "tenant_name": "ABDUL KASENKE",
+    "amount": 850,
+    "date": "2022-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "October",
+    "tenant_name": "ABDUL KASENKE",
+    "amount": 850,
+    "date": "2022-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "November",
+    "tenant_name": "ABDUL KASENKE",
+    "amount": 850,
+    "date": "2022-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "December",
+    "tenant_name": "ABDUL KASENKE",
+    "amount": 850,
+    "date": "2022-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "January",
+    "tenant_name": "HAMZA",
+    "amount": 500,
+    "date": "2022-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "February",
+    "tenant_name": "HAMZA",
+    "amount": 500,
+    "date": "2022-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "March",
+    "tenant_name": "HAMZA",
+    "amount": 500,
+    "date": "2022-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "April",
+    "tenant_name": "HAMZA",
+    "amount": 500,
+    "date": "2022-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "May",
+    "tenant_name": "HAMZA",
+    "amount": 500,
+    "date": "2022-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "June",
+    "tenant_name": "HAMZA",
+    "amount": 500,
+    "date": "2022-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "July",
+    "tenant_name": "HAMZA",
+    "amount": 500,
+    "date": "2022-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "August",
+    "tenant_name": "HAMZA",
+    "amount": 500,
+    "date": "2022-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "September",
+    "tenant_name": "HAMZA",
+    "amount": 500,
+    "date": "2022-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "October",
+    "tenant_name": "HAMZA",
+    "amount": 500,
+    "date": "2022-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "November",
+    "tenant_name": "HAMZA",
+    "amount": 500,
+    "date": "2022-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "December",
+    "tenant_name": "HAMZA",
+    "amount": 500,
+    "date": "2022-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "January",
+    "tenant_name": "FATIMAH NAKALANZI",
+    "amount": 800,
+    "date": "2022-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "February",
+    "tenant_name": "FATIMAH NAKALANZI",
+    "amount": 800,
+    "date": "2022-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "March",
+    "tenant_name": "FATIMAH NAKALANZI",
+    "amount": 800,
+    "date": "2022-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "April",
+    "tenant_name": "FATIMAH NAKALANZI",
+    "amount": 800,
+    "date": "2022-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "May",
+    "tenant_name": "FATIMAH NAKALANZI",
+    "amount": 900,
+    "date": "2022-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "June",
+    "tenant_name": "FATIMAH NAKALANZI",
+    "amount": 800,
+    "date": "2022-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "July",
+    "tenant_name": "FATIMAH NAKALANZI",
+    "amount": 800,
+    "date": "2022-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "August",
+    "tenant_name": "FATIMAH NAKALANZI",
+    "amount": 800,
+    "date": "2022-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "September",
+    "tenant_name": "FATIMAH NAKALANZI",
+    "amount": 800,
+    "date": "2022-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "October",
+    "tenant_name": "FATIMAH NAKALANZI",
+    "amount": 800,
+    "date": "2022-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "November",
+    "tenant_name": "FATIMAH NAKALANZI",
+    "amount": 800,
+    "date": "2022-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "December",
+    "tenant_name": "FATIMAH NAKALANZI",
+    "amount": 800,
+    "date": "2022-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "November",
+    "tenant_name": "ASHRAF MUKIIBI",
+    "amount": 300,
+    "date": "2022-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "September",
+    "tenant_name": "SHAMIRA MUSA",
+    "amount": 500,
+    "date": "2022-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "October",
+    "tenant_name": "SHAMIRA MUSA",
+    "amount": 500,
+    "date": "2022-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "September",
+    "tenant_name": "LINDA honette umutoniwase",
+    "amount": 1000,
+    "date": "2022-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "October",
+    "tenant_name": "LINDA honette umutoniwase",
+    "amount": 1000,
+    "date": "2022-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "January",
+    "tenant_name": "Ruth",
+    "amount": 700,
+    "date": "2022-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "February",
+    "tenant_name": "Ruth",
+    "amount": 700,
+    "date": "2022-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "March",
+    "tenant_name": "Ruth",
+    "amount": 700,
+    "date": "2022-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "April",
+    "tenant_name": "Ruth",
+    "amount": 700,
+    "date": "2022-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "May",
+    "tenant_name": "Ruth",
+    "amount": 650,
+    "date": "2022-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "June",
+    "tenant_name": "Ruth",
+    "amount": 700,
+    "date": "2022-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "July",
+    "tenant_name": "Ruth",
+    "amount": 700,
+    "date": "2022-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "August",
+    "tenant_name": "Ruth",
+    "amount": 700,
+    "date": "2022-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "September",
+    "tenant_name": "Ruth",
+    "amount": 700,
+    "date": "2022-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "August",
+    "tenant_name": "ROY JOSEPH",
+    "amount": 450,
+    "date": "2022-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "September",
+    "tenant_name": "ROY JOSEPH",
+    "amount": 550,
+    "date": "2022-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "October",
+    "tenant_name": "ROY JOSEPH",
+    "amount": 300,
+    "date": "2022-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "July",
+    "tenant_name": "NOBLE",
+    "amount": 800,
+    "date": "2022-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "August",
+    "tenant_name": "NOBLE",
+    "amount": 800,
+    "date": "2022-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "September",
+    "tenant_name": "NOBLE",
+    "amount": 800,
+    "date": "2022-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "September",
+    "tenant_name": "ASHRAF MUKIIBI",
+    "amount": 50,
+    "date": "2022-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "January",
+    "tenant_name": "HAMZA NKONGE",
+    "amount": 600,
+    "date": "2022-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "February",
+    "tenant_name": "HAMZA NKONGE",
+    "amount": 600,
+    "date": "2022-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "March",
+    "tenant_name": "HAMZA NKONGE",
+    "amount": 600,
+    "date": "2022-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "April",
+    "tenant_name": "HAMZA NKONGE",
+    "amount": 600,
+    "date": "2022-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "May",
+    "tenant_name": "HAMZA NKONGE",
+    "amount": 600,
+    "date": "2022-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "June",
+    "tenant_name": "HAMZA NKONGE",
+    "amount": 600,
+    "date": "2022-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "July",
+    "tenant_name": "HAMZA NKONGE",
+    "amount": 600,
+    "date": "2022-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "August",
+    "tenant_name": "HAMZA NKONGE",
+    "amount": 600,
+    "date": "2022-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "March",
+    "tenant_name": "JACKY",
+    "amount": 900,
+    "date": "2022-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "April",
+    "tenant_name": "JACKY",
+    "amount": 900,
+    "date": "2022-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "May",
+    "tenant_name": "JACKY",
+    "amount": 900,
+    "date": "2022-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "June",
+    "tenant_name": "JACKY",
+    "amount": 900,
+    "date": "2022-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "July",
+    "tenant_name": "JACKY",
+    "amount": 900,
+    "date": "2022-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "August",
+    "tenant_name": "JACKY",
+    "amount": 900,
+    "date": "2022-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "September",
+    "tenant_name": "JACKY",
+    "amount": 900,
+    "date": "2022-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "January",
+    "tenant_name": "VICKY-24-08-2022",
+    "amount": 850,
+    "date": "2022-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "February",
+    "tenant_name": "VICKY-24-08-2022",
+    "amount": 500,
+    "date": "2022-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "March",
+    "tenant_name": "VICKY-24-08-2022",
+    "amount": 500,
+    "date": "2022-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "April",
+    "tenant_name": "VICKY-24-08-2022",
+    "amount": 500,
+    "date": "2022-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "May",
+    "tenant_name": "VICKY-24-08-2022",
+    "amount": 500,
+    "date": "2022-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "June",
+    "tenant_name": "VICKY-24-08-2022",
+    "amount": 500,
+    "date": "2022-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "July",
+    "tenant_name": "VICKY-24-08-2022",
+    "amount": 500,
+    "date": "2022-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "August",
+    "tenant_name": "VICKY-24-08-2022",
+    "amount": 500,
+    "date": "2022-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "June",
+    "tenant_name": "KHADIJAH",
+    "amount": 200,
+    "date": "2022-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "July",
+    "tenant_name": "KHADIJAH",
+    "amount": 400,
+    "date": "2022-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "July",
+    "tenant_name": "SULAIMAN EMMANUEL",
+    "amount": 300,
+    "date": "2022-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "June",
+    "tenant_name": "DALILAH",
+    "amount": 600,
+    "date": "2022-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "June",
+    "tenant_name": "DORA",
+    "amount": 400,
+    "date": "2022-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "May",
+    "tenant_name": "NAKI",
+    "amount": 600,
+    "date": "2022-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "February",
+    "tenant_name": "ABUDUL KIRIISA",
+    "amount": 400,
+    "date": "2022-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "March",
+    "tenant_name": "ABUDUL KIRIISA",
+    "amount": 400,
+    "date": "2022-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "April",
+    "tenant_name": "ABUDUL KIRIISA",
+    "amount": 500,
+    "date": "2022-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "May",
+    "tenant_name": "ABUDUL KIRIISA",
+    "amount": 400,
+    "date": "2022-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "May",
+    "tenant_name": "SHAREEF",
+    "amount": 400,
+    "date": "2022-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "January",
+    "tenant_name": "MATHEW",
+    "amount": 750,
+    "date": "2022-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "February",
+    "tenant_name": "MATHEW",
+    "amount": 750,
+    "date": "2022-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "March",
+    "tenant_name": "MATHEW",
+    "amount": 750,
+    "date": "2022-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "April",
+    "tenant_name": "MATHEW",
+    "amount": 750,
+    "date": "2022-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "May",
+    "tenant_name": "MATHEW",
+    "amount": 750,
+    "date": "2022-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "March",
+    "tenant_name": "ROGER & FATTIE",
+    "amount": 500,
+    "date": "2022-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "January",
+    "tenant_name": "ALI",
+    "amount": 1100,
+    "date": "2022-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "January",
+    "tenant_name": "sharon jb",
+    "amount": 400,
+    "date": "2022-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "January",
+    "tenant_name": "GRACE",
+    "amount": 1000,
+    "date": "2022-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "March",
+    "tenant_name": "CEILING & PARTITION",
+    "amount": 500,
+    "date": "2022-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2022,
+    "month": "January",
+    "tenant_name": "OCTOBER",
+    "amount": 200,
+    "date": "2022-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "November",
+    "tenant_name": "KAMUMI SHIRA",
+    "amount": 450,
+    "date": "2023-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "December",
+    "tenant_name": "KAMUMI SHIRA",
+    "amount": 450,
+    "date": "2023-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "November",
+    "tenant_name": "Hidah",
+    "amount": 700,
+    "date": "2023-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "December",
+    "tenant_name": "Hidah",
+    "amount": 700,
+    "date": "2023-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "October",
+    "tenant_name": "SANDRAH NDAGIRE",
+    "amount": 400,
+    "date": "2023-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "November",
+    "tenant_name": "SANDRAH NDAGIRE",
+    "amount": 400,
+    "date": "2023-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "December",
+    "tenant_name": "SANDRAH NDAGIRE",
+    "amount": 400,
+    "date": "2023-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "August",
+    "tenant_name": "FRED BAGUMA",
+    "amount": 550,
+    "date": "2023-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "September",
+    "tenant_name": "FRED BAGUMA",
+    "amount": 550,
+    "date": "2023-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "October",
+    "tenant_name": "FRED BAGUMA",
+    "amount": 600,
+    "date": "2023-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "November",
+    "tenant_name": "FRED BAGUMA",
+    "amount": 650,
+    "date": "2023-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "December",
+    "tenant_name": "FRED BAGUMA",
+    "amount": 600,
+    "date": "2023-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "July",
+    "tenant_name": "SALIM ZINTA ADHRA",
+    "amount": 200,
+    "date": "2023-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "August",
+    "tenant_name": "SALIM ZINTA ADHRA",
+    "amount": 450,
+    "date": "2023-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "September",
+    "tenant_name": "SALIM ZINTA ADHRA",
+    "amount": 450,
+    "date": "2023-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "October",
+    "tenant_name": "SALIM ZINTA ADHRA",
+    "amount": 450,
+    "date": "2023-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "November",
+    "tenant_name": "SALIM ZINTA ADHRA",
+    "amount": 450,
+    "date": "2023-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "December",
+    "tenant_name": "SALIM ZINTA ADHRA",
+    "amount": 450,
+    "date": "2023-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "July",
+    "tenant_name": "AMITO",
+    "amount": 733,
+    "date": "2023-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "August",
+    "tenant_name": "AMITO",
+    "amount": 1000,
+    "date": "2023-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "September",
+    "tenant_name": "AMITO",
+    "amount": 1000,
+    "date": "2023-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "October",
+    "tenant_name": "AMITO",
+    "amount": 900,
+    "date": "2023-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "November",
+    "tenant_name": "AMITO",
+    "amount": 1000,
+    "date": "2023-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "December",
+    "tenant_name": "AMITO",
+    "amount": 1000,
+    "date": "2023-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "June",
+    "tenant_name": "NEITHAN",
+    "amount": 770,
+    "date": "2023-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "July",
+    "tenant_name": "NEITHAN",
+    "amount": 750,
+    "date": "2023-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "August",
+    "tenant_name": "NEITHAN",
+    "amount": 750,
+    "date": "2023-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "September",
+    "tenant_name": "NEITHAN",
+    "amount": 750,
+    "date": "2023-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "October",
+    "tenant_name": "NEITHAN",
+    "amount": 750,
+    "date": "2023-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "November",
+    "tenant_name": "NEITHAN",
+    "amount": 650,
+    "date": "2023-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "December",
+    "tenant_name": "NEITHAN",
+    "amount": 650,
+    "date": "2023-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "June",
+    "tenant_name": "JACKSON NKALUBO",
+    "amount": 620,
+    "date": "2023-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "July",
+    "tenant_name": "JACKSON NKALUBO",
+    "amount": 600,
+    "date": "2023-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "August",
+    "tenant_name": "JACKSON NKALUBO",
+    "amount": 600,
+    "date": "2023-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "September",
+    "tenant_name": "JACKSON NKALUBO",
+    "amount": 600,
+    "date": "2023-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "October",
+    "tenant_name": "JACKSON NKALUBO",
+    "amount": 600,
+    "date": "2023-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "November",
+    "tenant_name": "JACKSON NKALUBO",
+    "amount": 600,
+    "date": "2023-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "December",
+    "tenant_name": "JACKSON NKALUBO",
+    "amount": 600,
+    "date": "2023-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "May",
+    "tenant_name": "kabogoza erick",
+    "amount": 420,
+    "date": "2023-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "June",
+    "tenant_name": "kabogoza erick",
+    "amount": 400,
+    "date": "2023-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "July",
+    "tenant_name": "kabogoza erick",
+    "amount": 400,
+    "date": "2023-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "August",
+    "tenant_name": "kabogoza erick",
+    "amount": 400,
+    "date": "2023-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "September",
+    "tenant_name": "kabogoza erick",
+    "amount": 400,
+    "date": "2023-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "October",
+    "tenant_name": "kabogoza erick",
+    "amount": 400,
+    "date": "2023-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "November",
+    "tenant_name": "kabogoza erick",
+    "amount": 400,
+    "date": "2023-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "December",
+    "tenant_name": "kabogoza erick",
+    "amount": 400,
+    "date": "2023-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "March",
+    "tenant_name": "phiphi/BRIDGET",
+    "amount": 1170,
+    "date": "2023-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "April",
+    "tenant_name": "phiphi/BRIDGET",
+    "amount": 1170,
+    "date": "2023-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "May",
+    "tenant_name": "phiphi/BRIDGET",
+    "amount": 1170,
+    "date": "2023-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "June",
+    "tenant_name": "phiphi/BRIDGET",
+    "amount": 1170,
+    "date": "2023-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "July",
+    "tenant_name": "phiphi/BRIDGET",
+    "amount": 1150,
+    "date": "2023-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "August",
+    "tenant_name": "phiphi/BRIDGET",
+    "amount": 1150,
+    "date": "2023-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "September",
+    "tenant_name": "phiphi/BRIDGET",
+    "amount": 1150,
+    "date": "2023-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "October",
+    "tenant_name": "phiphi/BRIDGET",
+    "amount": 1150,
+    "date": "2023-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "November",
+    "tenant_name": "phiphi/BRIDGET",
+    "amount": 1150,
+    "date": "2023-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "December",
+    "tenant_name": "phiphi/BRIDGET",
+    "amount": 1150,
+    "date": "2023-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "January",
+    "tenant_name": "SSEMAGANDA GERALD",
+    "amount": 600,
+    "date": "2023-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "February",
+    "tenant_name": "SSEMAGANDA GERALD",
+    "amount": 600,
+    "date": "2023-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "March",
+    "tenant_name": "SSEMAGANDA GERALD",
+    "amount": 700,
+    "date": "2023-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "April",
+    "tenant_name": "SSEMAGANDA GERALD",
+    "amount": 720,
+    "date": "2023-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "May",
+    "tenant_name": "SSEMAGANDA GERALD",
+    "amount": 720,
+    "date": "2023-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "June",
+    "tenant_name": "SSEMAGANDA GERALD",
+    "amount": 920,
+    "date": "2023-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "July",
+    "tenant_name": "SSEMAGANDA GERALD",
+    "amount": 1000,
+    "date": "2023-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "August",
+    "tenant_name": "SSEMAGANDA GERALD",
+    "amount": 1000,
+    "date": "2023-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "September",
+    "tenant_name": "SSEMAGANDA GERALD",
+    "amount": 1000,
+    "date": "2023-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "October",
+    "tenant_name": "SSEMAGANDA GERALD",
+    "amount": 1020,
+    "date": "2023-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "November",
+    "tenant_name": "SSEMAGANDA GERALD",
+    "amount": 1000,
+    "date": "2023-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "December",
+    "tenant_name": "SSEMAGANDA GERALD",
+    "amount": 1000,
+    "date": "2023-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "January",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 700,
+    "date": "2023-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "February",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 1200,
+    "date": "2023-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "March",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 1200,
+    "date": "2023-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "April",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 1200,
+    "date": "2023-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "May",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 1220,
+    "date": "2023-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "June",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 1220,
+    "date": "2023-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "July",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 1200,
+    "date": "2023-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "August",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 1200,
+    "date": "2023-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "September",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 1200,
+    "date": "2023-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "October",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 1200,
+    "date": "2023-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "November",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 1200,
+    "date": "2023-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "December",
+    "tenant_name": "MAXICENCIA MARY NAKIWEEWA",
+    "amount": 1200,
+    "date": "2023-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "January",
+    "tenant_name": "MOSES GYM",
+    "amount": 1000,
+    "date": "2023-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "February",
+    "tenant_name": "MOSES GYM",
+    "amount": 1000,
+    "date": "2023-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "March",
+    "tenant_name": "MOSES GYM",
+    "amount": 1020,
+    "date": "2023-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "April",
+    "tenant_name": "MOSES GYM",
+    "amount": 1020,
+    "date": "2023-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "May",
+    "tenant_name": "MOSES GYM",
+    "amount": 1020,
+    "date": "2023-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "June",
+    "tenant_name": "MOSES GYM",
+    "amount": 1020,
+    "date": "2023-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "July",
+    "tenant_name": "MOSES GYM",
+    "amount": 1000,
+    "date": "2023-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "August",
+    "tenant_name": "MOSES GYM",
+    "amount": 1000,
+    "date": "2023-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "September",
+    "tenant_name": "MOSES GYM",
+    "amount": 1000,
+    "date": "2023-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "October",
+    "tenant_name": "MOSES GYM",
+    "amount": 1000,
+    "date": "2023-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "November",
+    "tenant_name": "MOSES GYM",
+    "amount": 1000,
+    "date": "2023-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "December",
+    "tenant_name": "MOSES GYM",
+    "amount": 1000,
+    "date": "2023-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "January",
+    "tenant_name": "HAMZA",
+    "amount": 500,
+    "date": "2023-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "February",
+    "tenant_name": "HAMZA",
+    "amount": 500,
+    "date": "2023-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "March",
+    "tenant_name": "HAMZA",
+    "amount": 520,
+    "date": "2023-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "April",
+    "tenant_name": "HAMZA",
+    "amount": 520,
+    "date": "2023-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "May",
+    "tenant_name": "HAMZA",
+    "amount": 820,
+    "date": "2023-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+  },
+  {
+    "year": 2022,
+    "month": "December",
+    "tenant_name": "JOHNTIBALEKE",
+    "amount": 1000,
+    "date": "2022-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "January",
+    "tenant_name": "DERRICKSENYANGE",
+    "amount": 1100,
+    "date": "2023-01-15",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "February",
+    "tenant_name": "SHAKIRAHNAKIYEMBA",
+    "amount": 2300,
+    "date": "2023-02-01",
+    "method": "Cheque",
+    "status": "Pending"
+  }
+]
+
+    "month": "June",
+    "tenant_name": "HAMZA",
+    "amount": 820,
+    "date": "2023-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "July",
+    "tenant_name": "HAMZA",
+    "amount": 800,
+    "date": "2023-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "August",
+    "tenant_name": "HAMZA",
+    "amount": 800,
+    "date": "2023-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "September",
+    "tenant_name": "HAMZA",
+    "amount": 1300,
+    "date": "2023-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "October",
+    "tenant_name": "HAMZA",
+    "amount": 900,
+    "date": "2023-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "November",
+    "tenant_name": "HAMZA",
+    "amount": 1000,
+    "date": "2023-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "December",
+    "tenant_name": "HAMZA",
+    "amount": 1000,
+    "date": "2023-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "April",
+    "tenant_name": "JOANA DERACRUZ",
+    "amount": 380,
+    "date": "2023-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "May",
+    "tenant_name": "JOANA DERACRUZ",
+    "amount": 520,
+    "date": "2023-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "June",
+    "tenant_name": "JOANA DERACRUZ",
+    "amount": 520,
+    "date": "2023-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "July",
+    "tenant_name": "JOANA DERACRUZ",
+    "amount": 500,
+    "date": "2023-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "August",
+    "tenant_name": "JOANA DERACRUZ",
+    "amount": 500,
+    "date": "2023-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "September",
+    "tenant_name": "JOANA DERACRUZ",
+    "amount": 500,
+    "date": "2023-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "October",
+    "tenant_name": "JOANA DERACRUZ",
+    "amount": 500,
+    "date": "2023-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "August",
+    "tenant_name": "MUGALULA",
+    "amount": 400,
+    "date": "2023-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "September",
+    "tenant_name": "MUGALULA",
+    "amount": 400,
+    "date": "2023-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "March",
+    "tenant_name": "TOBIAS",
+    "amount": 600,
+    "date": "2023-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "April",
+    "tenant_name": "TOBIAS",
+    "amount": 620,
+    "date": "2023-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "May",
+    "tenant_name": "TOBIAS",
+    "amount": 620,
+    "date": "2023-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "June",
+    "tenant_name": "TOBIAS",
+    "amount": 620,
+    "date": "2023-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "July",
+    "tenant_name": "TOBIAS",
+    "amount": 600,
+    "date": "2023-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "August",
+    "tenant_name": "TOBIAS",
+    "amount": 600,
+    "date": "2023-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "September",
+    "tenant_name": "TOBIAS",
+    "amount": 600,
+    "date": "2023-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "June",
+    "tenant_name": "JOAN FIFI",
+    "amount": 400,
+    "date": "2023-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "May",
+    "tenant_name": "NAYIGA Deborah",
+    "amount": 420,
+    "date": "2023-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "June",
+    "tenant_name": "NAYIGA Deborah",
+    "amount": 410,
+    "date": "2023-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "January",
+    "tenant_name": "JOHNTIBALEKE",
+    "amount": 1000,
+    "date": "2023-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "February",
+    "tenant_name": "JOHNTIBALEKE",
+    "amount": 1000,
+    "date": "2023-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "March",
+    "tenant_name": "JOHNTIBALEKE",
+    "amount": 1020,
+    "date": "2023-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "April",
+    "tenant_name": "JOHNTIBALEKE",
+    "amount": 1020,
+    "date": "2023-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "May",
+    "tenant_name": "JOHNTIBALEKE",
+    "amount": 1020,
+    "date": "2023-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "June",
+    "tenant_name": "JOHNTIBALEKE",
+    "amount": 1020,
+    "date": "2023-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "May",
+    "tenant_name": "ROSE",
+    "amount": 250,
+    "date": "2023-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "June",
+    "tenant_name": "ROSE",
+    "amount": 150,
+    "date": "2023-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "August",
+    "tenant_name": "ROSE",
+    "amount": 400,
+    "date": "2023-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "May",
+    "tenant_name": "FREDRICK ABERE CHOGO",
+    "amount": 500,
+    "date": "2023-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "January",
+    "tenant_name": "PRISCILA",
+    "amount": 500,
+    "date": "2023-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "February",
+    "tenant_name": "PRISCILA",
+    "amount": 500,
+    "date": "2023-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "March",
+    "tenant_name": "PRISCILA",
+    "amount": 520,
+    "date": "2023-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "April",
+    "tenant_name": "PRISCILA",
+    "amount": 410,
+    "date": "2023-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "May",
+    "tenant_name": "PRISCILA",
+    "amount": 520,
+    "date": "2023-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "March",
+    "tenant_name": "DESIRE",
+    "amount": 600,
+    "date": "2023-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "April",
+    "tenant_name": "DESIRE",
+    "amount": 650,
+    "date": "2023-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "January",
+    "tenant_name": "ABDULSHAKUURU SSALI",
+    "amount": 500,
+    "date": "2023-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "February",
+    "tenant_name": "ABDULSHAKUURU SSALI",
+    "amount": 600,
+    "date": "2023-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "March",
+    "tenant_name": "ABDULSHAKUURU SSALI",
+    "amount": 600,
+    "date": "2023-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "April",
+    "tenant_name": "ABDULSHAKUURU SSALI",
+    "amount": 600,
+    "date": "2023-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "January",
+    "tenant_name": "FATIMAH NAKALANZI",
+    "amount": 800,
+    "date": "2023-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "February",
+    "tenant_name": "FATIMAH NAKALANZI",
+    "amount": 800,
+    "date": "2023-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "March",
+    "tenant_name": "FATIMAH NAKALANZI",
+    "amount": 800,
+    "date": "2023-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "April",
+    "tenant_name": "FATIMAH NAKALANZI",
+    "amount": 800,
+    "date": "2023-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "January",
+    "tenant_name": "ABDUL KASENKE",
+    "amount": 850,
+    "date": "2023-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "February",
+    "tenant_name": "ABDUL KASENKE",
+    "amount": 850,
+    "date": "2023-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "March",
+    "tenant_name": "ABDUL KASENKE",
+    "amount": 850,
+    "date": "2023-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "April",
+    "tenant_name": "ABDUL KASENKE",
+    "amount": 870,
+    "date": "2023-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "March",
+    "tenant_name": "TIMOTH",
+    "amount": 400,
+    "date": "2023-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "January",
+    "tenant_name": "PATRICK",
+    "amount": 1000,
+    "date": "2023-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "January",
+    "tenant_name": "SAMUEL",
+    "amount": 500,
+    "date": "2023-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "January",
+    "tenant_name": "PETRA",
+    "amount": 450,
+    "date": "2023-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "February",
+    "tenant_name": "PETRA",
+    "amount": 450,
+    "date": "2023-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "January",
+    "tenant_name": "DAVID",
+    "amount": 1300,
+    "date": "2023-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2023,
+    "month": "January",
+    "tenant_name": "STELLA",
+    "amount": 200,
+    "date": "2023-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "January",
+    "tenant_name": "Robert nsubuga",
+    "amount": 400,
+    "date": "2024-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "February",
+    "tenant_name": "Robert nsubuga",
+    "amount": 400,
+    "date": "2024-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "March",
+    "tenant_name": "Robert nsubuga",
+    "amount": 400,
+    "date": "2024-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "April",
+    "tenant_name": "Robert nsubuga",
+    "amount": 400,
+    "date": "2024-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "May",
+    "tenant_name": "Robert nsubuga",
+    "amount": 400,
+    "date": "2024-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "June",
+    "tenant_name": "Robert nsubuga",
+    "amount": 400,
+    "date": "2024-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "July",
+    "tenant_name": "Robert nsubuga",
+    "amount": 400,
+    "date": "2024-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "December",
+    "tenant_name": "Robert nsubuga",
+    "amount": 350,
+    "date": "2024-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "January",
+    "tenant_name": "Baguma Fred",
+    "amount": 550,
+    "date": "2024-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "February",
+    "tenant_name": "Baguma Fred",
+    "amount": 550,
+    "date": "2024-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "March",
+    "tenant_name": "Baguma Fred",
+    "amount": 550,
+    "date": "2024-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "April",
+    "tenant_name": "Baguma Fred",
+    "amount": 550,
+    "date": "2024-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "May",
+    "tenant_name": "Baguma Fred",
+    "amount": 550,
+    "date": "2024-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "June",
+    "tenant_name": "Baguma Fred",
+    "amount": 550,
+    "date": "2024-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "July",
+    "tenant_name": "Baguma Fred",
+    "amount": 500,
+    "date": "2024-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "August",
+    "tenant_name": "Baguma Fred",
+    "amount": 500,
+    "date": "2024-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "September",
+    "tenant_name": "Baguma Fred",
+    "amount": 500,
+    "date": "2024-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "October",
+    "tenant_name": "Baguma Fred",
+    "amount": 500,
+    "date": "2024-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "November",
+    "tenant_name": "Baguma Fred",
+    "amount": 500,
+    "date": "2024-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "December",
+    "tenant_name": "Baguma Fred",
+    "amount": 500,
+    "date": "2024-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "March",
+    "tenant_name": "Kabogoza",
+    "amount": 500,
+    "date": "2024-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "July",
+    "tenant_name": "Kabogoza",
+    "amount": 400,
+    "date": "2024-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "August",
+    "tenant_name": "Kabogoza",
+    "amount": 400,
+    "date": "2024-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "September",
+    "tenant_name": "Kabogoza",
+    "amount": 400,
+    "date": "2024-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "October",
+    "tenant_name": "Kabogoza",
+    "amount": 400,
+    "date": "2024-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "December",
+    "tenant_name": "Kabogoza",
+    "amount": 400,
+    "date": "2024-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "January",
+    "tenant_name": "Neithan",
+    "amount": 650,
+    "date": "2024-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "February",
+    "tenant_name": "Neithan",
+    "amount": 650,
+    "date": "2024-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "March",
+    "tenant_name": "Neithan",
+    "amount": 650,
+    "date": "2024-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "April",
+    "tenant_name": "Neithan",
+    "amount": 650,
+    "date": "2024-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "May",
+    "tenant_name": "Neithan",
+    "amount": 650,
+    "date": "2024-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "June",
+    "tenant_name": "Neithan",
+    "amount": 650,
+    "date": "2024-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "July",
+    "tenant_name": "Neithan",
+    "amount": 650,
+    "date": "2024-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "August",
+    "tenant_name": "Neithan",
+    "amount": 650,
+    "date": "2024-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "September",
+    "tenant_name": "Neithan",
+    "amount": 650,
+    "date": "2024-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "December",
+    "tenant_name": "Neithan",
+    "amount": 600,
+    "date": "2024-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "January",
+    "tenant_name": "Jackison nkalu",
+    "amount": 600,
+    "date": "2024-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "February",
+    "tenant_name": "Jackison nkalu",
+    "amount": 600,
+    "date": "2024-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "March",
+    "tenant_name": "Jackison nkalu",
+    "amount": 600,
+    "date": "2024-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "April",
+    "tenant_name": "Jackison nkalu",
+    "amount": 600,
+    "date": "2024-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "May",
+    "tenant_name": "Jackison nkalu",
+    "amount": 600,
+    "date": "2024-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "June",
+    "tenant_name": "Jackison nkalu",
+    "amount": 600,
+    "date": "2024-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "July",
+    "tenant_name": "Jackison nkalu",
+    "amount": 600,
+    "date": "2024-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "August",
+    "tenant_name": "Jackison nkalu",
+    "amount": 600,
+    "date": "2024-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "September",
+    "tenant_name": "Jackison nkalu",
+    "amount": 600,
+    "date": "2024-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "December",
+    "tenant_name": "Jackison nkalu",
+    "amount": 500,
+    "date": "2024-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "January",
+    "tenant_name": "Phiphi/ Brigheht",
+    "amount": 1150,
+    "date": "2024-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "February",
+    "tenant_name": "Phiphi/ Brigheht",
+    "amount": 1150,
+    "date": "2024-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "March",
+    "tenant_name": "Phiphi/ Brigheht",
+    "amount": 1150,
+    "date": "2024-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "April",
+    "tenant_name": "Phiphi/ Brigheht",
+    "amount": 1150,
+    "date": "2024-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "May",
+    "tenant_name": "Phiphi/ Brigheht",
+    "amount": 1150,
+    "date": "2024-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "June",
+    "tenant_name": "Phiphi/ Brigheht",
+    "amount": 1050,
+    "date": "2024-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "July",
+    "tenant_name": "Phiphi/ Brigheht",
+    "amount": 1050,
+    "date": "2024-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "August",
+    "tenant_name": "Phiphi/ Brigheht",
+    "amount": 1050,
+    "date": "2024-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "September",
+    "tenant_name": "Phiphi/ Brigheht",
+    "amount": 1050,
+    "date": "2024-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "October",
+    "tenant_name": "Phiphi/ Brigheht",
+    "amount": 1150,
+    "date": "2024-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "November",
+    "tenant_name": "Phiphi/ Brigheht",
+    "amount": 1150,
+    "date": "2024-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "December",
+    "tenant_name": "Phiphi/ Brigheht",
+    "amount": 1150,
+    "date": "2024-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "January",
+    "tenant_name": "Derick",
+    "amount": 500,
+    "date": "2024-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "February",
+    "tenant_name": "Derick",
+    "amount": 1000,
+    "date": "2024-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "March",
+    "tenant_name": "Derick",
+    "amount": 1000,
+    "date": "2024-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "April",
+    "tenant_name": "Derick",
+    "amount": 1000,
+    "date": "2024-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "May",
+    "tenant_name": "Derick",
+    "amount": 1000,
+    "date": "2024-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "June",
+    "tenant_name": "Derick",
+    "amount": 1000,
+    "date": "2024-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "July",
+    "tenant_name": "Derick",
+    "amount": 1000,
+    "date": "2024-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "August",
+    "tenant_name": "Derick",
+    "amount": 1000,
+    "date": "2024-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "September",
+    "tenant_name": "Derick",
+    "amount": 1000,
+    "date": "2024-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "October",
+    "tenant_name": "Derick",
+    "amount": 1000,
+    "date": "2024-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "November",
+    "tenant_name": "Derick",
+    "amount": 1000,
+    "date": "2024-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "December",
+    "tenant_name": "Derick",
+    "amount": 1000,
+    "date": "2024-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "January",
+    "tenant_name": "Moses Gym",
+    "amount": 1000,
+    "date": "2024-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "February",
+    "tenant_name": "Moses Gym",
+    "amount": 1000,
+    "date": "2024-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "March",
+    "tenant_name": "Moses Gym",
+    "amount": 1000,
+    "date": "2024-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "April",
+    "tenant_name": "Moses Gym",
+    "amount": 1000,
+    "date": "2024-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "May",
+    "tenant_name": "Moses Gym",
+    "amount": 1000,
+    "date": "2024-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "June",
+    "tenant_name": "Moses Gym",
+    "amount": 1000,
+    "date": "2024-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "July",
+    "tenant_name": "Moses Gym",
+    "amount": 1000,
+    "date": "2024-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "August",
+    "tenant_name": "Moses Gym",
+    "amount": 1000,
+    "date": "2024-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "September",
+    "tenant_name": "Moses Gym",
+    "amount": 1000,
+    "date": "2024-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "October",
+    "tenant_name": "Moses Gym",
+    "amount": 1000,
+    "date": "2024-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "November",
+    "tenant_name": "Moses Gym",
+    "amount": 1000,
+    "date": "2024-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "December",
+    "tenant_name": "Moses Gym",
+    "amount": 1000,
+    "date": "2024-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "January",
+    "tenant_name": "Hamza/ kharol",
+    "amount": 1000,
+    "date": "2024-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "February",
+    "tenant_name": "Hamza/ kharol",
+    "amount": 800,
+    "date": "2024-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "March",
+    "tenant_name": "Hamza/ kharol",
+    "amount": 800,
+    "date": "2024-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "April",
+    "tenant_name": "Hamza/ kharol",
+    "amount": 500,
+    "date": "2024-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "June",
+    "tenant_name": "Hamza/ kharol",
+    "amount": 800,
+    "date": "2024-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "July",
+    "tenant_name": "Hamza/ kharol",
+    "amount": 800,
+    "date": "2024-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "August",
+    "tenant_name": "Hamza/ kharol",
+    "amount": 800,
+    "date": "2024-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "September",
+    "tenant_name": "Hamza/ kharol",
+    "amount": 800,
+    "date": "2024-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "October",
+    "tenant_name": "Hamza/ kharol",
+    "amount": 800,
+    "date": "2024-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "November",
+    "tenant_name": "Hamza/ kharol",
+    "amount": 800,
+    "date": "2024-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "December",
+    "tenant_name": "Hamza/ kharol",
+    "amount": 800,
+    "date": "2024-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "January",
+    "tenant_name": "Max",
+    "amount": 1200,
+    "date": "2024-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "February",
+    "tenant_name": "Max",
+    "amount": 1200,
+    "date": "2024-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "March",
+    "tenant_name": "Max",
+    "amount": 1200,
+    "date": "2024-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "April",
+    "tenant_name": "Max",
+    "amount": 1200,
+    "date": "2024-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "May",
+    "tenant_name": "Max",
+    "amount": 1200,
+    "date": "2024-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "June",
+    "tenant_name": "Max",
+    "amount": 1200,
+    "date": "2024-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "July",
+    "tenant_name": "Max",
+    "amount": 1200,
+    "date": "2024-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "August",
+    "tenant_name": "Max",
+    "amount": 1200,
+    "date": "2024-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "September",
+    "tenant_name": "Max",
+    "amount": 1200,
+    "date": "2024-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "October",
+    "tenant_name": "Max",
+    "amount": 1200,
+    "date": "2024-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "November",
+    "tenant_name": "Max",
+    "amount": 1200,
+    "date": "2024-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "December",
+    "tenant_name": "Max",
+    "amount": 1200,
+    "date": "2024-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "January",
+    "tenant_name": "Amito",
+    "amount": 1000,
+    "date": "2024-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "February",
+    "tenant_name": "Amito",
+    "amount": 1000,
+    "date": "2024-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "March",
+    "tenant_name": "Amito",
+    "amount": 1000,
+    "date": "2024-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "April",
+    "tenant_name": "Amito",
+    "amount": 1000,
+    "date": "2024-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "May",
+    "tenant_name": "Amito",
+    "amount": 1000,
+    "date": "2024-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "June",
+    "tenant_name": "Amito",
+    "amount": 1000,
+    "date": "2024-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "August",
+    "tenant_name": "Amito",
+    "amount": 1000,
+    "date": "2024-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "September",
+    "tenant_name": "Amito",
+    "amount": 1000,
+    "date": "2024-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "October",
+    "tenant_name": "Amito",
+    "amount": 1000,
+    "date": "2024-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "November",
+    "tenant_name": "Amito",
+    "amount": 1000,
+    "date": "2024-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "December",
+    "tenant_name": "Amito",
+    "amount": 1000,
+    "date": "2024-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "January",
+    "tenant_name": "kamumi shira",
+    "amount": 400,
+    "date": "2024-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "February",
+    "tenant_name": "kamumi shira",
+    "amount": 450,
+    "date": "2024-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "March",
+    "tenant_name": "kamumi shira",
+    "amount": 450,
+    "date": "2024-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "April",
+    "tenant_name": "kamumi shira",
+    "amount": 450,
+    "date": "2024-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "July",
+    "tenant_name": "kamumi shira",
+    "amount": 400,
+    "date": "2024-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "August",
+    "tenant_name": "kamumi shira",
+    "amount": 400,
+    "date": "2024-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "September",
+    "tenant_name": "kamumi shira",
+    "amount": 400,
+    "date": "2024-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "October",
+    "tenant_name": "kamumi shira",
+    "amount": 400,
+    "date": "2024-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "November",
+    "tenant_name": "kamumi shira",
+    "amount": 400,
+    "date": "2024-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "December",
+    "tenant_name": "kamumi shira",
+    "amount": 400,
+    "date": "2024-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "January",
+    "tenant_name": "Jose",
+    "amount": 700,
+    "date": "2024-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "February",
+    "tenant_name": "Jose",
+    "amount": 700,
+    "date": "2024-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "April",
+    "tenant_name": "Jose",
+    "amount": 400,
+    "date": "2024-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "May",
+    "tenant_name": "Jose",
+    "amount": 650,
+    "date": "2024-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "July",
+    "tenant_name": "Jose",
+    "amount": 650,
+    "date": "2024-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "August",
+    "tenant_name": "Jose",
+    "amount": 650,
+    "date": "2024-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "September",
+    "tenant_name": "Jose",
+    "amount": 650,
+    "date": "2024-09-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "October",
+    "tenant_name": "Jose",
+    "amount": 650,
+    "date": "2024-10-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "November",
+    "tenant_name": "Jose",
+    "amount": 650,
+    "date": "2024-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "December",
+    "tenant_name": "Jose",
+    "amount": 650,
+    "date": "2024-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "January",
+    "tenant_name": "Zinta/...Wareen",
+    "amount": 450,
+    "date": "2024-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "February",
+    "tenant_name": "Zinta/...Wareen",
+    "amount": 450,
+    "date": "2024-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "March",
+    "tenant_name": "Zinta/...Wareen",
+    "amount": 450,
+    "date": "2024-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "April",
+    "tenant_name": "Zinta/...Wareen",
+    "amount": 450,
+    "date": "2024-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "May",
+    "tenant_name": "Zinta/...Wareen",
+    "amount": 450,
+    "date": "2024-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "June",
+    "tenant_name": "Zinta/...Wareen",
+    "amount": 450,
+    "date": "2024-06-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "July",
+    "tenant_name": "Zinta/...Wareen",
+    "amount": 450,
+    "date": "2024-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "August",
+    "tenant_name": "Zinta/...Wareen",
+    "amount": 450,
+    "date": "2024-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "November",
+    "tenant_name": "Zinta/...Wareen",
+    "amount": 200,
+    "date": "2024-11-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "December",
+    "tenant_name": "Zinta/...Wareen",
+    "amount": 400,
+    "date": "2024-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "January",
+    "tenant_name": "Rose....ESTER",
+    "amount": 500,
+    "date": "2024-01-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "February",
+    "tenant_name": "Rose....ESTER",
+    "amount": 400,
+    "date": "2024-02-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "March",
+    "tenant_name": "Rose....ESTER",
+    "amount": 500,
+    "date": "2024-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "April",
+    "tenant_name": "Rose....ESTER",
+    "amount": 500,
+    "date": "2024-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "May",
+    "tenant_name": "Rose....ESTER",
+    "amount": 200,
+    "date": "2024-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "July",
+    "tenant_name": "Rose....ESTER",
+    "amount": 550,
+    "date": "2024-07-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "August",
+    "tenant_name": "Rose....ESTER",
+    "amount": 550,
+    "date": "2024-08-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2024,
+    "month": "December",
+    "tenant_name": "Rose....ESTER",
+    "amount": 500,
+    "date": "2024-12-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "January",
+    "tenant_name": "Max",
+    "amount": 1925,
+    "date": "2026-01-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "February",
+    "tenant_name": "Max",
+    "amount": 1700,
+    "date": "2026-01-29",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "tenant_name": "Max",
+    "amount": 2100,
+    "date": "2026-03-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "February",
+    "tenant_name": "WAREEN",
+    "amount": 500,
+    "date": "2026-02-01",
+    "method": "Bank Transfer",
+    "status": "Overdue"
+  },
+  {
+    "year": 2026,
+    "month": "January",
+    "tenant_name": "Shakirah Nakiyemba",
+    "amount": 2300,
+    "date": "2026-01-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "February",
+    "tenant_name": "Shakirah Nakiyemba",
+    "amount": 2300,
+    "date": "2026-02-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "tenant_name": "Shakirah Nakiyemba",
+    "amount": 2300,
+    "date": "2026-03-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "January",
+    "tenant_name": "Jenie & Bridget",
+    "amount": 1150,
+    "date": "2026-01-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "February",
+    "tenant_name": "Jenie & Bridget",
+    "amount": 1150,
+    "date": "2026-01-31",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "tenant_name": "Jenie & Bridget",
+    "amount": 1300,
+    "date": "2026-03-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "January",
+    "tenant_name": "Tonny",
+    "amount": 1300,
+    "date": "2026-01-08",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "February",
+    "tenant_name": "Tonny",
+    "amount": 1300,
+    "date": "2026-02-04",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "tenant_name": "Tonny",
+    "amount": 1300,
+    "date": "2026-03-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2025,
+    "month": "December",
+    "tenant_name": "Danny",
+    "amount": 600,
+    "date": "2025-12-06",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "January",
+    "tenant_name": "Danny",
+    "amount": 600,
+    "date": "2026-01-02",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "February",
+    "tenant_name": "Danny",
+    "amount": 600,
+    "date": "2026-01-29",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "tenant_name": "Danny",
+    "amount": 1200,
+    "date": "2026-03-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "January",
+    "tenant_name": "carol",
+    "amount": 1150,
+    "date": "2026-07-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "February",
+    "tenant_name": "carol",
+    "amount": 1300,
+    "date": "2026-04-02",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "tenant_name": "Ibrahim Ssebunnya",
+    "amount": 2300,
+    "date": "2026-03-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "tenant_name": "Akoyoyo Esther",
+    "amount": 1200,
+    "date": "2026-03-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "tenant_name": "Jean &bridget",
+    "amount": 1300,
+    "date": "2026-03-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "April",
+    "tenant_name": "Tonny",
+    "amount": 1300,
+    "date": "2026-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "April",
+    "tenant_name": "Danny",
+    "amount": 1200,
+    "date": "2026-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "April",
+    "tenant_name": "Akoyoyo Esther",
+    "amount": 1200,
+    "date": "2026-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "April",
+    "tenant_name": "Max",
+    "amount": 2100,
+    "date": "2026-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "April",
+    "tenant_name": "Shakirah Nakiyemba",
+    "amount": 2300,
+    "date": "2026-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "April",
+    "tenant_name": "Ibrahim Ssebunnya",
+    "amount": 2300,
+    "date": "2026-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "April",
+    "tenant_name": "Shakirah kalunji",
+    "amount": 1150,
+    "date": "2026-04-01",
+    "method": "Cash",
+    "status": "Vacant"
+  },
+  {
+    "year": 2026,
+    "month": "April",
+    "tenant_name": "Max",
+    "amount": 2300,
+    "date": "2026-04-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "May",
+    "tenant_name": "Danny",
+    "amount": 1200,
+    "date": "2026-05-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "May",
+    "tenant_name": "Tonny",
+    "amount": 1300,
+    "date": "2026-05-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "May",
+    "tenant_name": "Jenie & Bridget",
+    "amount": 1300,
+    "date": "2026-05-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "May",
+    "tenant_name": "Joyce",
+    "amount": 1000,
+    "date": "2026-05-01",
+    "method": "Cash",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "May",
+    "tenant_name": "Shakirah Nakiyemba",
+    "amount": 2300,
+    "date": "2026-05-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "May",
+    "tenant_name": "Nabukera Esther",
+    "amount": 2000,
+    "date": "2026-05-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "May",
+    "tenant_name": "Max",
+    "amount": 2300,
+    "date": "2026-05-07",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "June",
+    "tenant_name": "Danny",
+    "amount": 1200,
+    "date": "2026-06-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "June",
+    "tenant_name": "Tonny",
+    "amount": 1300,
+    "date": "2026-06-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "June",
+    "tenant_name": "Jenie & Bridget",
+    "amount": 1300,
+    "date": "2026-06-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "June",
+    "tenant_name": "Shakirah Nakiyemba",
+    "amount": 2300,
+    "date": "2026-06-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "June",
+    "tenant_name": "Nabukera Esther",
+    "amount": 2300,
+    "date": "2026-06-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "June",
+    "tenant_name": "Max",
+    "amount": 2100,
+    "date": "2026-06-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "June",
+    "tenant_name": "SHAKIRAH KALUNJI",
+    "amount": 1150,
+    "date": "2026-06-05",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "July",
+    "tenant_name": "Danny",
+    "amount": 1200,
+    "date": "2026-07-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "July",
+    "tenant_name": "Tonny",
+    "amount": 1300,
+    "date": "2026-07-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "July",
+    "tenant_name": "Jenie & Bridget",
+    "amount": 1300,
+    "date": "2026-07-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "July",
+    "tenant_name": "Shakirah Nakiyemba",
+    "amount": 2300,
+    "date": "2026-07-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "July",
+    "tenant_name": "Nabukera Esther",
+    "amount": 2300,
+    "date": "2026-07-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "July",
+    "tenant_name": "Max",
+    "amount": 2100,
+    "date": "2026-07-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "July",
+    "tenant_name": "SHAKIRAH KALUNJI",
+    "amount": 1150,
+    "date": "2026-07-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "August",
+    "tenant_name": "Danny",
+    "amount": 1200,
+    "date": "2026-08-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "August",
+    "tenant_name": "Tonny",
+    "amount": 1300,
+    "date": "2026-08-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "August",
+    "tenant_name": "Jenie & Bridget",
+    "amount": 1300,
+    "date": "2026-08-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "August",
+    "tenant_name": "Shakirah Nakiyemba",
+    "amount": 2300,
+    "date": "2026-08-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "August",
+    "tenant_name": "Max",
+    "amount": 2100,
+    "date": "2026-08-01",
+    "method": "Bank Transfer",
+    "status": "Partial"
+  },
+  {
+    "year": 2026,
+    "month": "August",
+    "tenant_name": "SHAKIRAH KALUNJI",
+    "amount": 1100,
+    "date": "2026-08-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "September",
+    "tenant_name": "Danny",
+    "amount": 1200,
+    "date": "2026-09-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "September",
+    "tenant_name": "Tonny",
+    "amount": 1300,
+    "date": "2026-09-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "September",
+    "tenant_name": "Jenie & Bridget",
+    "amount": 1300,
+    "date": "2026-09-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "September",
+    "tenant_name": "Shakirah Nakiyemba",
+    "amount": 2300,
+    "date": "2026-09-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "September",
+    "tenant_name": "SHAKIRAH KALUNJI",
+    "amount": 1100,
+    "date": "2026-09-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "October",
+    "tenant_name": "Danny",
+    "amount": 1200,
+    "date": "2026-10-01",
+    "method": "Bank Transfer",
+    "status": "Pending"
+  },
+  {
+    "year": 2026,
+    "month": "October",
+    "tenant_name": "Tonny",
+    "amount": 1300,
+    "date": "2026-10-01",
+    "method": "Bank Transfer",
+    "status": "Pending"
+  },
+  {
+    "year": 2026,
+    "month": "October",
+    "tenant_name": "Jenie & Bridget",
+    "amount": 1300,
+    "date": "2026-10-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "October",
+    "tenant_name": "Shakirah Nakiyemba",
+    "amount": 2300,
+    "date": "2026-10-01",
+    "method": "Bank Transfer",
+    "status": "Paid"
+  },
+  {
+    "year": 2026,
+    "month": "February",
+    "tenant_name": "Max",
+    "amount": 2100,
+    "date": "2026-02-01",
+    "method": "Bank Transfer",
+    "status": "Pending"
+  },
+  {
+    "year": 2026,
+    "month": "October",
+    "tenant_name": "SHAKIRAH KALUNJI",
+    "amount": 1100,
+    "date": "2026-10-01",
+    "method": "Bank Transfer",
+    "status": "Pending"
+  }
+]

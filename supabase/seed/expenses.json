@@ -1,0 +1,29 @@
+[
+  {
+    "year": 2026,
+    "month": "January",
+    "date": "2026-01-01",
+    "category": "Maintenance",
+    "description": "Max room paint",
+    "amount": 200,
+    "method": "BT"
+  },
+  {
+    "year": 2026,
+    "month": "January",
+    "date": "2026-01-05",
+    "category": "Utilities",
+    "description": "Electricity bill",
+    "amount": 150,
+    "method": "Cash"
+  },
+  {
+    "year": 2026,
+    "month": "January",
+    "date": "2026-01-10",
+    "category": "Cleaning",
+    "description": "Monthly cleaning supplies",
+    "amount": 75,
+    "method": "BT"
+  }
+]
