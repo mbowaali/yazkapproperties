@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { supabase } from "@/lib/supabase";
-import AdminDashboard from "@/components/AdminDashboard";
 import TenantDashboard from "@/components/TenantDashboard";
 
 export default function Dashboard() {
@@ -14,14 +13,14 @@ export default function Dashboard() {
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session }, error } = await supabase.auth.getSession();
-      
+
       if (!session || error) {
         router.push("/login");
         return;
       }
 
       setUid(session.user.id);
-      
+
       const { data: profileData, error: profileError } = await supabase
         .from("profiles")
         .select("role")
@@ -31,7 +30,13 @@ export default function Dashboard() {
       if (profileError && profileError.code !== 'PGRST116') {
         console.error('Profile fetch error:', profileError);
       }
-      setRole(profileData?.role ?? "tenant");
+
+      const r = profileData?.role ?? "tenant";
+      if (r === "admin") {
+        router.replace("/admin");
+        return;
+      }
+      setRole(r);
       setLoading(false);
     };
 
@@ -52,5 +57,5 @@ export default function Dashboard() {
   }, [router]);
 
   if (loading) return <p className="p-10 text-center">Loading…</p>;
-  return role === "admin" ? <AdminDashboard /> : <TenantDashboard userId={uid!} />;
+  return <TenantDashboard userId={uid!} />;
 }
