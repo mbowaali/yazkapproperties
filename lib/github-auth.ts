@@ -16,7 +16,7 @@ export const signInWithGitHub = async (options: GitHubAuthOptions = {}) => {
       provider: 'github',
       options: {
         redirectTo,
-        scopes,
+        scopes: scopes.join(" "),
       },
     });
     // Note: The user will be redirected to GitHub, so this line typically won't execute

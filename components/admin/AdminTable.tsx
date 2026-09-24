@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { fmt } from "@/lib/currency";
-import { exportToExcel } from "@/lib/excel";
+import { exportToExcel, importFromExcel } from "@/lib/excel";
 
 export type FieldType = "text" | "number" | "date" | "select" | "textarea" | "checkbox";
 
@@ -23,6 +23,9 @@ const PILL_GREEN = ["paid", "active", "done", "good", "refunded", "resolved"];
 const PILL_BLUE = ["occupied", "in-progress", "held", "true"];
 const PILL_AMBER = ["pending", "medium", "fair", "maintenance", "partially-refunded"];
 const PILL_RED = ["overdue", "urgent", "high", "open", "poor", "broken", "forfeited"];
+
+// normalize a spreadsheet header or field name for matching ("Monthly Rent" → "monthlyrent")
+const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
 
 function pillClass(value: unknown): string | null {
   if (value === true) return "bg-green-100 text-green-700";
@@ -86,6 +89,7 @@ export default function AdminTable({
   const [form, setForm] = useState<Record<string, any>>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [importState, setImportState] = useState<{ busy: boolean; msg: string; ok: boolean } | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -197,6 +201,63 @@ export default function AdminTable({
       table
     );
 
+  const onImportFile = async (file: File) => {
+    setImportState({ busy: true, msg: "Reading file…", ok: true });
+    try {
+      const raw = await importFromExcel(file);
+      // accept headers that match either the field key or its label ("Full name", "fullname", …)
+      const lookup = new Map<string, Field>();
+      for (const f of fields) {
+        lookup.set(norm(f.key), f);
+        lookup.set(norm(f.label), f);
+      }
+      const errors: string[] = [];
+      const out: Record<string, any>[] = [];
+      raw.forEach((r, i) => {
+        const row: Record<string, any> = {};
+        let used = false;
+        for (const [h, v] of Object.entries(r)) {
+          const f = lookup.get(norm(h));
+          if (!f) continue;
+          used = true;
+          if (f.type === "number") row[f.key] = v === "" || v == null ? null : Number(String(v).replace(/,/g, ""));
+          else if (f.type === "checkbox")
+            row[f.key] = v === true || ["yes", "true", "1"].includes(String(v).toLowerCase());
+          else row[f.key] = v == null || String(v).trim() === "" ? null : String(v).trim();
+        }
+        if (!used) { errors.push(`row ${i + 2} has no recognized columns`); return; }
+        const missing = fields.filter(
+          (f) => f.required && f.type !== "checkbox" && (row[f.key] == null || row[f.key] === "")
+        );
+        if (missing.length) {
+          errors.push(`row ${i + 2} is missing ${missing.map((f) => f.label).join(", ")}`);
+          return;
+        }
+        out.push(row);
+      });
+      if (!out.length) {
+        setImportState({ busy: false, ok: false, msg: `Nothing imported — ${errors.slice(0, 4).join("; ") || "no data rows found"}.` });
+        return;
+      }
+      let done = 0;
+      for (let i = 0; i < out.length; i += 200) {
+        const { error } = await supabase.from(table).insert(out.slice(i, i + 200));
+        if (error) {
+          setImportState({ busy: false, ok: false, msg: `Import failed after ${done} rows: ${error.message}` });
+          return;
+        }
+        done += out.slice(i, i + 200).length;
+      }
+      setImportState({
+        busy: false, ok: true,
+        msg: `✅ Imported ${done} row${done === 1 ? "" : "s"}${errors.length ? ` — skipped ${errors.length} (${errors.slice(0, 3).join("; ")})` : ""}.`,
+      });
+      load();
+    } catch (e: any) {
+      setImportState({ busy: false, ok: false, msg: "Import failed: " + (e?.message ?? "unreadable file") });
+    }
+  };
+
   const toggleSort = (key: string) => {
     if (sortKey === key) setSortAsc(!sortAsc);
     else { setSortKey(key); setSortAsc(true); }
@@ -207,6 +268,11 @@ export default function AdminTable({
     if (f.type === "checkbox")
       return v ? <span className="pill-paid">Yes</span> : <span className="text-slate-300">—</span>;
     if (v == null || v === "") return <span className="text-slate-300">—</span>;
+    if (f.key.includes("photo_url") && typeof v === "string" && v.startsWith("http"))
+      return (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={v} alt="Photo" className="h-10 w-10 rounded-lg border border-slate-200 object-cover" />
+      );
     const pill = (f.type === "select" || typeof v === "boolean") ? pillClass(v) : null;
     const text = f.currency ? fmt(Number(v)) : f.type === "textarea" ? (
       <span title={String(v)}>{String(v).length > 42 ? String(v).slice(0, 42) + "…" : String(v)}</span>
@@ -227,10 +293,30 @@ export default function AdminTable({
           )}
         </div>
         <div className="flex gap-2">
+          <label className="btn-ghost cursor-pointer">
+            ⬆ Import
+            <input
+              type="file"
+              className="hidden"
+              accept=".xlsx,.xls,.csv"
+              disabled={importState?.busy}
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                e.target.value = "";
+                if (f) onImportFile(f);
+              }}
+            />
+          </label>
           <button onClick={exportRows} className="btn-ghost" disabled={!visible.length}>⬇ Export</button>
           <button onClick={openAdd} className="btn-primary">+ Add {itemLabel}</button>
         </div>
       </div>
+
+      {importState && (
+        <div className={`mt-4 rounded-xl border px-4 py-3 text-sm ${importState.ok ? "border-green-200 bg-green-50 text-green-800" : "border-red-200 bg-red-50 text-danger"}`}>
+          {importState.msg}
+        </div>
+      )}
 
       {note && (
         <div className="mt-4 rounded-xl border border-blue-100 bg-primary-50 px-4 py-3 text-sm text-primary-dark">{note}</div>

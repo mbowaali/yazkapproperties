@@ -40,6 +40,7 @@ create table if not exists public.profiles (
   emirates_id       text,
   employer          text,
   job_title         text,
+  photo_url         text,
   role              text not null default 'tenant' check (role in ('tenant','admin')),
   approved          boolean not null default false,
   id_document_url   text,
@@ -276,10 +277,20 @@ create policy "admin manages invoices"     on public.invoices          for all  
 
 -- ============================================================
 -- Storage: documents bucket (Emirates ID + work contract uploads)
+--           avatars bucket (tenant profile photos)
 -- ============================================================
 insert into storage.buckets (id, name, public)
 values ('documents', 'documents', true)
 on conflict (id) do nothing;
 
+insert into storage.buckets (id, name, public)
+values ('avatars', 'avatars', true)
+on conflict (id) do nothing;
+
 create policy "public read documents"      on storage.objects for select using (bucket_id = 'documents');
 create policy "auth upload documents"      on storage.objects for insert with check (bucket_id = 'documents' and auth.role() = 'authenticated');
+
+create policy "public read avatars"        on storage.objects for select using (bucket_id = 'avatars');
+create policy "auth upload avatars"        on storage.objects for insert with check (bucket_id = 'avatars' and auth.role() = 'authenticated');
+create policy "auth update own avatars"    on storage.objects for update using (bucket_id = 'avatars' and auth.role() = 'authenticated');
+create policy "auth delete own avatars"    on storage.objects for delete using (bucket_id = 'avatars' and auth.role() = 'authenticated');

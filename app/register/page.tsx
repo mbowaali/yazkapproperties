@@ -10,6 +10,7 @@ export default function Register() {
   });
   const [idFile, setIdFile] = useState<File | null>(null);
   const [contractFile, setContractFile] = useState<File | null>(null);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [msg, setMsg] = useState("");
   const [ok, setOk] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -20,14 +21,20 @@ export default function Register() {
 
   async function upload(file: File, folder: string) {
     const supabase = createBrowserClient();
-    
+
     if (!supabase) {
       throw new Error("Supabase client not initialized");
     }
-    
+
     const name = `${folder}/${Date.now()}-${file.name}`;
     await supabase.storage.from("documents").upload(name, file);
     return supabase.storage.from("documents").getPublicUrl(name).data.publicUrl;
+  }
+
+  async function uploadPhoto(supabase: any, userId: string, file: File) {
+    const name = `${userId}/photo.jpg`;
+    await supabase.storage.from("avatars").upload(name, file, { upsert: true, contentType: file.type });
+    return supabase.storage.from("avatars").getPublicUrl(name).data.publicUrl;
   }
 
   async function submit(e: React.FormEvent) {
@@ -40,7 +47,7 @@ export default function Register() {
     if (!supabase) {
       setBusy(false);
       setOk(false);
-      setMsg("❌ Supabase client not initialized. Please try again later.");
+      setMsg("❌ Supabase is not configured on this deployment — set the environment variables and redeploy.");
       return;
     }
     
@@ -52,10 +59,11 @@ export default function Register() {
 
     const idDoc = idFile ? await upload(idFile, "ids") : null;
     const contract = contractFile ? await upload(contractFile, "contracts") : null;
+    const photo = photoFile ? await uploadPhoto(supabase, data.user!.id, photoFile).catch(() => null) : null;
 
     await supabase.from("profiles").upsert({
       id: data.user!.id, ...form,
-      id_document_url: idDoc, work_contract_url: contract, role: "tenant",
+      id_document_url: idDoc, work_contract_url: contract, photo_url: photo, role: "tenant",
     });
     setBusy(false);
     setOk(true);
@@ -167,6 +175,15 @@ export default function Register() {
           </div>
 
           <div className="space-y-3">
+            <div>
+              <label className="label">Profile Photo <span className="font-normal text-slate-400">(optional)</span></label>
+              <input
+                type="file"
+                className="input file:mr-3 file:cursor-pointer file:rounded-lg file:border-0 file:bg-primary-50 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-primary"
+                onChange={(e) => setPhotoFile(e.target.files?.[0] ?? null)}
+                accept="image/*"
+              />
+            </div>
             <div>
               <label className="label">Emirates ID Document</label>
               <input

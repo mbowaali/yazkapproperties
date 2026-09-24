@@ -1,19 +1,19 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 // Environment variables
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-// Validate environment variables
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.warn("Missing Supabase environment variables. Some functionality may not work properly.");
-}
+const CONFIG_ERROR =
+  "Supabase is not configured on this deployment. " +
+  "The site owner must set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY " +
+  "in the hosting platform's environment variables, then trigger a new deployment " +
+  "(they are baked into the app at build time).";
 
 // Create a function to initialize Supabase client
-const initializeSupabaseClient = () => {
+const initializeSupabaseClient = (): SupabaseClient => {
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-    console.error("Supabase URL and/or ANON key not set in environment variables");
-    return null;
+    throw new Error(CONFIG_ERROR);
   }
 
   return createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -31,28 +31,27 @@ const initializeSupabaseClient = () => {
   });
 };
 
-// Export the main client instance - this will be undefined on the server side
-let supabaseInstance: any = null;
+// Lazily-initialized shared anon client. A Proxy keeps the module import safe
+// on the server (no access until actually used — event handlers/effects only
+// run in the browser) while ensuring the client exists by the first real call.
+let anonInstance: SupabaseClient | null = null;
 
-// Initialize the client only in the browser
-if (typeof window !== 'undefined') {
-  supabaseInstance = initializeSupabaseClient();
-}
+const getAnonClient = (): SupabaseClient => {
+  if (!anonInstance) anonInstance = initializeSupabaseClient();
+  return anonInstance;
+};
 
-export { supabaseInstance as supabase };
+export const supabase: SupabaseClient = new Proxy({} as SupabaseClient, {
+  get(_target, prop, receiver) {
+    const client = getAnonClient();
+    const value = Reflect.get(client, prop, receiver);
+    return typeof value === "function" ? value.bind(client) : value;
+  },
+});
 
 // Client-side Supabase client with PKCE support for OAuth
-export const createBrowserClient = () => {
-  if (typeof window === 'undefined') {
-    // Return null on the server side
-    return null;
-  }
-  
-  if (!supabaseInstance) {
-    supabaseInstance = initializeSupabaseClient();
-  }
-  
-  return supabaseInstance;
+export const createBrowserClient = (): SupabaseClient => {
+  return getAnonClient();
 };
 
 // Service role client for server-side operations that require higher permissions
@@ -61,15 +60,17 @@ export const createServiceRoleClient = () => {
     console.warn('Service role client should only be used on the server side');
     return null;
   }
-  
+
   const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  
+
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-    console.error("Supabase URL and/or SERVICE ROLE key not set in environment variables");
+    console.error(
+      "Supabase service-role credentials are not set. " +
+      "Set SUPABASE_SERVICE_ROLE_KEY (and NEXT_PUBLIC_SUPABASE_URL) in the server environment."
+    );
     return null;
   }
-  
+
   return createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
     auth: {
       persistSession: false, // Service role doesn't need session persistence
@@ -79,24 +80,14 @@ export const createServiceRoleClient = () => {
 
 // Import authentication helpers
 export const signInWithCredentials = async (email: string, password: string) => {
-  const supabaseClient = createBrowserClient();
-  if (!supabaseClient) {
-    throw new Error('Supabase client not initialized');
-  }
-  
-  return await supabaseClient.auth.signInWithPassword({
+  return await createBrowserClient().auth.signInWithPassword({
     email,
     password,
   });
 };
 
 export const signUpWithCredentials = async (email: string, password: string, userData: any = {}) => {
-  const supabaseClient = createBrowserClient();
-  if (!supabaseClient) {
-    throw new Error('Supabase client not initialized');
-  }
-  
-  return await supabaseClient.auth.signUp({
+  return await createBrowserClient().auth.signUp({
     email,
     password,
     options: {
@@ -106,10 +97,5 @@ export const signUpWithCredentials = async (email: string, password: string, use
 };
 
 export const signOut = async () => {
-  const supabaseClient = createBrowserClient();
-  if (!supabaseClient) {
-    throw new Error('Supabase client not initialized');
-  }
-  
-  return await supabaseClient.auth.signOut();
+  return await createBrowserClient().auth.signOut();
 };

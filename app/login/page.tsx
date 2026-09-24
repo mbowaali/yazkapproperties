@@ -21,7 +21,7 @@ export default function Login() {
     
     if (!supabase) {
       setBusy(false);
-      setErr("Supabase client not initialized. Please try again later.");
+      setErr("Supabase is not configured on this deployment — set the environment variables and redeploy.");
       return;
     }
     

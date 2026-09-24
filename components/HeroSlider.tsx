@@ -14,14 +14,14 @@ type Slide = {
 
 const SLIDES: Slide[] = [
   {
-    src: "/slides/building.svg",
+    src: "/slides/building.jpg",
     alt: "Valencia Laundry Building on Electra Street, Abu Dhabi",
     badge: "📍 302 Electra Street · Abu Dhabi",
     title: "Welcome to Yazkap Properties",
     subtitle: "Clean, secure and affordable living in the heart of the city — Valencia Laundry Building.",
   },
   {
-    src: "/slides/studio.svg",
+    src: "/slides/studio.jpg",
     alt: "Bright private studio room with a large window and bed",
     badge: "🏠 Private Studios",
     title: "Your own space, your own rules",
@@ -29,7 +29,7 @@ const SLIDES: Slide[] = [
     cta: { label: "Register as Tenant →", href: "/register" },
   },
   {
-    src: "/slides/partition.svg",
+    src: "/slides/partition.jpg",
     alt: "Partitioned room with a privacy curtain divider",
     badge: "🚪 Smart Partitions",
     title: "Privacy that fits your budget",
@@ -37,14 +37,14 @@ const SLIDES: Slide[] = [
     cta: { label: "Register as Tenant →", href: "/register" },
   },
   {
-    src: "/slides/bedspace.svg",
+    src: "/slides/bedspace.jpg",
     alt: "Bunk bed arrangement in a bright shared room",
     badge: "🛏 Bedspace & Shared",
     title: "The smartest deal in Abu Dhabi",
     subtitle: "Bedspaces and shared rooms for two — move in today, pay monthly.",
   },
   {
-    src: "/slides/big-hall.svg",
+    src: "/slides/big-hall.jpg",
     alt: "Spacious hall with tall windows and seating",
     badge: "🏛 Big Halls",
     title: "Room to breathe, room to live",
