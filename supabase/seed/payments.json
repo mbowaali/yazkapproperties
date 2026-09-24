@@ -2404,36 +2404,6 @@
   },
   {
     "year": 2023,
-  },
-  {
-    "year": 2022,
-    "month": "December",
-    "tenant_name": "JOHNTIBALEKE",
-    "amount": 1000,
-    "date": "2022-12-01",
-    "method": "Cash",
-    "status": "Paid"
-  },
-  {
-    "year": 2023,
-    "month": "January",
-    "tenant_name": "DERRICKSENYANGE",
-    "amount": 1100,
-    "date": "2023-01-15",
-    "method": "Bank Transfer",
-    "status": "Paid"
-  },
-  {
-    "year": 2023,
-    "month": "February",
-    "tenant_name": "SHAKIRAHNAKIYEMBA",
-    "amount": 2300,
-    "date": "2023-02-01",
-    "method": "Cheque",
-    "status": "Pending"
-  }
-]
-
     "month": "June",
     "tenant_name": "HAMZA",
     "amount": 820,

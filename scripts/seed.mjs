@@ -35,15 +35,18 @@ const supabase = createClient(URL, KEY, { auth: { persistSession: false } });
 
 const TABLES = [
   { file: "tenants.json", table: "tenants", unique: "code" },
-  { file: "payments.json", table: "transactions", unique: null },
+  { file: "payments.json", table: "transactions", unique: null,
+    // transactions has no year/month columns — `date` carries that; the DB
+    // defaults fill in type ('rent') and currency ('AED')
+    map: ({ year, month, ...tx }) => tx },
   { file: "expenses.json", table: "expenses", unique: null },
   { file: "landlord_payments.json", table: "landlord_payments", unique: null },
 ];
 
 const CHUNK = 400;
 
-for (const { file, table, unique } of TABLES) {
-  const rows = JSON.parse(readFileSync(join(ROOT, "supabase", "seed", file), "utf8"));
+for (const { file, table, unique, map } of TABLES) {
+  const rows = (map ? JSON.parse(readFileSync(join(ROOT, "supabase", "seed", file), "utf8")).map(map) : JSON.parse(readFileSync(join(ROOT, "supabase", "seed", file), "utf8")));
   const { count, error: countErr } = await supabase.from(table).select("*", { count: "exact", head: true });
   if (countErr) { console.error(`✗ ${table}: ${countErr.message} — did you run supabase/schema.sql?`); process.exit(1); }
 

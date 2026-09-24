@@ -6,24 +6,607 @@
     "category": "Maintenance",
     "description": "Max room paint",
     "amount": 200,
-    "method": "BT"
+    "method": "Bank Transfer",
+    "notes": null
   },
   {
     "year": 2026,
     "month": "January",
-    "date": "2026-01-05",
+    "date": "2026-01-01",
+    "category": "Maintenance",
+    "description": "Shakira room paint",
+    "amount": 300,
+    "method": "Cash",
+    "notes": "New tenant"
+  },
+  {
+    "year": 2026,
+    "month": "February",
+    "date": "2026-02-01",
     "category": "Utilities",
-    "description": "Electricity bill",
-    "amount": 150,
-    "method": "Cash"
+    "description": "Water and electricity",
+    "amount": 1247.43,
+    "method": "Credit Card",
+    "notes": "2/3/2026@ADDC/TAQA DISTRIBUTION ABU"
   },
   {
     "year": 2026,
     "month": "January",
-    "date": "2026-01-10",
-    "category": "Cleaning",
-    "description": "Monthly cleaning supplies",
+    "date": "2026-01-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 397,
+    "method": "Cash",
+    "notes": "1/27/2026Deposited by max on"
+  },
+  {
+    "year": 2026,
+    "month": "February",
+    "date": "2026-02-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 356.9,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2024,
+    "month": "March",
+    "date": "2024-03-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 376.85,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2024,
+    "month": "April",
+    "date": "2024-04-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 426.8,
+    "method": "Bank Transfer",
+    "notes": null
+  },
+  {
+    "year": 2024,
+    "month": "May",
+    "date": "2024-05-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 406.75,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2024,
+    "month": "June",
+    "date": "2024-06-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 388.7,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2024,
+    "month": "July",
+    "date": "2024-07-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 376.95,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2024,
+    "month": "August",
+    "date": "2024-08-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 403.9,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2024,
+    "month": "September",
+    "date": "2024-09-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 373.85,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2024,
+    "month": "November",
+    "date": "2024-11-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 386.7,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2025,
+    "month": "December",
+    "date": "2025-12-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 315.6,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2025,
+    "month": "March",
+    "date": "2025-03-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 377.55,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2025,
+    "month": "April",
+    "date": "2025-04-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 374.5,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2025,
+    "month": "June",
+    "date": "2025-06-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 376.35,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2025,
+    "month": "July",
+    "date": "2025-07-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 376.35,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2025,
+    "month": "September",
+    "date": "2025-09-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 378.25,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "January",
+    "date": "2026-01-01",
+    "category": "Utilities",
+    "description": "Water and electricity",
+    "amount": 1412.79,
+    "method": "Credit Card",
+    "notes": "1/18/2026@ADDC/TAQA DISTRIBUTION ABU"
+  },
+  {
+    "year": 2026,
+    "month": "January",
+    "date": "2026-01-01",
+    "category": "Utilities",
+    "description": "Water and electricity",
+    "amount": 1819.93,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2025,
+    "month": "December",
+    "date": "2025-12-01",
+    "category": "Utilities",
+    "description": "Water and electricity",
+    "amount": 1779.75,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2025,
+    "month": "October",
+    "date": "2025-10-01",
+    "category": "Utilities",
+    "description": "Water and electricity",
+    "amount": 1658.8,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2025,
+    "month": "May",
+    "date": "2025-05-01",
+    "category": "Utilities",
+    "description": "Water and electricity",
+    "amount": 2012.13,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2025,
+    "month": "February",
+    "date": "2025-02-01",
+    "category": "Utilities",
+    "description": "Water and electricity",
+    "amount": 2502.56,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2024,
+    "month": "December",
+    "date": "2024-12-01",
+    "category": "Utilities",
+    "description": "Water and electricity",
+    "amount": 1164.72,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "date": "2026-03-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 376.35,
+    "method": "Bank Transfer",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "April",
+    "date": "2026-04-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 376.35,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "May",
+    "date": "2026-05-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 376.35,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "June",
+    "date": "2026-06-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 376.35,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "July",
+    "date": "2026-07-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 376.35,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "August",
+    "date": "2026-08-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 376.35,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "September",
+    "date": "2026-09-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 376.35,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "October",
+    "date": "2026-10-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 376.35,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "November",
+    "date": "2026-11-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 376.35,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "December",
+    "date": "2026-12-01",
+    "category": "Utilities",
+    "description": "Wifi",
+    "amount": 376.35,
+    "method": "Credit Card",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "January",
+    "date": "2026-01-01",
+    "category": "Utilities",
+    "description": "Water and electricity",
+    "amount": 1247.43,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "April",
+    "date": "2026-04-01",
+    "category": "Utilities",
+    "description": "Water and electricity",
+    "amount": 1124.51,
+    "method": "Bank Transfer",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "May",
+    "date": "2026-05-01",
+    "category": "Utilities",
+    "description": "Water and electricity",
+    "amount": 996.14,
+    "method": "Bank Transfer",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "June",
+    "date": "2026-06-01",
+    "category": "Utilities",
+    "description": "Water and electricity",
+    "amount": 1040.63,
+    "method": "Bank Transfer",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "date": "2026-03-01",
+    "category": "Maintenance",
+    "description": "paint",
+    "amount": 500,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "date": "2026-03-01",
+    "category": "Supplies",
+    "description": "Curtains fixing",
+    "amount": 200,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "date": "2026-03-01",
+    "category": "Equipment",
+    "description": "Curtains New",
+    "amount": 400,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "date": "2026-03-01",
+    "category": "Maintenance",
+    "description": "Lock fixing by mulonngo and bed dismantaling  , Ac cleaning",
+    "amount": 140,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "date": "2026-03-01",
+    "category": "Other",
+    "description": "Dxb-Auh",
+    "amount": 140,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "January",
+    "date": "2026-01-01",
+    "category": "Legal",
+    "description": "Ruth refund",
+    "amount": 500,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "date": "2026-03-01",
+    "category": "Other",
+    "description": "Ruth refund",
+    "amount": 500,
+    "method": "Bank Transfer",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "date": "2026-03-01",
+    "category": "Supplies",
+    "description": "coin washing machine",
+    "amount": 2150,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "date": "2026-03-01",
+    "category": "Supplies",
+    "description": "cleaning equipments",
+    "amount": 28,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "date": "2026-03-01",
+    "category": "Supplies",
+    "description": "camera new",
     "amount": 75,
-    "method": "BT"
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "March",
+    "date": "2026-03-01",
+    "category": "Supplies",
+    "description": "tranport to fix camera",
+    "amount": 150,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "April",
+    "date": "2026-04-01",
+    "category": "Utilities",
+    "description": "Water and electricity",
+    "amount": 1150,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "April",
+    "date": "2026-04-01",
+    "category": "Utilities",
+    "description": "wifi",
+    "amount": 376.35,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "May",
+    "date": "2026-05-01",
+    "category": "Maintenance",
+    "description": "touch up paint and Ac cleaning",
+    "amount": 220,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "May",
+    "date": "2026-05-01",
+    "category": "Utilities",
+    "description": "wifi",
+    "amount": 376.35,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "June",
+    "date": "2026-06-01",
+    "category": "Utilities",
+    "description": "wifi",
+    "amount": 376.35,
+    "method": "Bank Transfer",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "May",
+    "date": "2026-05-01",
+    "category": "Equipment",
+    "description": "Big bathroom bulbs and kitchen",
+    "amount": 20,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "June",
+    "date": "2026-06-01",
+    "category": "Maintenance",
+    "description": "RAYIE SHOWER SET BLACK/WHITE SILVER RHSBSF/RHWSF",
+    "amount": 52.5,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "June",
+    "date": "2026-06-01",
+    "category": "Staff",
+    "description": "LABOR",
+    "amount": 20,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "June",
+    "date": "2026-06-01",
+    "category": "Utilities",
+    "description": "Big bathroom bulbs",
+    "amount": 30,
+    "method": "Cash",
+    "notes": null
+  },
+  {
+    "year": 2026,
+    "month": "July",
+    "date": "2026-07-01",
+    "category": "Utilities",
+    "description": "Water and electricity",
+    "amount": 916.24,
+    "method": "Bank Transfer",
+    "notes": null
   }
 ]
