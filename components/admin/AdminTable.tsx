@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase";
 import { fmt } from "@/lib/currency";
 import { exportToExcel, importFromExcel } from "@/lib/excel";
 
-export type FieldType = "text" | "number" | "date" | "select" | "textarea" | "checkbox";
+export type FieldType = "text" | "number" | "date" | "select" | "textarea" | "checkbox" | "photo";
 
 export interface Field {
   key: string;
@@ -174,11 +174,31 @@ export default function AdminTable({
     const payload: Record<string, any> = {};
     for (const f of fields) {
       const v = form[f.key];
+      if (f.type === "photo") continue; // handled below (File or kept URL)
       if (f.type === "number") payload[f.key] = v === "" || v == null ? null : Number(v);
       else if (f.type === "checkbox") payload[f.key] = Boolean(v);
       else payload[f.key] = v === "" ? null : v;
     }
     setSaving(true);
+    // photo fields: upload the picked File to the avatars bucket, else keep the existing URL
+    for (const f of fields) {
+      if (f.type !== "photo") continue;
+      const v = form[f.key];
+      if (v instanceof File) {
+        const path = `${table}/${editingId ?? "new"}-${Date.now()}.jpg`;
+        const { error: upErr } = await supabase.storage
+          .from("avatars")
+          .upload(path, v, { upsert: true, contentType: v.type || "image/jpeg" });
+        if (upErr) {
+          setSaving(false);
+          setFormError(`Photo upload failed: ${upErr.message} (run supabase/upgrade-profile-photos.sql if the avatars bucket is missing)`);
+          return;
+        }
+        payload[f.key] = supabase.storage.from("avatars").getPublicUrl(path).data.publicUrl;
+      } else {
+        payload[f.key] = typeof v === "string" && v !== "" ? v : null;
+      }
+    }
     const { error: err } = editingId
       ? await supabase.from(table).update(payload).eq("id", editingId)
       : await supabase.from(table).insert(payload);
@@ -408,6 +428,32 @@ export default function AdminTable({
                       />
                       {f.label}
                     </label>
+                  ) : f.type === "photo" ? (
+                    <div className="flex items-center gap-3">
+                      {typeof form[f.key] === "string" && form[f.key] ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={form[f.key]} alt="Current photo" className="h-14 w-14 rounded-xl border border-slate-200 object-cover" />
+                      ) : form[f.key] instanceof File ? (
+                        <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-green-50 text-xs font-semibold text-green-700">
+                          Ready
+                        </span>
+                      ) : (
+                        <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-slate-100 text-lg text-slate-300" aria-hidden>👤</span>
+                      )}
+                      <label className="btn-ghost cursor-pointer text-sm">
+                        Choose photo…
+                        <input
+                          type="file"
+                          className="hidden"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            e.target.value = "";
+                            if (file) setForm({ ...form, [f.key]: file });
+                          }}
+                        />
+                      </label>
+                    </div>
                   ) : (
                     <>
                       <label className="label" htmlFor={`fld-${f.key}`}>

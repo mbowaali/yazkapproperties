@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createBrowserClient } from "@/lib/supabase";
+import { createBrowserClient, isSupabaseConfigured } from "@/lib/supabase";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -42,12 +42,12 @@ export default function Register() {
     setBusy(true);
     setMsg("");
     
-    const supabase = createBrowserClient();
-    
+    const supabase = isSupabaseConfigured ? createBrowserClient() : null;
+
     if (!supabase) {
       setBusy(false);
       setOk(false);
-      setMsg("❌ Supabase is not configured on this deployment — set the environment variables and redeploy.");
+      setMsg("❌ Registration is unavailable: Supabase environment variables are missing on this deployment. The site owner must add them and redeploy.");
       return;
     }
     

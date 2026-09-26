@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { createBrowserClient } from "@/lib/supabase";
+import { createBrowserClient, isSupabaseConfigured } from "@/lib/supabase";
 
 interface NavLink {
   href: string;
@@ -23,8 +23,8 @@ export default function Header() {
   useEffect(() => {
     let subscription: any = null;
     
-    // Initialize Supabase client
-    const supabaseClient = createBrowserClient();
+    // Initialize Supabase client (an unconfigured deployment renders signed-out)
+    const supabaseClient = isSupabaseConfigured ? createBrowserClient() : null;
     if (supabaseClient) {
       // Get current user session
       const getUserSession = async () => {

@@ -1,9 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
-import { supabase, signOut } from "@/lib/supabase";
+import { supabase, signOut, isSupabaseConfigured } from "@/lib/supabase";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import SupabaseConfigNotice from "@/components/SupabaseConfigNotice";
 
 const NAV = [
   ["📊 Overview", "/admin"], ["🏢 Units", "/admin/units"], ["👥 Tenants", "/admin/tenants"],
@@ -48,6 +49,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         : "text-primary-100 hover:bg-white/10 hover:text-white"
     }`;
   };
+
+  if (!isSupabaseConfigured) return <SupabaseConfigNotice />;
 
   if (state !== "ok") {
     return (

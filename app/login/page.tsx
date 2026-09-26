@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createBrowserClient } from "@/lib/supabase";
+import { createBrowserClient, isSupabaseConfigured } from "@/lib/supabase";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -17,11 +17,11 @@ export default function Login() {
     setErr("");
     
     // Get the Supabase client
-    const supabase = createBrowserClient();
-    
+    const supabase = isSupabaseConfigured ? createBrowserClient() : null;
+
     if (!supabase) {
       setBusy(false);
-      setErr("Supabase is not configured on this deployment — set the environment variables and redeploy.");
+      setErr("Sign-in is unavailable: Supabase environment variables are missing on this deployment. The site owner must add them and redeploy.");
       return;
     }
     

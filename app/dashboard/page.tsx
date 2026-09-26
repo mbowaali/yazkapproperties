@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import TenantDashboard from "@/components/TenantDashboard";
+import SupabaseConfigNotice from "@/components/SupabaseConfigNotice";
 
 export default function Dashboard() {
   const [role, setRole] = useState<string | null>(null);
@@ -56,6 +57,7 @@ export default function Dashboard() {
     };
   }, [router]);
 
+  if (!isSupabaseConfigured) return <SupabaseConfigNotice />;
   if (loading) return <p className="p-10 text-center">Loading…</p>;
   return <TenantDashboard userId={uid!} />;
 }

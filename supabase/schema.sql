@@ -15,6 +15,7 @@ create table if not exists public.tenants (
   monthly_rent     numeric(12,2),
   status           text check (status in ('active','exited')),
   space_type       text,
+  photo_url        text,
   created_at       timestamptz default now()
 );
 

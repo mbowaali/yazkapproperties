@@ -12,6 +12,7 @@ export default function TenantsPage() {
       orderAsc
       sumField="monthly_rent"
       fields={[
+        { key: "photo_url", label: "Photo", type: "photo" },
         { key: "code", label: "Code", required: true, placeholder: "e.g. T-001" },
         { key: "full_name", label: "Full name", required: true },
         { key: "phone", label: "Phone", placeholder: "+971…" },

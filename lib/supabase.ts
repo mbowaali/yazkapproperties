@@ -4,6 +4,11 @@ import { createClient, SupabaseClient } from "@supabase/supabase-js";
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+// True when the public (client) credentials were present at build time.
+// Check this before touching `supabase` so an unconfigured deployment shows
+// a setup notice instead of crashing the client bundle.
+export const isSupabaseConfigured = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
+
 const CONFIG_ERROR =
   "Supabase is not configured on this deployment. " +
   "The site owner must set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY " +
