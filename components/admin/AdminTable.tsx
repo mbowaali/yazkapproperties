@@ -63,7 +63,7 @@ function initialForm(fields: Field[]): Record<string, any> {
 
 export default function AdminTable({
   table, title, subtitle, itemLabel, fields,
-  orderBy, orderAsc = false, sumField, yearField, note,
+  orderBy, orderAsc = false, sumField, yearField, note, extraRowAction,
 }: {
   table: string;
   title: string;
@@ -75,6 +75,7 @@ export default function AdminTable({
   sumField?: string;   // numeric column to total in the header chip
   yearField?: string;  // date column used to build the year filter
   note?: React.ReactNode;
+  extraRowAction?: (row: Record<string, any>) => React.ReactNode;
 }) {
   const cols = fields.filter((f) => !f.hideInTable);
   const [rows, setRows] = useState<Record<string, any>[]>([]);
@@ -393,6 +394,7 @@ export default function AdminTable({
                 <tr key={row.id}>
                   {cols.map((f) => <td key={f.key}>{cell(f, row)}</td>)}
                   <td className="whitespace-nowrap text-right">
+                    {extraRowAction?.(row)}
                     <button onClick={() => openEdit(row)} className="text-sm font-semibold text-primary hover:underline">Edit</button>
                     <span className="mx-1.5 text-slate-200">|</span>
                     <button onClick={() => remove(row)} className="text-sm font-semibold text-danger hover:underline">Delete</button>

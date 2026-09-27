@@ -9,7 +9,8 @@ import SupabaseConfigNotice from "@/components/SupabaseConfigNotice";
 const NAV = [
   ["📊 Overview", "/admin"], ["🏢 Units", "/admin/units"], ["👥 Tenants", "/admin/tenants"],
   ["💵 Transactions", "/admin/transactions"], ["🧾 Invoices", "/admin/invoices"], ["📉 Expenses", "/admin/expenses"],
-  ["🔑 Landlord (A. Nady)", "/admin/landlord"], ["🛠 Maintenance", "/admin/maintenance"],
+  ["🔑 Landlord (A. Nady)", "/admin/landlord"], ["📑 Statements", "/admin/statements"],
+  ["🛠 Maintenance", "/admin/maintenance"],
   ["🛏 Assets", "/admin/assets"], ["🧴 Consumables", "/admin/consumables"],
   ["💰 Deposits", "/admin/deposits"], ["📈 Reports", "/admin/reports"],
   ["🏦 Banks/Branches", "/admin/banks"], ["📢 Announcements", "/admin/announcements"],
@@ -65,7 +66,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
       {/* Mobile nav: horizontally scrollable chips */}
-      <nav className="sticky top-16 z-30 flex gap-2 overflow-x-auto border-b border-slate-200 bg-white/95 px-4 py-2.5 backdrop-blur lg:hidden">
+      <nav className="no-print sticky top-16 z-30 flex gap-2 overflow-x-auto border-b border-slate-200 bg-white/95 px-4 py-2.5 backdrop-blur lg:hidden">
         {NAV.map(([label, href]) => (
           <Link
             key={href}
@@ -88,7 +89,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </nav>
 
       {/* Desktop sidebar */}
-      <aside className="hidden w-64 shrink-0 flex-col bg-primary-dark p-4 lg:sticky lg:top-16 lg:flex lg:h-[calc(100vh-4rem)] lg:overflow-y-auto">
+      <aside className="no-print hidden w-64 shrink-0 flex-col bg-primary-dark p-4 lg:sticky lg:top-16 lg:flex lg:h-[calc(100vh-4rem)] lg:overflow-y-auto">
         <Image src="/logo.svg" alt="Yazkap" width={180} height={48} className="mb-4 rounded-xl bg-white p-1.5" />
         {NAV.map(([label, href]) => (
           <Link key={href} href={href} className={linkCls(href)}>{label}</Link>

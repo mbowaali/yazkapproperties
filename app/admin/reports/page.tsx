@@ -2,6 +2,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { fmt } from "@/lib/currency";
+import { rentRoll, type Tenant } from "@/lib/finance";
+import { exportToExcel } from "@/lib/excel";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
   PieChart, Pie, Cell, Legend,
@@ -101,6 +103,14 @@ export default function ReportsPage() {
     [...new Set(tx.map((r) => (yearOf(r.date) ?? 0)))].filter(Boolean).sort((a, b) => b - a) as number[],
   [tx]);
 
+  const [tenants, setTenants] = useState<Tenant[]>([]);
+  useEffect(() => { (async () => {
+    const { data } = await supabase.from("tenants").select("code,full_name,monthly_rent,entry_date,status").limit(2000);
+    setTenants((data ?? []) as Tenant[]);
+  })(); }, []);
+
+  const roll = useMemo(() => rentRoll(tenants, year, tx), [tenants, year, tx]);
+
   if (loading) return <p className="py-16 text-center text-sm text-slate-500">Loading reports…</p>;
   if (error) return (
     <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-danger">{error}</div>
@@ -189,6 +199,59 @@ export default function ReportsPage() {
               </ResponsiveContainer>
             </div>
           )}
+        </div>
+      </div>
+
+      <div className="card mt-6 !p-0 overflow-hidden">
+        <div className="flex flex-wrap items-center justify-between gap-3 px-5 pt-5">
+          <div>
+            <p className="section-title">Rent roll &amp; arrears — {year}</p>
+            <p className="mt-1 text-xs text-slate-400">
+              Expected = contract rent × months of occupancy. Negative balance = tenant behind (arrears); positive = ahead.
+            </p>
+          </div>
+          <button
+            className="btn-ghost no-print !min-h-0 px-4 py-2 text-sm"
+            onClick={() => exportToExcel(roll.rows.map((r) => ({
+              Code: r.code, Tenant: r.tenant, Status: r.status, "Monthly rent": r.monthlyRent,
+              Expected: r.expected, Collected: r.collected, Balance: r.balance,
+            })), `rent-roll-${year}`)}
+            disabled={roll.rows.length === 0}
+          >
+            ⬇ Export rent roll
+          </button>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="table-clean min-w-[680px]">
+            <thead>
+              <tr><th>Code</th><th>Tenant</th><th>Status</th><th>Expected</th><th>Collected</th><th>Balance</th></tr>
+            </thead>
+            <tbody>
+              {roll.rows.length === 0 && (
+                <tr><td colSpan={6} className="py-6 text-center text-sm text-slate-500">No tenants on the roster.</td></tr>
+              )}
+              {roll.rows.map((r) => (
+                <tr key={r.code}>
+                  <td>{r.code}</td>
+                  <td className="font-medium">{r.tenant}</td>
+                  <td><span className={r.status === "active" ? "pill-paid" : "text-slate-400 text-xs"}>{r.status}</span></td>
+                  <td>{fmt(r.expected)}</td>
+                  <td>{fmt(r.collected)}</td>
+                  <td className={r.balance < 0 ? "font-semibold text-danger" : "font-semibold text-success"}>{fmt(r.balance)}</td>
+                </tr>
+              ))}
+              <tr className="bg-slate-50 font-bold">
+                <td colSpan={3}>Totals</td>
+                <td>{fmt(roll.expectedTotal)}</td>
+                <td>{fmt(roll.collectedTotal)}</td>
+                <td>
+                  <span className={roll.arrearsTotal > 0 ? "text-danger" : "text-success"}>
+                    {roll.arrearsTotal > 0 ? `${fmt(roll.arrearsTotal)} arrears` : "no arrears"}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
