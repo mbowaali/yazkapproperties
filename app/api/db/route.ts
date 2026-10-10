@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { sql } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 
-// Allowed tables and their tenant-visible columns (null = admin only)
 const ALLOWED_TABLES: Record<string, "admin" | "tenant"> = {
   tenants: "admin",
   units: "tenant",
@@ -20,10 +19,33 @@ const ALLOWED_TABLES: Record<string, "admin" | "tenant"> = {
   bank_accounts: "admin",
   users: "admin",
   laundry_usage: "admin",
+  tenant_requests: "tenant",
+  tenant_events: "tenant",
+  receipts: "tenant",
+  tenant_documents: "tenant",
 };
+
+// Tables tenants can write to (their own rows only)
+const TENANT_WRITABLE = ["tenant_requests", "tenant_documents"];
 
 function isValidIdentifier(s: string) {
   return /^[a-z_][a-z0-9_]*$/.test(s);
+}
+
+function addTenantFilter(table: string, userId: number): { clause: string; value: number | null } {
+  const map: Record<string, string> = {
+    transactions: "tenancy_id IN (SELECT id FROM tenancies WHERE tenant_id = $1)",
+    invoices: "tenancy_id IN (SELECT id FROM tenancies WHERE tenant_id = $1)",
+    tenancies: "tenant_id = $1",
+    announcements: "active = true",
+    tenant_events: "active = true",
+    tenant_requests: "user_id = $1",
+    receipts: "user_id = $1",
+    tenant_documents: "user_id = $1",
+  };
+  const clause = map[table] ?? "";
+  const needsId = clause.includes("$1");
+  return { clause, value: needsId ? userId : null };
 }
 
 export async function GET(req: Request) {
@@ -36,51 +58,22 @@ export async function GET(req: Request) {
   const orderBy = searchParams.get("orderBy");
   const orderAsc = searchParams.get("orderAsc") === "true";
   const limit = Math.min(Number(searchParams.get("limit") || 2000), 5000);
-  const eqField = searchParams.get("eqField");
-  const eqValue = searchParams.get("eqValue");
 
-  if (!table || !ALLOWED_TABLES[table])
+  if (!table || !ALLOWED_TABLES[table] || !isValidIdentifier(table))
     return NextResponse.json({ error: "Invalid table" }, { status: 400 });
 
-  const access = ALLOWED_TABLES[table];
-  if (access === "admin" && session.role !== "admin")
+  if (ALLOWED_TABLES[table] === "admin" && session.role !== "admin")
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
-  if (!isValidIdentifier(table))
-    return NextResponse.json({ error: "Invalid table name" }, { status: 400 });
-
-  // Build safe query — we can't use parameterized identifiers with @vercel/postgres
-  // so we validate all identifiers strictly above
-  let query = `SELECT ${select === "*" ? "*" : select.split(",").filter(c => isValidIdentifier(c.trim())).join(",")} FROM ${table}`;
+  const safeCols = select === "*" ? "*" : select.split(",").filter(c => isValidIdentifier(c.trim())).join(",");
+  let query = `SELECT ${safeCols} FROM ${table}`;
   const values: any[] = [];
 
-  if (eqField && eqValue && isValidIdentifier(eqField)) {
-    // tenant filtering: tenants only see their own data
-    if (session.role === "tenant" && table === "transactions") {
-      query += ` WHERE tenancy_id IN (SELECT id FROM tenancies WHERE tenant_id = $1)`;
-      values.push(session.id);
-    } else if (session.role === "tenant" && table === "invoices") {
-      query += ` WHERE tenancy_id IN (SELECT id FROM tenancies WHERE tenant_id = $1)`;
-      values.push(session.id);
-    } else if (session.role === "tenant" && table === "tenancies") {
-      query += ` WHERE tenant_id = $1`;
-      values.push(session.id);
-    } else {
-      values.push(eqValue);
-      query += ` WHERE ${eqField} = $${values.length}`;
-    }
-  } else if (session.role === "tenant") {
-    if (table === "transactions") {
-      query += ` WHERE tenancy_id IN (SELECT id FROM tenancies WHERE tenant_id = $1)`;
-      values.push(session.id);
-    } else if (table === "invoices") {
-      query += ` WHERE tenancy_id IN (SELECT id FROM tenancies WHERE tenant_id = $1)`;
-      values.push(session.id);
-    } else if (table === "tenancies") {
-      query += ` WHERE tenant_id = $1`;
-      values.push(session.id);
-    } else if (table === "announcements") {
-      query += ` WHERE active = true`;
+  if (session.role === "tenant") {
+    const { clause, value } = addTenantFilter(table, session.id);
+    if (clause) {
+      query += ` WHERE ${clause}`;
+      if (value !== null) values.push(value);
     }
   }
 
@@ -95,12 +88,18 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const session = await getSession();
-  if (!session || session.role !== "admin")
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { table, payload } = await req.json();
   if (!table || !ALLOWED_TABLES[table] || !isValidIdentifier(table))
     return NextResponse.json({ error: "Invalid table" }, { status: 400 });
+
+  // Tenants can only write to TENANT_WRITABLE tables, and only for themselves
+  if (session.role !== "admin") {
+    if (!TENANT_WRITABLE.includes(table))
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    payload.user_id = session.id; // force own user_id
+  }
 
   const keys = Object.keys(payload).filter(isValidIdentifier);
   const values = keys.map((k) => payload[k]);
@@ -115,12 +114,14 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
   const session = await getSession();
-  if (!session || session.role !== "admin")
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { table, id, payload } = await req.json();
   if (!table || !ALLOWED_TABLES[table] || !isValidIdentifier(table))
     return NextResponse.json({ error: "Invalid table" }, { status: 400 });
+
+  if (session.role !== "admin")
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const keys = Object.keys(payload).filter(isValidIdentifier);
   const values = keys.map((k) => payload[k]);

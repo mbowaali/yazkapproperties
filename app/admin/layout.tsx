@@ -12,6 +12,9 @@ const NAV = [
   ["💰 Deposits", "/admin/deposits"], ["📈 Reports", "/admin/reports"],
   ["🏦 Banks/Branches", "/admin/banks"], ["📢 Announcements", "/admin/announcements"],
   ["🫧 Laundry Machines", "/admin/laundry"],
+  ["🖨 Receipts", "/admin/receipts"],
+  ["📬 Requests", "/admin/requests"],
+  ["📅 News & Events", "/admin/events"],
   ["👤 Tenant Accounts", "/admin/accounts"],
 ];
 

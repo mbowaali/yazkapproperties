@@ -217,3 +217,78 @@ CREATE TABLE IF NOT EXISTS laundry_usage (
 CREATE INDEX IF NOT EXISTS idx_laundry_date    ON laundry_usage(date);
 CREATE INDEX IF NOT EXISTS idx_laundry_machine ON laundry_usage(machine_id);
 CREATE INDEX IF NOT EXISTS idx_laundry_user    ON laundry_usage(used_by_user_id);
+
+-- Extended user profile fields (run ALTER TABLE if DB already exists)
+ALTER TABLE users ADD COLUMN IF NOT EXISTS nationality TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS passport_no TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS passport_expiry DATE;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS date_of_birth DATE;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS gender TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS joining_date DATE;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS emergency_contact_name TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS emergency_contact_phone TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS emergency_contact_relation TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS id_document_url TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS passport_url TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS work_contract_url TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS visa_url TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS unit_label TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS monthly_rent NUMERIC(12,2);
+
+-- Tenant requests (maintenance, complaints, general)
+CREATE TABLE IF NOT EXISTS tenant_requests (
+  id          SERIAL PRIMARY KEY,
+  user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  type        TEXT NOT NULL DEFAULT 'general',
+  subject     TEXT NOT NULL,
+  message     TEXT,
+  status      TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open','in-progress','resolved','closed')),
+  admin_reply TEXT,
+  created_at  TIMESTAMPTZ DEFAULT NOW(),
+  updated_at  TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- News, events, reminders posted by admin
+CREATE TABLE IF NOT EXISTS tenant_events (
+  id          SERIAL PRIMARY KEY,
+  title       TEXT NOT NULL,
+  body        TEXT,
+  event_date  DATE,
+  type        TEXT NOT NULL DEFAULT 'news' CHECK (type IN ('news','event','reminder','notice')),
+  active      BOOLEAN NOT NULL DEFAULT true,
+  created_at  TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Payment receipts (tenant requests, admin approves)
+CREATE TABLE IF NOT EXISTS receipts (
+  id             SERIAL PRIMARY KEY,
+  receipt_no     TEXT UNIQUE NOT NULL,
+  user_id        INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  tenant_name    TEXT NOT NULL,
+  unit_label     TEXT,
+  amount         NUMERIC(12,2) NOT NULL,
+  currency       TEXT NOT NULL DEFAULT 'AED',
+  payment_date   DATE NOT NULL,
+  payment_method TEXT,
+  description    TEXT,
+  status         TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','approved','rejected')),
+  approved_by    INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  approved_at    TIMESTAMPTZ,
+  created_at     TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Tenant uploaded documents
+CREATE TABLE IF NOT EXISTS tenant_documents (
+  id          SERIAL PRIMARY KEY,
+  user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  doc_type    TEXT NOT NULL,
+  file_url    TEXT NOT NULL,
+  file_name   TEXT,
+  ocr_data    JSONB,
+  uploaded_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_requests_user ON tenant_requests(user_id);
+CREATE INDEX IF NOT EXISTS idx_receipts_user ON receipts(user_id);
+CREATE INDEX IF NOT EXISTS idx_docs_user     ON tenant_documents(user_id);
+CREATE INDEX IF NOT EXISTS idx_events_date   ON tenant_events(event_date);
