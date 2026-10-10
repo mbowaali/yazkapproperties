@@ -1,14 +1,6 @@
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 import { checkSession, checkAdmin } from "@/lib/auth";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
-
-declare module "jspdf" {
-  interface jsPDF {
-    autoTable: (options: any) => jsPDF;
-  }
-}
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   const session = await checkSession();
@@ -37,44 +29,10 @@ export async function GET(request: Request, { params }: { params: { id: string }
       SELECT * FROM invoice_items WHERE invoice_id = ${Number(id)}
     `;
 
-    const doc = new jsPDF();
-
-    doc.setFontSize(20);
-    doc.text("Receipt", 105, 20, { align: "center" });
-
-    doc.setFontSize(12);
-    doc.text(`Receipt #: ${invoice.invoice_no}`, 14, 40);
-    doc.text(`Date: ${new Date(invoice.paid_at).toLocaleDateString()}`, 14, 46);
-
-    doc.text("Billed To:", 14, 60);
-    doc.text(invoice.tenant_name, 14, 66);
-    doc.text(`Unit: ${invoice.unit_name}`, 14, 72);
-
-    doc.autoTable({
-      startY: 80,
-      head: [["Description", "Amount"]],
-      body: itemRows.map(item => [item.description, `AED ${item.amount.toFixed(2)}`]),
-      foot: [
-        ["Total", `AED ${invoice.total.toFixed(2)}`],
-        ["Amount Paid", `AED ${invoice.amount_paid.toFixed(2)}`],
-        ["Balance", `AED ${(invoice.total - invoice.amount_paid).toFixed(2)}`],
-      ],
-      theme: "striped",
-      headStyles: { fillColor: [22, 163, 74] },
-    });
-
-    const pdfBytes = doc.output("arraybuffer");
-
-    return new NextResponse(pdfBytes, {
-      status: 200,
-      headers: {
-        "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="receipt-${invoice.invoice_no}.pdf"`,
-      },
-    });
+    return NextResponse.json({ invoice, items: itemRows });
 
   } catch (error) {
-    console.error("Error generating receipt:", error);
+    console.error("Error fetching receipt data:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

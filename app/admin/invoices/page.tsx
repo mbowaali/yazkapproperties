@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import AdminTable from "@/components/admin/AdminTable";
+import AdminTable, { downloadReceipt } from "@/components/admin/AdminTable";
 
 const filterFields = [
   {
@@ -31,13 +31,12 @@ export default function InvoicesPage() {
             PDF
           </Link>
           {row.status === 'paid' && (
-            <a
-              href={`/api/admin/invoices/${row.id}/receipt`}
-              download
+            <button
+              onClick={() => downloadReceipt(row.id)}
               className="text-sm font-semibold text-green-600 hover:underline"
             >
               Receipt
-            </a>
+            </button>
           )}
         </>
       )}

@@ -1,5 +1,7 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import { fmt } from "@/lib/currency";
 import { exportToExcel, importFromExcel } from "@/lib/excel";
 
@@ -59,6 +61,48 @@ function initialForm(fields: Field[]): Record<string, any> {
   }
   return form;
 }
+
+export const downloadReceipt = async (invoiceId: number) => {
+  try {
+    const response = await fetch(`/api/admin/invoices/${invoiceId}/receipt`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch receipt data");
+    }
+    const { invoice, items } = await response.json();
+
+    const doc = new jsPDF();
+
+    doc.setFontSize(20);
+    doc.text("Receipt", 105, 20, { align: "center" });
+
+    doc.setFontSize(12);
+    doc.text(`Receipt #: ${invoice.invoice_no}`, 14, 40);
+    doc.text(`Date: ${new Date(invoice.paid_at).toLocaleDateString()}`, 14, 46);
+
+    doc.text("Billed To:", 14, 60);
+    doc.text(invoice.tenant_name, 14, 66);
+    doc.text(`Unit: ${invoice.unit_name}`, 14, 72);
+
+    autoTable(doc, {
+      startY: 80,
+      head: [["Description", "Amount"]],
+      body: items.map((item: any) => [item.description, `AED ${item.amount.toFixed(2)}`]),
+      foot: [
+        ["Total", `AED ${invoice.total.toFixed(2)}`],
+        ["Amount Paid", `AED ${invoice.amount_paid.toFixed(2)}`],
+        ["Balance", `AED ${(invoice.total - invoice.amount_paid).toFixed(2)}`],
+      ],
+      theme: "striped",
+      headStyles: { fillColor: [22, 163, 74] },
+    });
+
+    doc.save(`receipt-${invoice.invoice_no}.pdf`);
+
+  } catch (error) {
+    console.error("Error generating receipt:", error);
+    alert("Failed to generate receipt. Please check the console for details.");
+  }
+};
 
 export default function AdminTable({
   table, title, subtitle, itemLabel, fields,
