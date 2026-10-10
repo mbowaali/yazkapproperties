@@ -19,6 +19,7 @@ const ALLOWED_TABLES: Record<string, "admin" | "tenant"> = {
   deposits: "admin",
   bank_accounts: "admin",
   users: "admin",
+  laundry_usage: "admin",
 };
 
 function isValidIdentifier(s: string) {

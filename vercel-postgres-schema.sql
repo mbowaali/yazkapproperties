@@ -196,3 +196,24 @@ CREATE INDEX IF NOT EXISTS idx_invoices_tenancy       ON invoices(tenancy_id);
 CREATE INDEX IF NOT EXISTS idx_tenancies_tenant       ON tenancies(tenant_id);
 CREATE INDEX IF NOT EXISTS idx_expenses_date          ON expenses(date);
 CREATE INDEX IF NOT EXISTS idx_landlord_payments_date ON landlord_payments(date);
+
+-- Laundry / Washing Machine usage tracking
+CREATE TABLE IF NOT EXISTS laundry_usage (
+  id              SERIAL PRIMARY KEY,
+  machine_id      TEXT NOT NULL,
+  machine_label   TEXT,
+  used_by_name    TEXT,
+  used_by_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  unit_label      TEXT,
+  date            DATE NOT NULL DEFAULT CURRENT_DATE,
+  cycles          INTEGER NOT NULL DEFAULT 1,
+  fee_per_cycle   NUMERIC(10,2) NOT NULL DEFAULT 5.00,
+  total_fee       NUMERIC(10,2) GENERATED ALWAYS AS (cycles * fee_per_cycle) STORED,
+  currency        TEXT NOT NULL DEFAULT 'AED',
+  paid            BOOLEAN NOT NULL DEFAULT false,
+  notes           TEXT,
+  created_at      TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_laundry_date    ON laundry_usage(date);
+CREATE INDEX IF NOT EXISTS idx_laundry_machine ON laundry_usage(machine_id);
+CREATE INDEX IF NOT EXISTS idx_laundry_user    ON laundry_usage(used_by_user_id);

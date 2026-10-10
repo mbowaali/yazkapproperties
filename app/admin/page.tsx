@@ -9,41 +9,47 @@ async function q(table: string, select = "*") {
 }
 
 export default function AdminOverview() {
-  const [stats, setStats] = useState({ collected: 0, owed: 0, vacant: 0, occupied: 0, expenses: 0, landlordPaid: 0, openMaintenance: 0 });
+  const [stats, setStats] = useState({ collected: 0, owed: 0, vacant: 0, occupied: 0, expenses: 0, landlordPaid: 0, openMaintenance: 0, laundryCollected: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       const y = new Date().getFullYear();
-      const [tr, inv, un, ex, lp, mt] = await Promise.all([
+      const [tr, inv, un, ex, lp, mt, lw] = await Promise.all([
         q("transactions", "amount,date"),
         q("invoices", "total,status"),
         q("units", "status"),
         q("expenses", "amount,date"),
         q("landlord_payments", "amount,date"),
         q("maintenance_requests", "id,status"),
+        q("laundry_usage", "total_fee,date,paid"),
       ]);
       const sum = (rows: any[], dateField?: string) =>
         rows
           .filter(r => !dateField || String(r[dateField] ?? "").startsWith(String(y)))
           .reduce((s, x) => s + Number(x.amount ?? x.total ?? 0), 0);
+      const laundryCollected = lw
+        .filter((r: any) => r.paid && String(r.date ?? "").startsWith(String(y)))
+        .reduce((s: number, r: any) => s + Number(r.total_fee ?? 0), 0);
       setStats({
         collected: sum(tr, "date"),
-        owed: inv.filter(i => i.status !== "paid").reduce((s, i) => s + Number(i.total ?? 0), 0),
-        vacant: un.filter(u => u.status === "vacant").length,
-        occupied: un.filter(u => u.status === "occupied").length,
+        owed: inv.filter((i: any) => i.status !== "paid").reduce((s: number, i: any) => s + Number(i.total ?? 0), 0),
+        vacant: un.filter((u: any) => u.status === "vacant").length,
+        occupied: un.filter((u: any) => u.status === "occupied").length,
         expenses: sum(ex, "date"),
         landlordPaid: sum(lp, "date"),
-        openMaintenance: mt.filter(m => m.status !== "done").length,
+        openMaintenance: mt.filter((m: any) => m.status !== "done").length,
+        laundryCollected,
       });
       setLoading(false);
     })();
   }, []);
 
-  const profit = stats.collected - stats.expenses - stats.landlordPaid;
+  const profit = stats.collected + stats.laundryCollected - stats.expenses - stats.landlordPaid;
 
   const cards = [
-    { label: "Collected (Income)", value: fmt(stats.collected), cls: "text-success", icon: "💵" },
+    { label: "Rent Collected", value: fmt(stats.collected), cls: "text-success", icon: "💵" },
+    { label: "Laundry Income", value: fmt(stats.laundryCollected), cls: "text-success", icon: "🫧" },
     { label: "Outstanding Invoices", value: fmt(stats.owed), cls: "text-danger", icon: "🧾" },
     { label: "Paid to Landlord (Nady)", value: fmt(stats.landlordPaid), cls: "text-primary", icon: "🔑" },
     { label: "Expenses", value: fmt(stats.expenses), cls: "text-slate-700", icon: "📉" },
