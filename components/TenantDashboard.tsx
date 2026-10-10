@@ -105,21 +105,42 @@ export default function TenantDashboard({ userId }: { userId: number }) {
           </div>
 
           {/* Landlord card */}
-          {(landlord.landlord_name || landlord.landlord_photo) && (
+          {(landlord.landlord_name || landlord.landlord_photo || landlord.admin_name || landlord.admin_photo) && (
             <div className="card">
-              <h2 className="section-title mb-3">🏠 Your Landlord</h2>
-              <div className="flex items-center gap-4">
-                {landlord.landlord_photo ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={landlord.landlord_photo} alt="Landlord" className="h-16 w-16 rounded-2xl object-cover border border-slate-200 shrink-0" />
-                ) : (
-                  <div className="h-16 w-16 rounded-2xl bg-primary-50 flex items-center justify-center text-3xl shrink-0">👤</div>
+              <h2 className="section-title mb-3">🏢 Meet Your Management</h2>
+              <div className="flex flex-col sm:flex-row gap-4">
+                {/* Admin / Manager */}
+                {(landlord.admin_name || landlord.admin_photo) && (
+                  <div className="flex items-center gap-3 flex-1">
+                    {landlord.admin_photo ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={landlord.admin_photo} alt="Manager" className="h-14 w-14 rounded-2xl object-cover border border-slate-200 shrink-0" />
+                    ) : (
+                      <div className="h-14 w-14 rounded-2xl bg-primary-50 flex items-center justify-center text-2xl shrink-0">👤</div>
+                    )}
+                    <div>
+                      <p className="font-bold text-slate-800 text-sm">{landlord.admin_name ?? "Property Manager"}</p>
+                      <p className="text-xs text-slate-500">Property Manager</p>
+                      {landlord.admin_bio && <p className="mt-0.5 text-xs text-slate-600">{landlord.admin_bio}</p>}
+                    </div>
+                  </div>
                 )}
-                <div>
-                  <p className="font-bold text-slate-800">{landlord.landlord_name ?? "Ahmed Nady"}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">Building Owner · Yazkap Properties</p>
-                  {landlord.landlord_bio && <p className="mt-1 text-sm text-slate-600">{landlord.landlord_bio}</p>}
-                </div>
+                {/* Building Landlord */}
+                {(landlord.landlord_name || landlord.landlord_photo) && (
+                  <div className="flex items-center gap-3 flex-1">
+                    {landlord.landlord_photo ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={landlord.landlord_photo} alt="Landlord" className="h-14 w-14 rounded-2xl object-cover border border-slate-200 shrink-0" />
+                    ) : (
+                      <div className="h-14 w-14 rounded-2xl bg-slate-50 flex items-center justify-center text-2xl shrink-0">🏠</div>
+                    )}
+                    <div>
+                      <p className="font-bold text-slate-800 text-sm">{landlord.landlord_name ?? "Ahmed Nady"}</p>
+                      <p className="text-xs text-slate-500">Building Owner</p>
+                      {landlord.landlord_bio && <p className="mt-0.5 text-xs text-slate-600">{landlord.landlord_bio}</p>}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}

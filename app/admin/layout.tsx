@@ -16,6 +16,7 @@ const NAV = [
   ["📬 Requests", "/admin/requests"],
   ["📅 News & Events", "/admin/events"],
   ["👤 Tenant Accounts", "/admin/accounts"],
+  ["⚙️ Settings", "/admin/settings"],
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

@@ -22,7 +22,7 @@ export default function Login() {
     const json = await res.json();
     setBusy(false);
     if (!res.ok) { setErr(json.error); return; }
-    router.push(json.role === "admin" ? "/admin" : "/dashboard");
+    router.push(json.role === "admin" ? "/admin" : json.role === "landlord" ? "/landlord" : "/dashboard");
     router.refresh();
   }
 

@@ -1,0 +1,239 @@
+"use client";
+import { useEffect, useState } from "react";
+import { fmt } from "@/lib/currency";
+
+type Tab = "expenses" | "transactions" | "mypayments";
+
+export default function LandlordPortal() {
+  const [tab, setTab] = useState<Tab>("expenses");
+  const [expenses, setExpenses] = useState<any[]>([]);
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [landlordPayments, setLandlordPayments] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [name, setName] = useState("Ahmed Nady");
+
+  // filters
+  const [yearFilter, setYearFilter] = useState("");
+  const [catFilter, setCatFilter] = useState("");
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    fetch("/api/auth/me").then(r => r.json()).then(({ user }) => {
+      if (!user || (user.role !== "landlord" && user.role !== "admin")) {
+        location.href = "/login";
+      } else {
+        setName(user.full_name || "Ahmed Nady");
+      }
+    });
+    fetch("/api/landlord").then(r => r.json()).then(data => {
+      setExpenses(data.expenses ?? []);
+      setTransactions(data.transactions ?? []);
+      setLandlordPayments(data.landlordPayments ?? []);
+      setLoading(false);
+    });
+  }, []);
+
+  const signOut = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    location.href = "/";
+  };
+
+  const years = [...new Set([...expenses, ...transactions].map(r => r.date?.slice(0, 4)).filter(Boolean))].sort().reverse();
+  const categories = [...new Set(expenses.map(e => e.category).filter(Boolean))].sort();
+
+  const filteredExpenses = expenses.filter(e => {
+    if (yearFilter && e.date?.slice(0, 4) !== yearFilter) return false;
+    if (catFilter && e.category !== catFilter) return false;
+    if (search && !e.description?.toLowerCase().includes(search.toLowerCase())) return false;
+    return true;
+  });
+
+  const filteredTx = transactions.filter(t => {
+    if (yearFilter && t.date?.slice(0, 4) !== yearFilter) return false;
+    if (search && !t.tenant_name?.toLowerCase().includes(search.toLowerCase())) return false;
+    return true;
+  });
+
+  const totalExpenses = filteredExpenses.reduce((s, e) => s + Number(e.amount ?? 0), 0);
+  const totalTx = filteredTx.reduce((s, t) => s + Number(t.amount ?? 0), 0);
+  const totalMyPayments = landlordPayments.reduce((s, p) => s + Number(p.amount ?? 0), 0);
+
+  const statusCls = (s: string) =>
+    s === "Paid" ? "bg-green-100 text-green-700" :
+    s === "Overdue" ? "bg-red-100 text-red-700" :
+    s === "Partial" ? "bg-amber-100 text-amber-700" : "bg-slate-100 text-slate-500";
+
+  const TABS = [
+    { id: "expenses" as Tab, label: "📉 Expenses" },
+    { id: "transactions" as Tab, label: "💵 Tenant Payments" },
+    { id: "mypayments" as Tab, label: "🏠 My Rent Payments" },
+  ];
+
+  return (
+    <div className="min-h-screen bg-slate-50">
+      {/* Header */}
+      <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur px-4 py-3 flex items-center justify-between">
+        <div>
+          <h1 className="text-lg font-bold text-primary-dark">🏢 Yazkap Properties</h1>
+          <p className="text-xs text-slate-500">Landlord Portal — {name}</p>
+        </div>
+        <button onClick={signOut} className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50">
+          Sign Out
+        </button>
+      </header>
+
+      <div className="max-w-5xl mx-auto px-4 py-6 space-y-5">
+        {/* KPI cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div className="card card-hover">
+            <p className="text-xs text-slate-500">Total Expenses {yearFilter ? yearFilter : "(all)"}</p>
+            <p className="mt-1 text-xl font-bold text-danger">{fmt(totalExpenses)}</p>
+          </div>
+          <div className="card card-hover">
+            <p className="text-xs text-slate-500">Tenant Payments {yearFilter ? yearFilter : "(all)"}</p>
+            <p className="mt-1 text-xl font-bold text-success">{fmt(totalTx)}</p>
+          </div>
+          <div className="card card-hover col-span-2 sm:col-span-1">
+            <p className="text-xs text-slate-500">My Rent Paid (total)</p>
+            <p className="mt-1 text-xl font-bold text-primary">{fmt(totalMyPayments)}</p>
+          </div>
+        </div>
+
+        {/* Filters */}
+        <div className="flex flex-wrap gap-2">
+          <select className="input !w-auto !min-h-0 py-1.5 text-sm" value={yearFilter} onChange={e => setYearFilter(e.target.value)}>
+            <option value="">All Years</option>
+            {years.map(y => <option key={y}>{y}</option>)}
+          </select>
+          {tab === "expenses" && (
+            <select className="input !w-auto !min-h-0 py-1.5 text-sm" value={catFilter} onChange={e => setCatFilter(e.target.value)}>
+              <option value="">All Categories</option>
+              {categories.map(c => <option key={c}>{c}</option>)}
+            </select>
+          )}
+          <input className="input !w-auto !min-h-0 py-1.5 text-sm flex-1 min-w-[160px]"
+            placeholder="Search…" value={search} onChange={e => setSearch(e.target.value)} />
+        </div>
+
+        {/* Tabs */}
+        <div className="flex gap-1.5 overflow-x-auto no-scrollbar">
+          {TABS.map(t => (
+            <button key={t.id} onClick={() => setTab(t.id)}
+              className={`whitespace-nowrap rounded-full px-4 py-2 text-xs font-semibold transition ${
+                tab === t.id ? "bg-primary text-white" : "bg-slate-100 text-slate-600 hover:bg-primary-50 hover:text-primary"
+              }`}>
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {loading && <p className="text-sm text-slate-500 py-10 text-center">Loading…</p>}
+
+        {/* ── EXPENSES ── */}
+        {!loading && tab === "expenses" && (
+          <div className="card !p-0 overflow-hidden">
+            <div className="px-5 pt-4 pb-2 border-b border-slate-100 flex items-center justify-between">
+              <p className="text-sm font-semibold text-slate-700">
+                {filteredExpenses.length} records · Total: <span className="text-danger font-bold">{fmt(totalExpenses)}</span>
+              </p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="table-clean min-w-[640px]">
+                <thead>
+                  <tr><th>Date</th><th>Category</th><th>Description</th><th>Amount</th><th>Method</th><th>Notes</th></tr>
+                </thead>
+                <tbody>
+                  {filteredExpenses.length === 0 && (
+                    <tr><td colSpan={6} className="py-10 text-center text-sm text-slate-500">No expenses found.</td></tr>
+                  )}
+                  {filteredExpenses.map(e => (
+                    <tr key={e.id}>
+                      <td className="whitespace-nowrap">{e.date?.slice(0, 10)}</td>
+                      <td>
+                        <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ${
+                          e.category === "Utilities" ? "bg-blue-100 text-blue-700" :
+                          e.category === "Maintenance" ? "bg-amber-100 text-amber-700" :
+                          e.category === "Staff" ? "bg-purple-100 text-purple-700" : "bg-slate-100 text-slate-600"
+                        }`}>{e.category}</span>
+                      </td>
+                      <td className="max-w-[200px]">{e.description || "—"}</td>
+                      <td className="font-semibold text-danger">{fmt(e.amount)}</td>
+                      <td>{e.method || "—"}</td>
+                      <td className="text-xs text-slate-400 max-w-[160px] truncate">{e.notes || "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* ── TRANSACTIONS ── */}
+        {!loading && tab === "transactions" && (
+          <div className="card !p-0 overflow-hidden">
+            <div className="px-5 pt-4 pb-2 border-b border-slate-100">
+              <p className="text-sm font-semibold text-slate-700">
+                {filteredTx.length} records · Total collected: <span className="text-success font-bold">{fmt(totalTx)}</span>
+              </p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="table-clean min-w-[560px]">
+                <thead>
+                  <tr><th>Date</th><th>Tenant</th><th>Amount</th><th>Method</th><th>Status</th><th>Note</th></tr>
+                </thead>
+                <tbody>
+                  {filteredTx.length === 0 && (
+                    <tr><td colSpan={6} className="py-10 text-center text-sm text-slate-500">No transactions found.</td></tr>
+                  )}
+                  {filteredTx.map(t => (
+                    <tr key={t.id}>
+                      <td className="whitespace-nowrap">{t.date?.slice(0, 10)}</td>
+                      <td className="font-medium">{t.tenant_name || "—"}</td>
+                      <td className="font-semibold text-success">{fmt(t.amount)}</td>
+                      <td>{t.method || "—"}</td>
+                      <td><span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ${statusCls(t.status)}`}>{t.status}</span></td>
+                      <td className="text-xs text-slate-400">{t.note || "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* ── MY PAYMENTS ── */}
+        {!loading && tab === "mypayments" && (
+          <div className="card !p-0 overflow-hidden">
+            <div className="px-5 pt-4 pb-2 border-b border-slate-100">
+              <p className="text-sm font-semibold text-slate-700">
+                {landlordPayments.length} payments · Total: <span className="text-primary font-bold">{fmt(totalMyPayments)}</span>
+              </p>
+              <p className="text-xs text-slate-400 mt-0.5">Contract: AED 5,800 / month to Yazkap Properties</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="table-clean min-w-[480px]">
+                <thead>
+                  <tr><th>Date</th><th>Month</th><th>Amount</th><th>Method</th><th>Note</th></tr>
+                </thead>
+                <tbody>
+                  {landlordPayments.length === 0 && (
+                    <tr><td colSpan={5} className="py-10 text-center text-sm text-slate-500">No payments recorded.</td></tr>
+                  )}
+                  {landlordPayments.map(p => (
+                    <tr key={p.id}>
+                      <td className="whitespace-nowrap">{p.date?.slice(0, 10)}</td>
+                      <td>{p.month} {p.year}</td>
+                      <td className="font-semibold text-primary">{fmt(p.amount)}</td>
+                      <td>{p.method || "—"}</td>
+                      <td className="text-xs text-slate-500">{p.note || "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

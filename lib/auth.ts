@@ -9,7 +9,7 @@ const COOKIE = "yazkap_session";
 export type SessionUser = {
   id: number;
   email: string;
-  role: "admin" | "tenant";
+  role: "admin" | "tenant" | "landlord";
   full_name: string | null;
   approved: boolean;
 };
