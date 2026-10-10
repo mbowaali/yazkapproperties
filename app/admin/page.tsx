@@ -22,15 +22,15 @@ export default function AdminOverview() {
         q("expenses", "amount,date"),
         q("landlord_payments", "amount,date"),
         q("maintenance_requests", "id,status"),
-        q("laundry_usage", "total_fee,date,paid"),
+        q("laundry_collections", "total_amount,collection_month"),
       ]);
       const sum = (rows: any[], dateField?: string) =>
         rows
           .filter(r => !dateField || String(r[dateField] ?? "").startsWith(String(y)))
           .reduce((s, x) => s + Number(x.amount ?? x.total ?? 0), 0);
       const laundryCollected = lw
-        .filter((r: any) => r.paid && String(r.date ?? "").startsWith(String(y)))
-        .reduce((s: number, r: any) => s + Number(r.total_fee ?? 0), 0);
+        .filter((r: any) => String(r.collection_month ?? "").startsWith(String(y)))
+        .reduce((s: number, r: any) => s + Number(r.total_amount ?? 0), 0);
       setStats({
         collected: sum(tr, "date"),
         owed: inv.filter((i: any) => i.status !== "paid").reduce((s: number, i: any) => s + Number(i.total ?? 0), 0),
@@ -48,29 +48,32 @@ export default function AdminOverview() {
   const profit = stats.collected + stats.laundryCollected - stats.expenses - stats.landlordPaid;
 
   const cards = [
-    { label: "Rent Collected", value: fmt(stats.collected), cls: "text-success", icon: "💵" },
-    { label: "Laundry Income", value: fmt(stats.laundryCollected), cls: "text-success", icon: "🫧" },
-    { label: "Outstanding Invoices", value: fmt(stats.owed), cls: "text-danger", icon: "🧾" },
-    { label: "Paid to Landlord (Nady)", value: fmt(stats.landlordPaid), cls: "text-primary", icon: "🔑" },
-    { label: "Expenses", value: fmt(stats.expenses), cls: "text-slate-700", icon: "📉" },
-    { label: "Net Profit (auto)", value: fmt(profit), cls: profit >= 0 ? "text-success" : "text-danger", icon: "📈" },
-    { label: "Occupancy", value: `${stats.occupied} 🟢 / ${stats.vacant} 🔴`, cls: "text-primary", icon: "🏢" },
-    { label: "Open Maintenance", value: String(stats.openMaintenance), cls: "text-danger", icon: "🛠" },
+    { label: "Rent Collected", value: fmt(stats.collected), cls: "text-success", icon: "💵", edge: "border-t-emerald-500" },
+    { label: "Laundry Coin Collections", value: fmt(stats.laundryCollected), cls: "text-success", icon: "🫧", edge: "border-t-teal-500" },
+    { label: "Outstanding Invoices", value: fmt(stats.owed), cls: "text-danger", icon: "🧾", edge: "border-t-rose-500" },
+    { label: "Landlord Payments", value: fmt(stats.landlordPaid), cls: "text-primary", icon: "🔑", edge: "border-t-amber-500" },
+    { label: "Expenses", value: fmt(stats.expenses), cls: "text-slate-700", icon: "📉", edge: "border-t-sky-500" },
+    { label: "Net Profit", value: fmt(profit), cls: profit >= 0 ? "text-success" : "text-danger", icon: "📈", edge: "border-t-primary-500" },
+    { label: "Occupancy", value: `${stats.occupied} occupied / ${stats.vacant} vacant`, cls: "text-primary", icon: "🏢", edge: "border-t-indigo-500" },
+    { label: "Open Maintenance", value: String(stats.openMaintenance), cls: "text-danger", icon: "🛠", edge: "border-t-orange-500" },
   ];
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-primary-dark">Owner Dashboard</h1>
-      <p className="mt-1 text-sm text-slate-500">Year {new Date().getFullYear()} · All figures AED</p>
+      <header className="mb-6 rounded-xl border-l-4 border-accent bg-gradient-to-r from-primary-900 via-primary-dark to-primary px-5 py-5 text-white shadow-card sm:px-6">
+        <p className="text-xs font-semibold uppercase text-accent">Yazkap Properties · Management</p>
+        <h1 className="mt-1 text-2xl font-bold">Management Overview</h1>
+        <p className="mt-1 text-sm text-white/75">{new Date().getFullYear()} · All figures AED</p>
+      </header>
       {loading && <p className="mt-6 text-sm text-slate-400">Loading…</p>}
-      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {cards.map((c) => (
-          <div key={c.label} className="card card-hover">
-            <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-lg" aria-hidden>{c.icon}</span>
-              <p className="text-sm font-medium text-slate-500">{c.label}</p>
+          <div key={c.label} className={`rounded-lg border border-slate-200 border-t-[3px] ${c.edge} bg-white p-4 shadow-card transition hover:shadow-lift`}>
+            <div className="flex items-start justify-between gap-3">
+              <p className="text-xs font-semibold uppercase text-slate-500">{c.label}</p>
+              <span className="text-lg" aria-hidden>{c.icon}</span>
             </div>
-            <p className={`mt-3 text-2xl font-bold ${c.cls}`}>{c.value}</p>
+            <p className={`mt-3 break-words text-2xl font-bold tabular-nums ${c.cls}`}>{c.value}</p>
           </div>
         ))}
       </div>

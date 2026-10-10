@@ -139,54 +139,72 @@ export default function TenantDashboard({ userId }: { userId: number }) {
   }
 
   return (
-    <div className="container-page py-6 sm:py-10">
-      {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-primary-dark">
-            Welcome, {profile?.full_name?.split(" ")[0] ?? "Tenant"} 👋
-          </h1>
-          <p className="mt-0.5 text-sm text-slate-500">
-            {profile?.unit_label ? `Unit: ${profile.unit_label}` : "Yazkap Properties Portal"}
-            {profile?.joining_date ? ` · Joined ${profile.joining_date?.slice(0, 10)}` : ""}
-          </p>
+    <div className="container-page py-5 sm:py-8">
+      <header className="mb-6 rounded-xl border-l-4 border-accent bg-gradient-to-r from-primary-900 via-primary-dark to-primary px-4 py-5 text-white shadow-card sm:px-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex min-w-0 items-center gap-4">
+            {profile?.photo_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={profile.photo_url} alt="" className="h-14 w-14 shrink-0 rounded-full border-2 border-white/70 object-cover" />
+            ) : (
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-white/30 bg-white/10 text-2xl font-semibold text-white">
+                {profile?.full_name?.[0]?.toUpperCase() ?? "Y"}
+              </div>
+            )}
+            <div className="min-w-0">
+              <p className="text-xs font-semibold uppercase text-accent">Yazkap Properties · Tenant Portal</p>
+              <h1 className="mt-1 text-lg font-bold leading-tight sm:text-2xl">
+                Welcome, {profile?.full_name?.split(" ")[0] ?? "Tenant"}
+              </h1>
+              <p className="mt-1 text-sm text-white/75">
+                {profile?.unit_label ? `Unit ${profile.unit_label}` : "Your home, in one place"}
+                {profile?.joining_date ? ` · Since ${profile.joining_date?.slice(0, 10)}` : ""}
+              </p>
+            </div>
+          </div>
+          <div className="flex w-full gap-2 sm:w-auto">
+            <a href="https://wa.me/97150512276" target="_blank" rel="noopener noreferrer"
+              className="inline-flex min-h-10 flex-1 items-center justify-center whitespace-nowrap rounded-lg bg-accent px-3 py-2 text-xs font-semibold text-primary-900 transition hover:bg-accent-light sm:flex-none sm:px-4 sm:text-sm">
+              💬 Contact Manager
+            </a>
+            <button onClick={handleSignOut}
+              className="inline-flex min-h-10 items-center justify-center rounded-lg border border-white/30 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10">
+              Sign Out
+            </button>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <a href="https://wa.me/97150512276" target="_blank" rel="noopener noreferrer" className="btn-accent !min-h-0 px-4 py-2 text-sm">
-            💬 WhatsApp
-          </a>
-          <button onClick={handleSignOut} className="btn-ghost !min-h-0 px-4 py-2 text-sm">Sign Out</button>
-        </div>
-      </div>
+      </header>
 
       {/* Tab nav */}
-      <div className="flex gap-1.5 overflow-x-auto pb-1 mb-6 no-scrollbar">
+      <nav aria-label="Tenant dashboard sections" className="no-scrollbar mb-6 overflow-x-auto border-b border-slate-200">
+        <div className="flex min-w-max gap-1">
         {TABS.map(t => (
-          <button key={t.id} onClick={() => setTab(t.id)}
-            className={`whitespace-nowrap rounded-full px-4 py-2 text-xs font-semibold transition ${
-              tab === t.id ? "bg-primary text-white" : "bg-slate-100 text-slate-600 hover:bg-primary-50 hover:text-primary"
+          <button key={t.id} type="button" role="tab" aria-selected={tab === t.id} onClick={() => setTab(t.id)}
+            className={`whitespace-nowrap border-b-2 px-3 py-3 text-sm font-semibold transition ${
+              tab === t.id ? "border-accent text-primary-dark" : "border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-800"
             }`}>
             {t.label}
           </button>
         ))}
-      </div>
+        </div>
+      </nav>
 
       {/* ── OVERVIEW ── */}
       {tab === "overview" && (
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
             {[
-              { label: "Total Paid", value: fmt(totalPaid), cls: "text-success", icon: "💵" },
-              { label: "Outstanding", value: fmt(totalOwed), cls: totalOwed > 0 ? "text-danger" : "text-success", icon: "⏳" },
-              { label: "Pending Invoices", value: String(pendingInv), cls: pendingInv > 0 ? "text-danger" : "text-success", icon: "🧾" },
-              { label: "Monthly Rent", value: profile?.monthly_rent ? fmt(profile.monthly_rent) : "—", cls: "text-primary", icon: "🏠" },
+              { label: "Total Paid", value: fmt(totalPaid), cls: "text-success", icon: "💵", edge: "border-t-emerald-500" },
+              { label: "Outstanding", value: fmt(totalOwed), cls: totalOwed > 0 ? "text-danger" : "text-success", icon: "⏳", edge: totalOwed > 0 ? "border-t-rose-500" : "border-t-emerald-500" },
+              { label: "Open Invoices", value: String(pendingInv), cls: pendingInv > 0 ? "text-danger" : "text-success", icon: "🧾", edge: pendingInv > 0 ? "border-t-rose-500" : "border-t-emerald-500" },
+              { label: "Monthly Rent", value: profile?.monthly_rent ? fmt(profile.monthly_rent) : "—", cls: "text-primary", icon: "🏠", edge: "border-t-accent" },
             ].map(c => (
-              <div key={c.label} className="card card-hover">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg">{c.icon}</span>
-                  <p className="text-xs font-medium text-slate-500">{c.label}</p>
+              <div key={c.label} className={`rounded-lg border border-slate-200 border-t-[3px] ${c.edge} bg-white p-4 shadow-card`}>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-xs font-semibold uppercase text-slate-500">{c.label}</p>
+                  <span className="text-lg" aria-hidden>{c.icon}</span>
                 </div>
-                <p className={`mt-2 text-xl font-bold ${c.cls}`}>{c.value}</p>
+                <p className={`mt-3 break-words text-xl font-bold tabular-nums sm:text-2xl ${c.cls}`}>{c.value}</p>
               </div>
             ))}
           </div>

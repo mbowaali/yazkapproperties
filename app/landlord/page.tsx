@@ -64,37 +64,38 @@ export default function LandlordPortal() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-bg">
       {/* Header */}
-      <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur px-4 py-3 flex items-center justify-between">
+      <header className="sticky top-0 z-20 flex items-center justify-between border-b border-primary-900/20 border-l-4 border-l-accent bg-primary-900 px-4 py-4 text-white shadow-card">
         <div>
-          <h1 className="text-lg font-bold text-primary-dark">🏢 Yazkap Properties</h1>
-          <p className="text-xs text-slate-500">Landlord Portal — {name}</p>
+          <p className="text-xs font-semibold uppercase text-accent">Yazkap Properties</p>
+          <h1 className="mt-1 text-lg font-bold">Financial overview</h1>
+          <p className="text-xs text-white/70">Landlord Portal · {name}</p>
         </div>
-        <button onClick={signOut} className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50">
+        <button onClick={signOut} className="min-h-10 rounded-lg border border-white/30 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10">
           Sign Out
         </button>
       </header>
 
-      <div className="max-w-5xl mx-auto px-4 py-6 space-y-5">
+      <div className="mx-auto max-w-6xl space-y-5 px-4 py-6 sm:px-6 sm:py-8">
         {/* KPI cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          <div className="card card-hover">
+          <div className="rounded-lg border border-slate-200 border-t-[3px] border-t-rose-500 bg-white p-4 shadow-card">
             <p className="text-xs text-slate-500">Total Expenses {yearFilter ? yearFilter : "(all)"}</p>
-            <p className="mt-1 text-xl font-bold text-danger">{fmt(totalExpenses)}</p>
+            <p className="mt-2 text-xl font-bold tabular-nums text-danger">{fmt(totalExpenses)}</p>
           </div>
-          <div className="card card-hover">
+          <div className="rounded-lg border border-slate-200 border-t-[3px] border-t-emerald-500 bg-white p-4 shadow-card">
             <p className="text-xs text-slate-500">Collections {yearFilter ? yearFilter : "(all)"}</p>
-            <p className="mt-1 text-xl font-bold text-success">{fmt(totalTx)}</p>
+            <p className="mt-2 text-xl font-bold tabular-nums text-success">{fmt(totalTx)}</p>
           </div>
-          <div className="card card-hover col-span-2 sm:col-span-1">
+          <div className="col-span-2 rounded-lg border border-slate-200 border-t-[3px] border-t-accent bg-white p-4 shadow-card sm:col-span-1">
             <p className="text-xs text-slate-500">My Rent Paid (total)</p>
-            <p className="mt-1 text-xl font-bold text-primary">{fmt(totalMyPayments)}</p>
+            <p className="mt-2 text-xl font-bold tabular-nums text-primary">{fmt(totalMyPayments)}</p>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
           <select className="input !w-auto !min-h-0 py-1.5 text-sm" value={yearFilter} onChange={e => setYearFilter(e.target.value)}>
             <option value="">All Years</option>
             {years.map(y => <option key={y}>{y}</option>)}
@@ -110,16 +111,18 @@ export default function LandlordPortal() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1.5 overflow-x-auto no-scrollbar">
+        <nav aria-label="Landlord dashboard sections" className="no-scrollbar overflow-x-auto border-b border-slate-200">
+          <div className="flex min-w-max gap-1">
           {TABS.map(t => (
-            <button key={t.id} onClick={() => setTab(t.id)}
-              className={`whitespace-nowrap rounded-full px-4 py-2 text-xs font-semibold transition ${
-                tab === t.id ? "bg-primary text-white" : "bg-slate-100 text-slate-600 hover:bg-primary-50 hover:text-primary"
+            <button key={t.id} type="button" role="tab" aria-selected={tab === t.id} onClick={() => setTab(t.id)}
+              className={`whitespace-nowrap border-b-2 px-3 py-3 text-sm font-semibold transition ${
+                tab === t.id ? "border-accent text-primary-dark" : "border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-800"
               }`}>
               {t.label}
             </button>
           ))}
-        </div>
+          </div>
+        </nav>
 
         {loading && <p className="text-sm text-slate-500 py-10 text-center">Loading…</p>}
 
