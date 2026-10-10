@@ -16,6 +16,8 @@ const NAV = [
   ["🖨 Receipts", "/admin/receipts"],
   ["📬 Requests", "/admin/requests"],
   ["📅 News & Events", "/admin/events"],
+  ["💬 Team Chat", "/admin/chat"],
+  ["🤖 Tenant Help Bot", "/admin/chatbot"],
   ["👤 Tenant Accounts", "/admin/accounts"],
   ["📄 Tenant Rules", "/admin/contracts"],
   ["⚙️ Settings", "/admin/settings"],

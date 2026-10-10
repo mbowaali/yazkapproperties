@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { fmt } from "@/lib/currency";
 import { ReceiptsTab, RequestsTab, DocumentsTab, ProfileTab } from "@/components/tenant/TenantTabs";
+import TenantHelpChat from "@/components/tenant/TenantHelpChat";
 
 type Tab = "overview" | "payments" | "invoices" | "receipts" | "requests" | "events" | "documents" | "profile";
 type Agreement = { version: number; title: string; body: string; published_at: string };
@@ -163,7 +164,7 @@ export default function TenantDashboard({ userId }: { userId: number }) {
             </div>
           </div>
           <div className="flex w-full gap-2 sm:w-auto">
-            <a href="https://wa.me/97150512276" target="_blank" rel="noopener noreferrer"
+            <a href="https://wa.me/971505102276" target="_blank" rel="noopener noreferrer"
               className="inline-flex min-h-10 flex-1 items-center justify-center whitespace-nowrap rounded-lg bg-accent px-3 py-2 text-xs font-semibold text-primary-900 transition hover:bg-accent-light sm:flex-none sm:px-4 sm:text-sm">
               💬 Contact Manager
             </a>
@@ -410,6 +411,7 @@ export default function TenantDashboard({ userId }: { userId: number }) {
 
       {/* ── PROFILE ── */}
       {tab === "profile" && <ProfileTab profile={profile} onRefresh={fetchAll} />}
+      <TenantHelpChat />
     </div>
   );
 }

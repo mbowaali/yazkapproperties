@@ -100,7 +100,7 @@ if (ADMIN_EMAIL && ADMIN_PASSWORD) {
 
   if (adminId) {
     const { error: profErr } = await supabase.from("profiles").upsert({
-      id: adminId, email: ADMIN_EMAIL, full_name: "Yazid Ntulume", phone: "+97150512276",
+      id: adminId, email: ADMIN_EMAIL, full_name: "Yazid Ntulume", phone: "+971505102276",
       role: "admin", approved: true,
     });
     if (profErr) console.error(`✗ admin profile: ${profErr.message}`);

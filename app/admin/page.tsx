@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { fmt } from "@/lib/currency";
+import { calculateFinancialSummary } from "@/lib/finance";
 
 async function q(table: string, select = "*") {
   const res = await fetch(`/api/db?table=${table}&select=${select}&limit=5000`);
@@ -9,43 +10,44 @@ async function q(table: string, select = "*") {
 }
 
 export default function AdminOverview() {
-  const [stats, setStats] = useState({ collected: 0, owed: 0, vacant: 0, occupied: 0, expenses: 0, landlordPaid: 0, openMaintenance: 0, laundryCollected: 0 });
+  const [stats, setStats] = useState({ collected: 0, owed: 0, vacant: 0, occupied: 0, expenses: 0, landlordPaid: 0, openMaintenance: 0, laundryCollected: 0, refunds: 0, discounts: 0, netProfit: 0, netLoss: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       const y = new Date().getFullYear();
-      const [tr, inv, un, ex, lp, mt, lw] = await Promise.all([
-        q("transactions", "amount,date"),
+      const [tr, inv, un, ex, lp, mt, lw, adjustmentResponse] = await Promise.all([
+        q("transactions", "amount,date,type,status,tenant_name"),
         q("invoices", "total,status"),
         q("units", "status"),
         q("expenses", "amount,date"),
         q("landlord_payments", "amount,date"),
         q("maintenance_requests", "id,status"),
         q("laundry_collections", "total_amount,collection_month"),
+        fetch("/api/admin/adjustments").then(response => response.json()),
       ]);
+      const finance = calculateFinancialSummary(y, tr, ex, lp, lw, adjustmentResponse.data ?? []);
       const sum = (rows: any[], dateField?: string) =>
         rows
           .filter(r => !dateField || String(r[dateField] ?? "").startsWith(String(y)))
           .reduce((s, x) => s + Number(x.amount ?? x.total ?? 0), 0);
-      const laundryCollected = lw
-        .filter((r: any) => String(r.collection_month ?? "").startsWith(String(y)))
-        .reduce((s: number, r: any) => s + Number(r.total_amount ?? 0), 0);
       setStats({
-        collected: sum(tr, "date"),
+        collected: finance.collected,
         owed: inv.filter((i: any) => i.status !== "paid").reduce((s: number, i: any) => s + Number(i.total ?? 0), 0),
         vacant: un.filter((u: any) => u.status === "vacant").length,
         occupied: un.filter((u: any) => u.status === "occupied").length,
-        expenses: sum(ex, "date"),
-        landlordPaid: sum(lp, "date"),
+        expenses: finance.expenses,
+        landlordPaid: finance.landlordPayments,
         openMaintenance: mt.filter((m: any) => m.status !== "done").length,
-        laundryCollected,
+        laundryCollected: finance.laundryCollected,
+        refunds: finance.refunds,
+        discounts: finance.discounts,
+        netProfit: finance.netProfit,
+        netLoss: finance.netLoss,
       });
       setLoading(false);
     })();
   }, []);
-
-  const profit = stats.collected + stats.laundryCollected - stats.expenses - stats.landlordPaid;
 
   const cards = [
     { label: "Rent Collected", value: fmt(stats.collected), cls: "text-success", icon: "💵", edge: "border-t-emerald-500" },
@@ -53,7 +55,10 @@ export default function AdminOverview() {
     { label: "Outstanding Invoices", value: fmt(stats.owed), cls: "text-danger", icon: "🧾", edge: "border-t-rose-500" },
     { label: "Landlord Payments", value: fmt(stats.landlordPaid), cls: "text-primary", icon: "🔑", edge: "border-t-amber-500" },
     { label: "Expenses", value: fmt(stats.expenses), cls: "text-slate-700", icon: "📉", edge: "border-t-sky-500" },
-    { label: "Net Profit", value: fmt(profit), cls: profit >= 0 ? "text-success" : "text-danger", icon: "📈", edge: "border-t-primary-500" },
+    { label: "Refunds", value: fmt(stats.refunds), cls: "text-danger", icon: "↩️", edge: "border-t-rose-500" },
+    { label: "Discounts", value: fmt(stats.discounts), cls: "text-amber-700", icon: "🏷️", edge: "border-t-amber-500" },
+    { label: "Net Profit", value: fmt(stats.netProfit), cls: "text-success", icon: "📈", edge: "border-t-primary-500" },
+    { label: "Net Loss", value: fmt(stats.netLoss), cls: "text-danger", icon: "📉", edge: "border-t-red-600" },
     { label: "Occupancy", value: `${stats.occupied} occupied / ${stats.vacant} vacant`, cls: "text-primary", icon: "🏢", edge: "border-t-indigo-500" },
     { label: "Open Maintenance", value: String(stats.openMaintenance), cls: "text-danger", icon: "🛠", edge: "border-t-orange-500" },
   ];

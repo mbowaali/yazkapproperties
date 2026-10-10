@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { fmt } from "@/lib/currency";
-import { rentRoll, type Tenant } from "@/lib/finance";
+import { calculateFinancialSummary, rentRoll, type FinancialAdjustment, type LaundryCollection, type Tenant } from "@/lib/finance";
 import { exportToExcel } from "@/lib/excel";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
@@ -16,7 +16,7 @@ const PIE_COLORS = ["#0F4C81", "#F5B301", "#16A34A", "#DC2626", "#7CAAD5", "#4D8
 const yearOf = (d: string | null) => (d && /^\d{4}-\d{2}-\d{2}/.test(d) ? Number(d.slice(0, 4)) : null);
 const monthOf = (d: string | null) => (d && /^\d{4}-\d{2}-\d{2}/.test(d) ? Number(d.slice(5, 7)) - 1 : null);
 
-type Tx = { date: string | null; amount: number; tenant_name: string | null };
+type Tx = { date: string | null; amount: number; tenant_name: string | null; type?: string | null; status?: string | null };
 type Exp = { date: string | null; category: string; amount: number };
 type LP = { date: string | null; amount: number };
 
@@ -24,6 +24,8 @@ export default function ReportsPage() {
   const [tx, setTx] = useState<Tx[]>([]);
   const [exp, setExp] = useState<Exp[]>([]);
   const [lp, setLp] = useState<LP[]>([]);
+  const [laundry, setLaundry] = useState<LaundryCollection[]>([]);
+  const [adjustments, setAdjustments] = useState<FinancialAdjustment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [year, setYear] = useState<number>(new Date().getFullYear());
@@ -34,17 +36,21 @@ export default function ReportsPage() {
       const json = await res.json();
       return { data: json.data ?? [], error: json.error ?? null };
     };
-    const [t, e, l] = await Promise.all([
-      fetchTable("transactions", "date,amount,tenant_name"),
+    const [t, e, l, laundryResponse, adjustmentResponse] = await Promise.all([
+      fetchTable("transactions", "date,amount,tenant_name,type,status"),
       fetchTable("expenses", "date,category,amount"),
       fetchTable("landlord_payments", "date,amount"),
+      fetchTable("laundry_collections", "collection_month,total_amount"),
+      fetch("/api/admin/adjustments").then(async response => ({ ...(await response.json()), error: response.ok ? null : "Failed to load adjustments" })),
     ]);
-    if (t.error || e.error || l.error) {
-      setError(t.error?.message ?? e.error?.message ?? l.error?.message ?? "Failed to load data");
+    if (t.error || e.error || l.error || laundryResponse.error || adjustmentResponse.error) {
+      setError(t.error?.message ?? e.error?.message ?? l.error?.message ?? laundryResponse.error?.message ?? adjustmentResponse.error ?? "Failed to load data");
     } else {
       setTx((t.data ?? []) as Tx[]);
       setExp((e.data ?? []) as Exp[]);
       setLp((l.data ?? []) as LP[]);
+      setLaundry((laundryResponse.data ?? []) as LaundryCollection[]);
+      setAdjustments((adjustmentResponse.data ?? []) as FinancialAdjustment[]);
       const years = [...new Set((t.data ?? []).map((r: Tx) => yearOf(r.date) ?? 0))].filter(Boolean) as number[];
       if (years.length) setYear(Math.max(...years));
     }
@@ -54,20 +60,27 @@ export default function ReportsPage() {
   const inYear = <T extends { date: string | null }>(rows: T[], y: number) =>
     rows.filter((r) => r.date && yearOf(r.date) === y);
 
-  const collectedY = useMemo(() => inYear(tx, year).reduce((s, r) => s + Number(r.amount), 0), [tx, year]);
-  const expensesY = useMemo(() => inYear(exp, year).reduce((s, r) => s + Number(r.amount), 0), [exp, year]);
-  const landlordY = useMemo(() => inYear(lp, year).reduce((s, r) => s + Number(r.amount), 0), [lp, year]);
+  const financials = useMemo(
+    () => calculateFinancialSummary(year, tx, exp, lp, laundry, adjustments),
+    [year, tx, exp, lp, laundry, adjustments]
+  );
 
   const monthly = useMemo(() =>
     MONTHS.map((m, i) => {
       const inMonth = <T extends { date: string | null }>(rows: T[]) =>
         inYear(rows, year).filter((r) => monthOf(r.date) === i);
+      const monthTransactions = inMonth(tx);
+      const monthExpenses = inMonth(exp);
+      const monthLandlordPayments = inMonth(lp);
+      const monthLaundry = laundry.filter(row => monthOf(row.collection_month) === i && yearOf(row.collection_month) === year);
+      const monthAdjustments = adjustments.filter(row => monthOf(row.effective_date) === i && yearOf(row.effective_date) === year);
+      const totals = calculateFinancialSummary(year, monthTransactions, monthExpenses, monthLandlordPayments, monthLaundry, monthAdjustments);
       return {
         month: m,
-        Collected: inMonth(tx).reduce((s, r) => s + Number(r.amount), 0),
-        Expenses: inMonth(exp).reduce((s, r) => s + Number(r.amount), 0),
+        Collected: totals.collected + totals.laundryCollected,
+        Outflows: totals.expenses + totals.landlordPayments + totals.refunds + totals.discounts,
       };
-    }), [tx, exp, year]);
+    }), [tx, exp, lp, laundry, adjustments, year]);
 
   const byCategory = useMemo(() => {
     const map = new Map<string, number>();
@@ -94,14 +107,14 @@ export default function ReportsPage() {
       ...tx.map((r) => (yearOf(r.date) ?? 0)),
       ...exp.map((r) => (yearOf(r.date) ?? 0)),
       ...lp.map((r) => (yearOf(r.date) ?? 0)),
+      ...laundry.map((r) => (yearOf(r.collection_month) ?? 0)),
+      ...adjustments.map((r) => (yearOf(r.effective_date) ?? 0)),
     ]);
     return [...years].filter(Boolean).sort((a, b) => b - a).map((y) => {
-      const c = inYear(tx, y).reduce((s, r) => s + Number(r.amount), 0);
-      const e = inYear(exp, y).reduce((s, r) => s + Number(r.amount), 0);
-      const l = inYear(lp, y).reduce((s, r) => s + Number(r.amount), 0);
-      return { year: y, collected: c, expenses: e, landlord: l, net: c - e - l };
+      const totals = calculateFinancialSummary(y, tx, exp, lp, laundry, adjustments);
+      return { year: y, ...totals };
     });
-  }, [tx, exp, lp]);
+  }, [tx, exp, lp, laundry, adjustments]);
 
   const years = useMemo(() =>
     [...new Set(tx.map((r) => (yearOf(r.date) ?? 0)))].filter(Boolean).sort((a, b) => b - a) as number[],
@@ -122,10 +135,13 @@ export default function ReportsPage() {
   );
 
   const kpis = [
-    { label: "Rent collected", value: fmt(collectedY), cls: "text-success" },
-    { label: "Expenses", value: fmt(expensesY), cls: "text-danger" },
-    { label: "Paid to landlord", value: fmt(landlordY), cls: "text-primary" },
-    { label: "Net profit", value: fmt(collectedY - expensesY - landlordY), cls: collectedY - expensesY - landlordY >= 0 ? "text-success" : "text-danger" },
+    { label: "Cash collected", value: fmt(financials.collected), cls: "text-success" },
+    { label: "Laundry collections", value: fmt(financials.laundryCollected), cls: "text-teal-700" },
+    { label: "Operating expenses", value: fmt(financials.expenses), cls: "text-danger" },
+    { label: "Landlord payments", value: fmt(financials.landlordPayments), cls: "text-primary" },
+    { label: "Refunds & discounts", value: fmt(financials.refunds + financials.discounts), cls: "text-amber-700" },
+    { label: "Net profit", value: fmt(financials.netProfit), cls: "text-success" },
+    { label: "Net loss", value: fmt(financials.netLoss), cls: "text-danger" },
   ];
 
   return (
@@ -140,7 +156,7 @@ export default function ReportsPage() {
         </select>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {kpis.map((k) => (
           <div key={k.label} className="card card-hover">
             <p className="text-sm font-medium text-slate-500">{k.label} · {year}</p>
@@ -151,7 +167,7 @@ export default function ReportsPage() {
 
       <div className="card mt-6">
         <p className="section-title">Monthly cash flow — {year}</p>
-        <p className="mt-1 text-xs text-slate-400">Collected rent vs operating expenses per month (AED)</p>
+        <p className="mt-1 text-xs text-slate-400">Settled rent and laundry receipts vs all cash outflows per month (AED)</p>
         <div className="mt-4 h-72 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={monthly} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
@@ -161,7 +177,7 @@ export default function ReportsPage() {
               <Tooltip formatter={(v: any) => fmt(Number(v))} />
               <Legend wrapperStyle={{ fontSize: 12 }} />
               <Bar dataKey="Collected" fill="#0F4C81" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="Expenses" fill="#DC2626" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="Outflows" fill="#DC2626" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -266,7 +282,7 @@ export default function ReportsPage() {
           <table className="table-clean min-w-[560px]">
             <thead>
               <tr>
-                <th>Year</th><th>Rent collected</th><th>Expenses</th><th>Landlord</th><th>Net profit</th>
+                <th>Year</th><th>Cash collected</th><th>Laundry</th><th>Expenses</th><th>Landlord</th><th>Refunds</th><th>Discounts</th><th>Net profit</th><th>Net loss</th>
               </tr>
             </thead>
             <tbody>
@@ -274,9 +290,13 @@ export default function ReportsPage() {
                 <tr key={y.year} className={y.year === year ? "bg-primary-50/60 font-semibold" : ""}>
                   <td>{y.year}</td>
                   <td>{fmt(y.collected)}</td>
+                  <td>{fmt(y.laundryCollected)}</td>
                   <td>{fmt(y.expenses)}</td>
-                  <td>{fmt(y.landlord)}</td>
-                  <td className={y.net >= 0 ? "text-success" : "text-danger"}>{fmt(y.net)}</td>
+                  <td>{fmt(y.landlordPayments)}</td>
+                  <td>{fmt(y.refunds)}</td>
+                  <td>{fmt(y.discounts)}</td>
+                  <td className="text-success">{fmt(y.netProfit)}</td>
+                  <td className="text-danger">{fmt(y.netLoss)}</td>
                 </tr>
               ))}
             </tbody>

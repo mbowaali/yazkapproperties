@@ -36,18 +36,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <p className="mb-2 font-semibold uppercase tracking-wider text-accent">Contact</p>
               <ul className="space-y-1.5 text-primary-100">
                 <li>
-                  <a href="tel:+97150512276" className="transition hover:text-white">
-                    📞 +971 50 512 276
+                  <a href="tel:+971505102276" className="transition hover:text-white">
+                    📞 +971 50 510 2276
                   </a>
                 </li>
                 <li>
                   <a
-                    href="https://wa.me/97150512276"
+                    href="https://wa.me/971505102276"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="transition hover:text-white"
                   >
-                    💬 WhatsApp the landlord
+                    💬 WhatsApp the property manager
                   </a>
                 </li>
               </ul>

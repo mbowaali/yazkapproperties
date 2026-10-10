@@ -6,6 +6,26 @@ export type Tx = { date: string | null; amount: number; tenant_name: string | nu
 export type Deposit = { tenant_name: string; amount: number; status: string; held_since?: string | null };
 export type Tenant = { code: string; full_name: string; monthly_rent: number | null; entry_date: string | null; status: string | null; space_type?: string | null };
 export type Invoice = { invoice_no: string; total: number; due_date: string | null; status: string };
+export type FinancialTransaction = Tx & { type?: string | null; status?: string | null };
+export type FinancialAdjustment = {
+  adjustment_type: "refund" | "discount";
+  amount: number;
+  effective_date: string | null;
+  status: string;
+};
+export type LaundryCollection = { collection_month: string | null; total_amount: number };
+
+export interface FinancialSummary {
+  collected: number;
+  laundryCollected: number;
+  expenses: number;
+  landlordPayments: number;
+  refunds: number;
+  discounts: number;
+  netResult: number;
+  netProfit: number;
+  netLoss: number;
+}
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -13,6 +33,58 @@ export const yearOf = (d: string | null | undefined) =>
   d && /^\d{4}-\d{2}-\d{2}/.test(d) ? Number(d.slice(0, 4)) : null;
 export const monthOf = (d: string | null | undefined) =>
   d && /^\d{4}-\d{2}-\d{2}/.test(d) ? Number(d.slice(5, 7)) - 1 : null;
+
+export function calculateFinancialSummary(
+  year: number,
+  transactions: FinancialTransaction[],
+  expenses: Array<{ date: string | null; amount: number }>,
+  landlordPayments: Array<{ date: string | null; amount: number }>,
+  laundryCollections: LaundryCollection[],
+  adjustments: FinancialAdjustment[]
+): FinancialSummary {
+  const inYear = (date: string | null | undefined) => yearOf(date) === year;
+  const settled = (status: string | null | undefined) =>
+    ["paid", "partial"].includes(String(status ?? "").toLowerCase());
+
+  const collected = transactions
+    .filter(row => inYear(row.date) && row.type !== "refund" && settled(row.status))
+    .reduce((sum, row) => sum + Number(row.amount ?? 0), 0);
+  const transactionRefunds = transactions
+    .filter(row => inYear(row.date) && row.type === "refund" && settled(row.status))
+    .reduce((sum, row) => sum + Number(row.amount ?? 0), 0);
+  const laundryCollected = laundryCollections
+    .filter(row => inYear(row.collection_month))
+    .reduce((sum, row) => sum + Number(row.total_amount ?? 0), 0);
+  const operatingExpenses = expenses
+    .filter(row => inYear(row.date))
+    .reduce((sum, row) => sum + Number(row.amount ?? 0), 0);
+  const landlordPaid = landlordPayments
+    .filter(row => inYear(row.date))
+    .reduce((sum, row) => sum + Number(row.amount ?? 0), 0);
+  const completedAdjustments = adjustments.filter(row =>
+    row.status.toLowerCase() === "completed" && inYear(row.effective_date)
+  );
+  const adjustmentRefunds = completedAdjustments
+    .filter(row => row.adjustment_type === "refund")
+    .reduce((sum, row) => sum + Number(row.amount ?? 0), 0);
+  const discounts = completedAdjustments
+    .filter(row => row.adjustment_type === "discount")
+    .reduce((sum, row) => sum + Number(row.amount ?? 0), 0);
+  const refunds = transactionRefunds + adjustmentRefunds;
+  const netResult = collected + laundryCollected - operatingExpenses - landlordPaid - refunds - discounts;
+
+  return {
+    collected,
+    laundryCollected,
+    expenses: operatingExpenses,
+    landlordPayments: landlordPaid,
+    refunds,
+    discounts,
+    netResult,
+    netProfit: Math.max(0, netResult),
+    netLoss: Math.max(0, -netResult),
+  };
+}
 
 /** Months of a year a tenant is expected to pay rent, given entry date and status. */
 export function monthsOccupied(tenant: Tenant, year: number): boolean[] {

@@ -26,7 +26,7 @@ SUPABASE_SERVICE_ROLE_KEY=your_production_service_role_key
 
 Before deploying these features, run `vercel-postgres-contract-migration.sql` and `vercel-postgres-features-migration.sql` once against the production Vercel Postgres database. Then publish tenant rules from **Admin → Tenant Rules**. New registrations cannot be submitted until a version is published; existing tenants must acknowledge the current version before using dashboard data. Have agreement wording reviewed for local legal requirements before relying on it as a tenancy contract.
 
-The features migration creates the monthly washing-machine coin ledger and tenant-linked refund/discount records. Run `vercel-postgres-expense-receipts-migration.sql` to add receipt-number storage to an existing expenses table. One collected coin is counted as AED 3; historical per-tenant laundry logs remain unchanged. Discounts are recorded as one-time adjustments and do not automatically alter invoices or recurring rent.
+The features migration creates the monthly washing-machine coin ledger and tenant-linked refund/discount records. Run `vercel-postgres-expense-receipts-migration.sql` to add receipt-number storage to an existing expenses table. Run `vercel-postgres-communication-migration.sql` to add tenant setup invites and ensure the internal messages/chatbot FAQ tables exist. One collected coin is counted as AED 3; historical per-tenant laundry logs remain unchanged. Discounts are recorded as one-time adjustments and do not automatically alter invoices or recurring rent.
 
 ## Deploying to Vercel (Recommended)
 

@@ -142,7 +142,7 @@ export default function HeroSlider() {
             <div className="pointer-events-auto mt-4 flex flex-col gap-2.5 sm:mt-5 sm:flex-row">
               <Link href="/register" className="btn-accent w-full sm:w-auto">Tenant Registration →</Link>
               <a
-                href="https://wa.me/97150512276"
+                href="https://wa.me/971505102276"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-white/10 px-5 py-2.5 text-sm font-semibold text-white ring-1 ring-white/30 backdrop-blur transition hover:bg-white/20 sm:w-auto"

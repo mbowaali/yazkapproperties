@@ -53,7 +53,7 @@ export default async function Home() {
             <span className="text-3xl" aria-hidden>🏢</span>
             <p className="font-medium text-slate-700">No units advertised right now</p>
             <p className="max-w-sm text-sm text-slate-500">New rooms open up regularly — contact us on WhatsApp +971 50 512 276 to hear about upcoming vacancies.</p>
-            <a href="https://wa.me/97150512276" target="_blank" rel="noopener noreferrer" className="btn-accent mt-1">💬 WhatsApp us</a>
+            <a href="https://wa.me/971505102276" target="_blank" rel="noopener noreferrer" className="btn-accent mt-1">💬 WhatsApp us</a>
           </div>
         )}
       </section>
