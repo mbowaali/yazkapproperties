@@ -2,6 +2,15 @@
 import Link from "next/link";
 import AdminTable from "@/components/admin/AdminTable";
 
+const filterFields = [
+  {
+    key: "status",
+    label: "Status",
+    type: "select",
+    options: ["paid", "pending", "overdue"],
+  },
+];
+
 export default function InvoicesPage() {
   return (
     <AdminTable
@@ -12,6 +21,7 @@ export default function InvoicesPage() {
       orderBy="due_date"
       sumField="total"
       yearField="due_date"
+      filterFields={filterFields}
       extraRowAction={(row) => (
         <>
           <Link

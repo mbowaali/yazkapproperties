@@ -62,7 +62,7 @@ function initialForm(fields: Field[]): Record<string, any> {
 
 export default function AdminTable({
   table, title, subtitle, itemLabel, fields,
-  orderBy, orderAsc = false, sumField, yearField, note, extraRowAction,
+  orderBy, orderAsc = false, sumField, yearField, note, extraRowAction, filterFields,
 }: {
   table: string;
   title: string;
@@ -75,6 +75,7 @@ export default function AdminTable({
   yearField?: string;  // date column used to build the year filter
   note?: React.ReactNode;
   extraRowAction?: (row: Record<string, any>) => React.ReactNode;
+  filterFields?: Field[];
 }) {
   const cols = fields.filter((f) => !f.hideInTable);
   const [rows, setRows] = useState<Record<string, any>[]>([]);
@@ -82,6 +83,7 @@ export default function AdminTable({
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [year, setYear] = useState<string>("all");
+  const [filterValues, setFilterValues] = useState<Record<string, string>>({});
   const [sortKey, setSortKey] = useState<string | null>(orderBy ?? null);
   const [sortAsc, setSortAsc] = useState(orderAsc);
   const [showForm, setShowForm] = useState(false);
@@ -124,6 +126,16 @@ export default function AdminTable({
         typeof r[yearField] === "string" && r[yearField].slice(0, 4) === year
       );
     }
+
+    const activeFilters = Object.keys(filterValues);
+    if (activeFilters.length > 0) {
+      out = out.filter(r => {
+        return activeFilters.every(key => {
+          return r[key] === filterValues[key];
+        });
+      });
+    }
+
     if (search) {
       const q = search.toLowerCase();
       out = out.filter((r) =>
@@ -142,7 +154,7 @@ export default function AdminTable({
       });
     }
     return out;
-  }, [rows, search, year, yearField, sortKey, sortAsc, cols]);
+  }, [rows, search, year, yearField, sortKey, sortAsc, cols, filterValues]);
 
   const total = useMemo(
     () => (sumField ? visible.reduce((s, r) => s + Number(r[sumField] ?? 0), 0) : null),
@@ -372,6 +384,31 @@ export default function AdminTable({
           )}
           <p className="text-sm text-slate-400 sm:ml-auto">{visible.length} of {rows.length} records</p>
         </div>
+        {filterFields && (
+          <div className="flex flex-col gap-3 border-b border-slate-100 p-4 sm:flex-row sm:items-center">
+            {filterFields.map(field => (
+              <select
+                key={field.key}
+                className="input sm:max-w-xs"
+                value={filterValues[field.key] || ""}
+                onChange={(e) => {
+                  const newFilters = { ...filterValues };
+                  if (e.target.value) {
+                    newFilters[field.key] = e.target.value;
+                  } else {
+                    delete newFilters[field.key];
+                  }
+                  setFilterValues(newFilters);
+                }}
+              >
+                <option value="">All {field.label}</option>
+                {field.options?.map(option => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+            ))}
+          </div>
+        )}
 
         <div className="overflow-x-auto">
           <table className="table-clean min-w-[640px]">
