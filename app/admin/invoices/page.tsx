@@ -20,6 +20,7 @@ const filterFields: Field[] = [
 ];
 
 export default function InvoicesPage() {
+  // Trigger Vercel rebuild with dependencies fix
   return (
     <AdminTable
       table="invoices"
