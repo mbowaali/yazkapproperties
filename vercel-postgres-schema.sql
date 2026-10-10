@@ -105,9 +105,11 @@ CREATE TABLE IF NOT EXISTS expenses (
   description TEXT,
   amount      NUMERIC(12,2) NOT NULL,
   method      TEXT,
+  receipt_no  TEXT,
   notes       TEXT,
   created_at  TIMESTAMPTZ DEFAULT NOW()
 );
+ALTER TABLE expenses ADD COLUMN IF NOT EXISTS receipt_no TEXT;
 
 -- Landlord payments
 CREATE TABLE IF NOT EXISTS landlord_payments (
