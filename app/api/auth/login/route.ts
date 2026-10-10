@@ -18,8 +18,8 @@ export async function POST(req: Request) {
   const ok = await bcrypt.compare(password, user.password_hash);
   if (!ok) return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
 
-  if (user.role === "tenant" && !user.approved)
-    return NextResponse.json({ error: "Your account is pending approval by the landlord." }, { status: 403 });
+  if ((user.role === "tenant" || user.role === "employee") && !user.approved)
+    return NextResponse.json({ error: "Your account is inactive or pending approval." }, { status: 403 });
 
   const token = await createSession({
     id: user.id, email: user.email, role: user.role,

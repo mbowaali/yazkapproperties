@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
   id               SERIAL PRIMARY KEY,
   email            TEXT UNIQUE NOT NULL,
   password_hash    TEXT NOT NULL,
-  role             TEXT NOT NULL DEFAULT 'tenant' CHECK (role IN ('tenant','admin')),
+  role             TEXT NOT NULL DEFAULT 'tenant' CHECK (role IN ('tenant','admin','landlord','employee')),
   full_name        TEXT,
   phone            TEXT,
   emirates_id      TEXT,
@@ -264,6 +264,33 @@ ALTER TABLE users ADD COLUMN IF NOT EXISTS work_contract_url TEXT;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS visa_url TEXT;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS unit_label TEXT;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS monthly_rent NUMERIC(12,2);
+
+CREATE TABLE IF NOT EXISTS employee_permissions (
+  user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  permission TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (user_id, permission)
+);
+
+CREATE TABLE IF NOT EXISTS push_subscriptions (
+  id         SERIAL PRIMARY KEY,
+  user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  endpoint   TEXT NOT NULL UNIQUE,
+  p256dh     TEXT NOT NULL,
+  auth       TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS push_reminder_deliveries (
+  id              SERIAL PRIMARY KEY,
+  subscription_id INTEGER NOT NULL REFERENCES push_subscriptions(id) ON DELETE CASCADE,
+  invoice_id      INTEGER NOT NULL REFERENCES invoices(id) ON DELETE CASCADE,
+  due_date        DATE NOT NULL,
+  reminder_stage  TEXT NOT NULL CHECK (reminder_stage IN ('before_due','due_today','overdue')),
+  sent_at         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (subscription_id, invoice_id, due_date, reminder_stage)
+);
 
 CREATE TABLE IF NOT EXISTS tenant_setup_invites (
   id           SERIAL PRIMARY KEY,

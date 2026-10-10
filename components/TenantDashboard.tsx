@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { fmt } from "@/lib/currency";
 import { ReceiptsTab, RequestsTab, DocumentsTab, ProfileTab } from "@/components/tenant/TenantTabs";
 import TenantHelpChat from "@/components/tenant/TenantHelpChat";
+import RentPushAlerts from "@/components/tenant/RentPushAlerts";
 
 type Tab = "overview" | "payments" | "invoices" | "receipts" | "requests" | "events" | "documents" | "profile";
 type Agreement = { version: number; title: string; body: string; published_at: string };
@@ -209,6 +210,8 @@ export default function TenantDashboard({ userId }: { userId: number }) {
               </div>
             ))}
           </div>
+
+          <RentPushAlerts />
 
           {hasBirthdayToday && (
             <div className="overflow-hidden rounded-lg border border-amber-200 bg-gradient-to-r from-rose-50 via-amber-50 to-sky-50 p-4 sm:p-5">

@@ -7,6 +7,10 @@ export async function GET(req: Request) {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   if (session.role !== "admin" && session.role !== "employee")
     return NextResponse.json({ error: "Internal team access required" }, { status: 403 });
+  if (session.role === "employee") {
+    const { rows: users } = await sql`SELECT approved FROM users WHERE id = ${session.id} AND role = 'employee' LIMIT 1`;
+    if (!users.length || !users[0].approved) return NextResponse.json({ error: "Employee account is inactive" }, { status: 403 });
+  }
 
   const { searchParams } = new URL(req.url);
   const channel = "team";
@@ -38,6 +42,10 @@ export async function POST(req: Request) {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   if (session.role !== "admin" && session.role !== "employee")
     return NextResponse.json({ error: "Internal team access required" }, { status: 403 });
+  if (session.role === "employee") {
+    const { rows: users } = await sql`SELECT approved FROM users WHERE id = ${session.id} AND role = 'employee' LIMIT 1`;
+    if (!users.length || !users[0].approved) return NextResponse.json({ error: "Employee account is inactive" }, { status: 403 });
+  }
 
   const { body, is_alert = false } = await req.json();
   const message = typeof body === "string" ? body.trim() : "";
