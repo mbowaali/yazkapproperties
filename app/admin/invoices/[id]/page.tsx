@@ -1,10 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import { fmt } from "@/lib/currency";
 import { amountInWords } from "@/lib/finance";
-import SupabaseConfigNotice from "@/components/SupabaseConfigNotice";
 
 type Invoice = { id: number; invoice_no: string; total: number; due_date: string | null; status: string; created_at: string | null };
 
@@ -15,7 +14,6 @@ export default function InvoicePrintPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => { (async () => {
-    if (!isSupabaseConfigured) { setLoading(false); return; }
     const { data, error } = await supabase.from("invoices").select("id,invoice_no,total,due_date,status,created_at").eq("id", id).single();
     if (error) setError(error.message);
     else setInv(data as Invoice);
@@ -23,7 +21,6 @@ export default function InvoicePrintPage() {
   })(); }, [id]);
 
   if (loading) return <p className="py-16 text-center text-sm text-slate-500">Loading invoice…</p>;
-  if (!isSupabaseConfigured) return <SupabaseConfigNotice />;
   if (error || !inv) return <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-danger">{error ?? "Invoice not found."}</div>;
 
   return (

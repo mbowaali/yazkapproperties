@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import { fmt } from "@/lib/currency";
 import { rentRoll, type Tenant } from "@/lib/finance";
 import { exportToExcel } from "@/lib/excel";
@@ -30,10 +29,15 @@ export default function ReportsPage() {
   const [year, setYear] = useState<number>(new Date().getFullYear());
 
   useEffect(() => { (async () => {
+    const fetchTable = async (table: string, select: string) => {
+      const res = await fetch(`/api/db?table=${table}&select=${select}&limit=5000`);
+      const json = await res.json();
+      return { data: json.data ?? [], error: json.error ?? null };
+    };
     const [t, e, l] = await Promise.all([
-      supabase.from("transactions").select("date,amount,tenant_name").order("date").limit(3000),
-      supabase.from("expenses").select("date,category,amount").order("date").limit(2000),
-      supabase.from("landlord_payments").select("date,amount").order("date").limit(2000),
+      fetchTable("transactions", "date,amount,tenant_name"),
+      fetchTable("expenses", "date,category,amount"),
+      fetchTable("landlord_payments", "date,amount"),
     ]);
     if (t.error || e.error || l.error) {
       setError(t.error?.message ?? e.error?.message ?? l.error?.message ?? "Failed to load data");
@@ -105,8 +109,9 @@ export default function ReportsPage() {
 
   const [tenants, setTenants] = useState<Tenant[]>([]);
   useEffect(() => { (async () => {
-    const { data } = await supabase.from("tenants").select("code,full_name,monthly_rent,entry_date,status").limit(2000);
-    setTenants((data ?? []) as Tenant[]);
+    const res = await fetch("/api/db?table=tenants&select=code,full_name,monthly_rent,entry_date,status&limit=2000");
+    const json = await res.json();
+    setTenants((json.data ?? []) as Tenant[]);
   })(); }, []);
 
   const roll = useMemo(() => rentRoll(tenants, year, tx), [tenants, year, tx]);

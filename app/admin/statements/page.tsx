@@ -1,10 +1,9 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import { fmt } from "@/lib/currency";
 import { exportToExcel } from "@/lib/excel";
 import { buildStatement, amountInWords, type Tenant, type Tx, type Deposit } from "@/lib/finance";
-import SupabaseConfigNotice from "@/components/SupabaseConfigNotice";
 
 export default function StatementsPage() {
   const [tenants, setTenants] = useState<Tenant[]>([]);
@@ -16,13 +15,17 @@ export default function StatementsPage() {
   const [year, setYear] = useState<number>(new Date().getFullYear());
 
   useEffect(() => { (async () => {
-    if (!isSupabaseConfigured) { setLoading(false); return; }
+    const fetchTable = async (table: string, select: string) => {
+      const res = await fetch(`/api/db?table=${table}&select=${select}&limit=5000`);
+      const json = await res.json();
+      return { data: json.data ?? [], error: json.error ?? null };
+    };
     const [t, x, d] = await Promise.all([
-      supabase.from("tenants").select("code,full_name,monthly_rent,entry_date,status").order("full_name").limit(2000),
-      supabase.from("transactions").select("date,amount,tenant_name,method,status").limit(5000),
-      supabase.from("deposits").select("tenant_name,amount,status,held_since").limit(2000),
+      fetchTable("tenants", "code,full_name,monthly_rent,entry_date,status"),
+      fetchTable("transactions", "date,amount,tenant_name,method,status"),
+      fetchTable("deposits", "tenant_name,amount,status,held_since"),
     ]);
-    if (t.error) { setError(t.error.message); setLoading(false); return; }
+    if (t.error) { setError(t.error); setLoading(false); return; }
     setTenants((t.data ?? []) as Tenant[]);
     setTx((x.data ?? []) as Tx[]);
     setDeposits((d.data ?? []) as Deposit[]);
@@ -53,7 +56,7 @@ export default function StatementsPage() {
   };
 
   if (loading) return <p className="py-16 text-center text-sm text-slate-500">Loading statements…</p>;
-  if (!isSupabaseConfigured) return <SupabaseConfigNotice />;
+
   if (error) return <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-danger">{error}</div>;
 
   return (

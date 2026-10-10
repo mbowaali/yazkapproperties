@@ -1,6 +1,5 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import { fmt } from "@/lib/currency";
 import { exportToExcel, importFromExcel } from "@/lib/excel";
 
@@ -95,11 +94,12 @@ export default function AdminTable({
   const load = useCallback(async () => {
     setLoading(true);
     setError(null);
-    let q = supabase.from(table).select("*").limit(2000);
-    if (orderBy) q = q.order(orderBy, { ascending: orderAsc });
-    const { data, error: err } = await q;
-    if (err) setError(friendlyError(err));
-    setRows((data as Record<string, any>[]) ?? []);
+    const params = new URLSearchParams({ table, limit: "2000" });
+    if (orderBy) { params.set("orderBy", orderBy); params.set("orderAsc", String(orderAsc)); }
+    const res = await fetch(`/api/db?${params}`);
+    const json = await res.json();
+    if (json.error) setError(json.error);
+    setRows((json.data as Record<string, any>[]) ?? []);
     setLoading(false);
   }, [table, orderBy, orderAsc]);
 
@@ -181,38 +181,32 @@ export default function AdminTable({
       else payload[f.key] = v === "" ? null : v;
     }
     setSaving(true);
-    // photo fields: upload the picked File to the avatars bucket, else keep the existing URL
+    // photo fields: keep existing URL or skip File (no storage in Vercel Postgres)
     for (const f of fields) {
       if (f.type !== "photo") continue;
       const v = form[f.key];
-      if (v instanceof File) {
-        const path = `${table}/${editingId ?? "new"}-${Date.now()}.jpg`;
-        const { error: upErr } = await supabase.storage
-          .from("avatars")
-          .upload(path, v, { upsert: true, contentType: v.type || "image/jpeg" });
-        if (upErr) {
-          setSaving(false);
-          setFormError(`Photo upload failed: ${upErr.message} (run supabase/upgrade-profile-photos.sql if the avatars bucket is missing)`);
-          return;
-        }
-        payload[f.key] = supabase.storage.from("avatars").getPublicUrl(path).data.publicUrl;
-      } else {
-        payload[f.key] = typeof v === "string" && v !== "" ? v : null;
-      }
+      payload[f.key] = typeof v === "string" && v !== "" ? v : null;
     }
-    const { error: err } = editingId
-      ? await supabase.from(table).update(payload).eq("id", editingId)
-      : await supabase.from(table).insert(payload);
+    const method = editingId ? "PUT" : "POST";
+    const body = editingId ? { table, id: editingId, payload } : { table, payload };
+    const res = await fetch("/api/db", {
+      method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
+    });
+    const json = await res.json();
     setSaving(false);
-    if (err) { setFormError(friendlyError(err)); return; }
+    if (json.error) { setFormError(json.error); return; }
     setShowForm(false);
     load();
   };
 
   const remove = async (row: Record<string, any>) => {
     if (!window.confirm(`Delete this ${itemLabel}? This cannot be undone.`)) return;
-    const { error: err } = await supabase.from(table).delete().eq("id", row.id);
-    if (err) { setError(friendlyError(err)); return; }
+    const res = await fetch("/api/db", {
+      method: "DELETE", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ table, id: row.id }),
+    });
+    const json = await res.json();
+    if (json.error) { setError(json.error); return; }
     load();
   };
 
@@ -262,12 +256,20 @@ export default function AdminTable({
       }
       let done = 0;
       for (let i = 0; i < out.length; i += 200) {
-        const { error } = await supabase.from(table).insert(out.slice(i, i + 200));
-        if (error) {
-          setImportState({ busy: false, ok: false, msg: `Import failed after ${done} rows: ${error.message}` });
-          return;
+        const chunk = out.slice(i, i + 200);
+        // Insert one by one for bulk import
+        for (const row of chunk) {
+          const res = await fetch("/api/db", {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ table, payload: row }),
+          });
+          const json = await res.json();
+          if (json.error) {
+            setImportState({ busy: false, ok: false, msg: `Import failed after ${done} rows: ${json.error}` });
+            return;
+          }
+          done++;
         }
-        done += out.slice(i, i + 200).length;
       }
       setImportState({
         busy: false, ok: true,
