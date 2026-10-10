@@ -4,22 +4,35 @@ import { fmt } from "@/lib/currency";
 
 export function ReceiptsTab({ receipts, onRefresh }: { receipts: any[]; onRefresh: () => void }) {
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ amount: "", payment_date: new Date().toISOString().slice(0, 10), payment_method: "Cash", description: "Monthly Rent" });
+  const [form, setForm] = useState({
+    amount: "",
+    payment_date: new Date().toISOString().slice(0, 10),
+    payment_method: "Bank Transfer",
+    description: "Monthly Rent",
+    transaction_ref: "",
+    bank_name: "",
+  });
+  const [evidenceFile, setEvidenceFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState("");
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true); setMsg("");
-    const res = await fetch("/api/tenant/receipts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+    const fd = new FormData();
+    fd.append("amount", form.amount);
+    fd.append("payment_date", form.payment_date);
+    fd.append("payment_method", form.payment_method);
+    fd.append("description", form.description);
+    if (form.transaction_ref) fd.append("transaction_ref", form.transaction_ref);
+    if (form.bank_name) fd.append("bank_name", form.bank_name);
+    if (evidenceFile) fd.append("file", evidenceFile);
+    const res = await fetch("/api/tenant/payment-evidence", { method: "POST", body: fd });
     const json = await res.json();
     setBusy(false);
     if (json.error) { setMsg("❌ " + json.error); return; }
     setShowForm(false);
+    setEvidenceFile(null);
     setMsg("✅ Receipt request submitted — pending admin approval.");
     onRefresh();
   };
@@ -113,8 +126,8 @@ export function ReceiptsTab({ receipts, onRefresh }: { receipts: any[]; onRefres
 
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-lift">
-            <h3 className="text-lg font-bold text-primary-dark mb-4">Request Receipt</h3>
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-lift max-h-[90vh] overflow-y-auto">
+            <h3 className="text-lg font-bold text-primary-dark mb-4">Submit Payment Evidence</h3>
             <form onSubmit={submit} className="space-y-4">
               <div>
                 <label className="label">Amount (AED) *</label>
@@ -129,17 +142,43 @@ export function ReceiptsTab({ receipts, onRefresh }: { receipts: any[]; onRefres
               <div>
                 <label className="label">Payment Method</label>
                 <select className="input" value={form.payment_method} onChange={e => setForm(f => ({ ...f, payment_method: e.target.value }))}>
-                  {["Cash", "Bank Transfer", "Cheque", "Card", "Online"].map(m => <option key={m}>{m}</option>)}
+                  {["Bank Transfer", "Cash", "Cheque", "Card", "Online"].map(m => <option key={m}>{m}</option>)}
                 </select>
+              </div>
+              <div>
+                <label className="label">Bank Name</label>
+                <input className="input" type="text" placeholder="e.g. FAB, ADCB, Emirates NBD"
+                  value={form.bank_name} onChange={e => setForm(f => ({ ...f, bank_name: e.target.value }))} />
+              </div>
+              <div>
+                <label className="label">Transaction / Reference Number</label>
+                <input className="input" type="text" placeholder="e.g. TXN123456789"
+                  value={form.transaction_ref} onChange={e => setForm(f => ({ ...f, transaction_ref: e.target.value }))} />
               </div>
               <div>
                 <label className="label">Description</label>
                 <input className="input" type="text" placeholder="e.g. Monthly Rent - January 2025"
                   value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} />
               </div>
+              <div>
+                <label className="label">Payment Evidence (screenshot / slip)</label>
+                <label className={`flex items-center gap-3 rounded-xl border-2 border-dashed px-4 py-3 cursor-pointer transition ${
+                  evidenceFile ? "border-green-400 bg-green-50" : "border-slate-200 hover:border-primary"
+                }`}>
+                  <span className="text-xl">{evidenceFile ? "✅" : "📎"}</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-slate-700">
+                      {evidenceFile ? evidenceFile.name : "Upload bank screenshot or transfer slip"}
+                    </p>
+                    <p className="text-xs text-slate-400">JPG, PNG or PDF · max 5MB</p>
+                  </div>
+                  <input type="file" accept="image/*,.pdf" className="hidden"
+                    onChange={e => { const f = e.target.files?.[0]; e.target.value = ""; setEvidenceFile(f ?? null); }} />
+                </label>
+              </div>
               <div className="flex gap-2 pt-2">
-                <button type="button" onClick={() => setShowForm(false)} className="btn-ghost flex-1">Cancel</button>
-                <button type="submit" className="btn-primary flex-1" disabled={busy}>{busy ? "Submitting…" : "Submit Request"}</button>
+                <button type="button" onClick={() => { setShowForm(false); setEvidenceFile(null); }} className="btn-ghost flex-1">Cancel</button>
+                <button type="submit" className="btn-primary flex-1" disabled={busy}>{busy ? "Submitting…" : "Submit"}</button>
               </div>
             </form>
           </div>

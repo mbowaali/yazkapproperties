@@ -15,6 +15,7 @@ export default function TenantDashboard({ userId }: { userId: number }) {
   const [events, setEvents] = useState<any[]>([]);
   const [docs, setDocs] = useState<any[]>([]);
   const [announcements, setAnnouncements] = useState<any[]>([]);
+  const [landlord, setLandlord] = useState<Record<string, string>>({});
 
   const fetchAll = () => {
     fetch("/api/tenant/profile").then(r => r.json()).then(({ data }) => setProfile(data));
@@ -25,6 +26,7 @@ export default function TenantDashboard({ userId }: { userId: number }) {
     fetch("/api/db?table=tenant_events&orderBy=event_date&limit=50").then(r => r.json()).then(({ data }) => setEvents(data ?? []));
     fetch("/api/tenant/upload").then(r => r.json()).then(({ data }) => setDocs(data ?? []));
     fetch("/api/db?table=announcements&limit=20").then(r => r.json()).then(({ data }) => setAnnouncements(data ?? []));
+    fetch("/api/admin/settings").then(r => r.json()).then(({ data }) => setLandlord(data ?? {}));
   };
 
   useEffect(() => { fetchAll(); }, [userId]);
@@ -101,6 +103,26 @@ export default function TenantDashboard({ userId }: { userId: number }) {
               </div>
             ))}
           </div>
+
+          {/* Landlord card */}
+          {(landlord.landlord_name || landlord.landlord_photo) && (
+            <div className="card">
+              <h2 className="section-title mb-3">🏠 Your Landlord</h2>
+              <div className="flex items-center gap-4">
+                {landlord.landlord_photo ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={landlord.landlord_photo} alt="Landlord" className="h-16 w-16 rounded-2xl object-cover border border-slate-200 shrink-0" />
+                ) : (
+                  <div className="h-16 w-16 rounded-2xl bg-primary-50 flex items-center justify-center text-3xl shrink-0">👤</div>
+                )}
+                <div>
+                  <p className="font-bold text-slate-800">{landlord.landlord_name ?? "Ahmed Nady"}</p>
+                  <p className="text-xs text-slate-500 mt-0.5">Building Owner · Yazkap Properties</p>
+                  {landlord.landlord_bio && <p className="mt-1 text-sm text-slate-600">{landlord.landlord_bio}</p>}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Announcements */}
           {announcements.length > 0 && (
