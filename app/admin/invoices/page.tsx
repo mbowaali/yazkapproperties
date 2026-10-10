@@ -1,8 +1,16 @@
 "use client";
 import Link from "next/link";
-import AdminTable, { downloadReceipt } from "@/components/admin/AdminTable";
+import AdminTable, { Field, downloadReceipt } from "@/components/admin/AdminTable";
 
-const filterFields = [
+const fields: Field[] = [
+  { key: "invoice_no", label: "Invoice #", required: true, placeholder: "INV-2026-001" },
+  { key: "total", label: "Total", type: "number", currency: true, required: true, step: "0.01" },
+  { key: "due_date", label: "Due date", type: "date" },
+  { key: "status", label: "Status", type: "select", options: ["pending", "paid", "overdue"], defaultValue: "pending" },
+  { key: "pdf_url", label: "PDF link", type: "text", placeholder: "https://…", hideInTable: true },
+];
+
+const filterFields: Field[] = [
   {
     key: "status",
     label: "Status",
@@ -40,13 +48,7 @@ export default function InvoicesPage() {
           )}
         </>
       )}
-      fields={[
-        { key: "invoice_no", label: "Invoice #", required: true, placeholder: "INV-2026-001" },
-        { key: "total", label: "Total", type: "number", currency: true, required: true, step: "0.01" },
-        { key: "due_date", label: "Due date", type: "date" },
-        { key: "status", label: "Status", type: "select", options: ["pending", "paid", "overdue"], defaultValue: "pending" },
-        { key: "pdf_url", label: "PDF link", type: "text", placeholder: "https://…", hideInTable: true },
-      ]}
+      fields={fields}
     />
   );
 }
