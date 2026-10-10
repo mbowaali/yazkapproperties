@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import AdminTable from "@/components/admin/AdminTable";
 
 export default function LandlordPage() {
-  const [form, setForm] = useState({ name: "Ahmed Nady", bio: "" });
+  const [form, setForm] = useState({ name: "Landlord", bio: "" });
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>("");
   const [busy, setBusy] = useState(false);
@@ -11,7 +11,7 @@ export default function LandlordPage() {
 
   useEffect(() => {
     fetch("/api/admin/settings").then(r => r.json()).then(({ data }) => {
-      setForm({ name: data?.landlord_name ?? "Ahmed Nady", bio: data?.landlord_bio ?? "" });
+      setForm({ name: data?.landlord_name ?? "Landlord", bio: data?.landlord_bio ?? "" });
       if (data?.landlord_photo) setPreview(data.landlord_photo);
     });
   }, []);
@@ -59,7 +59,7 @@ export default function LandlordPage() {
             <div>
               <label className="label">Landlord Name</label>
               <input className="input" type="text" value={form.name}
-                onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Ahmed Nady" />
+                onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Landlord" />
             </div>
             <div>
               <label className="label">Short Bio / Message to Tenants</label>
@@ -78,7 +78,7 @@ export default function LandlordPage() {
       <AdminTable
         table="landlord_payments"
         title="💳 Rent Payments to Landlord"
-        subtitle="Rent paid to Ahmed Nady (contract: AED 5,800 / month)"
+        subtitle="Rent paid under the landlord agreement (AED 5,800 / month)"
         itemLabel="payment"
         orderBy="date"
         sumField="amount"

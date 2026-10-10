@@ -7,15 +7,17 @@ import Image from "next/image";
 const NAV = [
   ["📊 Overview", "/admin"], ["🏢 Units", "/admin/units"], ["👥 Tenants", "/admin/tenants"],
   ["💵 Transactions", "/admin/transactions"], ["🧾 Invoices", "/admin/invoices"], ["📉 Expenses", "/admin/expenses"],
-  ["🔑 Landlord (A. Nady)", "/admin/landlord"], ["📑 Statements", "/admin/statements"],
+  ["🔑 Landlord Portal", "/admin/landlord"], ["📑 Statements", "/admin/statements"],
   ["🛠 Maintenance", "/admin/maintenance"], ["🛏 Assets", "/admin/assets"], ["🧴 Consumables", "/admin/consumables"],
   ["💰 Deposits", "/admin/deposits"], ["📈 Reports", "/admin/reports"],
+  ["↩ Refunds & Discounts", "/admin/adjustments"],
   ["🏦 Banks/Branches", "/admin/banks"], ["📢 Announcements", "/admin/announcements"],
   ["🫧 Laundry Machines", "/admin/laundry"],
   ["🖨 Receipts", "/admin/receipts"],
   ["📬 Requests", "/admin/requests"],
   ["📅 News & Events", "/admin/events"],
   ["👤 Tenant Accounts", "/admin/accounts"],
+  ["📄 Tenant Rules", "/admin/contracts"],
   ["⚙️ Settings", "/admin/settings"],
 ];
 

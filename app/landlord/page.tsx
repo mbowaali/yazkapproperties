@@ -10,7 +10,7 @@ export default function LandlordPortal() {
   const [transactions, setTransactions] = useState<any[]>([]);
   const [landlordPayments, setLandlordPayments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [name, setName] = useState("Ahmed Nady");
+  const [name, setName] = useState("Landlord");
 
   // filters
   const [yearFilter, setYearFilter] = useState("");
@@ -22,7 +22,7 @@ export default function LandlordPortal() {
       if (!user || (user.role !== "landlord" && user.role !== "admin")) {
         location.href = "/login";
       } else {
-        setName(user.full_name || "Ahmed Nady");
+        setName(user.full_name || "Landlord");
       }
     });
     fetch("/api/landlord").then(r => r.json()).then(data => {
@@ -44,13 +44,12 @@ export default function LandlordPortal() {
   const filteredExpenses = expenses.filter(e => {
     if (yearFilter && e.date?.slice(0, 4) !== yearFilter) return false;
     if (catFilter && e.category !== catFilter) return false;
-    if (search && !e.description?.toLowerCase().includes(search.toLowerCase())) return false;
+    if (search && !e.category?.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
   const filteredTx = transactions.filter(t => {
     if (yearFilter && t.date?.slice(0, 4) !== yearFilter) return false;
-    if (search && !t.tenant_name?.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
@@ -58,14 +57,9 @@ export default function LandlordPortal() {
   const totalTx = filteredTx.reduce((s, t) => s + Number(t.amount ?? 0), 0);
   const totalMyPayments = landlordPayments.reduce((s, p) => s + Number(p.amount ?? 0), 0);
 
-  const statusCls = (s: string) =>
-    s === "Paid" ? "bg-green-100 text-green-700" :
-    s === "Overdue" ? "bg-red-100 text-red-700" :
-    s === "Partial" ? "bg-amber-100 text-amber-700" : "bg-slate-100 text-slate-500";
-
   const TABS = [
     { id: "expenses" as Tab, label: "📉 Expenses" },
-    { id: "transactions" as Tab, label: "💵 Tenant Payments" },
+    { id: "transactions" as Tab, label: "💵 Collections" },
     { id: "mypayments" as Tab, label: "🏠 My Rent Payments" },
   ];
 
@@ -90,7 +84,7 @@ export default function LandlordPortal() {
             <p className="mt-1 text-xl font-bold text-danger">{fmt(totalExpenses)}</p>
           </div>
           <div className="card card-hover">
-            <p className="text-xs text-slate-500">Tenant Payments {yearFilter ? yearFilter : "(all)"}</p>
+            <p className="text-xs text-slate-500">Collections {yearFilter ? yearFilter : "(all)"}</p>
             <p className="mt-1 text-xl font-bold text-success">{fmt(totalTx)}</p>
           </div>
           <div className="card card-hover col-span-2 sm:col-span-1">
@@ -111,8 +105,8 @@ export default function LandlordPortal() {
               {categories.map(c => <option key={c}>{c}</option>)}
             </select>
           )}
-          <input className="input !w-auto !min-h-0 py-1.5 text-sm flex-1 min-w-[160px]"
-            placeholder="Search…" value={search} onChange={e => setSearch(e.target.value)} />
+          {tab === "expenses" && <input className="input !w-auto !min-h-0 py-1.5 text-sm flex-1 min-w-[160px]"
+            placeholder="Search categories…" value={search} onChange={e => setSearch(e.target.value)} />}
         </div>
 
         {/* Tabs */}
@@ -134,21 +128,21 @@ export default function LandlordPortal() {
           <div className="card !p-0 overflow-hidden">
             <div className="px-5 pt-4 pb-2 border-b border-slate-100 flex items-center justify-between">
               <p className="text-sm font-semibold text-slate-700">
-                {filteredExpenses.length} records · Total: <span className="text-danger font-bold">{fmt(totalExpenses)}</span>
+                {filteredExpenses.length} monthly summaries · Total: <span className="text-danger font-bold">{fmt(totalExpenses)}</span>
               </p>
             </div>
             <div className="overflow-x-auto">
-              <table className="table-clean min-w-[640px]">
+              <table className="table-clean min-w-[420px]">
                 <thead>
-                  <tr><th>Date</th><th>Category</th><th>Description</th><th>Amount</th><th>Method</th><th>Notes</th></tr>
+                  <tr><th>Month</th><th>Category</th><th>Items</th><th>Total</th></tr>
                 </thead>
                 <tbody>
                   {filteredExpenses.length === 0 && (
-                    <tr><td colSpan={6} className="py-10 text-center text-sm text-slate-500">No expenses found.</td></tr>
+                    <tr><td colSpan={4} className="py-10 text-center text-sm text-slate-500">No expenses found.</td></tr>
                   )}
                   {filteredExpenses.map(e => (
-                    <tr key={e.id}>
-                      <td className="whitespace-nowrap">{e.date?.slice(0, 10)}</td>
+                    <tr key={`${e.date}-${e.category}`}>
+                      <td className="whitespace-nowrap">{e.date?.slice(0, 7)}</td>
                       <td>
                         <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ${
                           e.category === "Utilities" ? "bg-blue-100 text-blue-700" :
@@ -156,10 +150,8 @@ export default function LandlordPortal() {
                           e.category === "Staff" ? "bg-purple-100 text-purple-700" : "bg-slate-100 text-slate-600"
                         }`}>{e.category}</span>
                       </td>
-                      <td className="max-w-[200px]">{e.description || "—"}</td>
+                      <td>{e.item_count}</td>
                       <td className="font-semibold text-danger">{fmt(e.amount)}</td>
-                      <td>{e.method || "—"}</td>
-                      <td className="text-xs text-slate-400 max-w-[160px] truncate">{e.notes || "—"}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -173,26 +165,24 @@ export default function LandlordPortal() {
           <div className="card !p-0 overflow-hidden">
             <div className="px-5 pt-4 pb-2 border-b border-slate-100">
               <p className="text-sm font-semibold text-slate-700">
-                {filteredTx.length} records · Total collected: <span className="text-success font-bold">{fmt(totalTx)}</span>
+                {filteredTx.length} monthly summaries · Total collected: <span className="text-success font-bold">{fmt(totalTx)}</span>
               </p>
             </div>
             <div className="overflow-x-auto">
-              <table className="table-clean min-w-[560px]">
+              <table className="table-clean min-w-[420px]">
                 <thead>
-                  <tr><th>Date</th><th>Tenant</th><th>Amount</th><th>Method</th><th>Status</th><th>Note</th></tr>
+                  <tr><th>Month</th><th>Payments</th><th>Currency</th><th>Total collected</th></tr>
                 </thead>
                 <tbody>
                   {filteredTx.length === 0 && (
-                    <tr><td colSpan={6} className="py-10 text-center text-sm text-slate-500">No transactions found.</td></tr>
+                    <tr><td colSpan={4} className="py-10 text-center text-sm text-slate-500">No collections found.</td></tr>
                   )}
                   {filteredTx.map(t => (
-                    <tr key={t.id}>
-                      <td className="whitespace-nowrap">{t.date?.slice(0, 10)}</td>
-                      <td className="font-medium">{t.tenant_name || "—"}</td>
+                    <tr key={`${t.date}-${t.currency}`}>
+                      <td className="whitespace-nowrap">{t.date?.slice(0, 7)}</td>
+                      <td>{t.payment_count}</td>
+                      <td>{t.currency}</td>
                       <td className="font-semibold text-success">{fmt(t.amount)}</td>
-                      <td>{t.method || "—"}</td>
-                      <td><span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ${statusCls(t.status)}`}>{t.status}</span></td>
-                      <td className="text-xs text-slate-400">{t.note || "—"}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -213,11 +203,11 @@ export default function LandlordPortal() {
             <div className="overflow-x-auto">
               <table className="table-clean min-w-[480px]">
                 <thead>
-                  <tr><th>Date</th><th>Month</th><th>Amount</th><th>Method</th><th>Note</th></tr>
+                  <tr><th>Date</th><th>Month</th><th>Amount</th><th>Method</th></tr>
                 </thead>
                 <tbody>
                   {landlordPayments.length === 0 && (
-                    <tr><td colSpan={5} className="py-10 text-center text-sm text-slate-500">No payments recorded.</td></tr>
+                    <tr><td colSpan={4} className="py-10 text-center text-sm text-slate-500">No payments recorded.</td></tr>
                   )}
                   {landlordPayments.map(p => (
                     <tr key={p.id}>
@@ -225,7 +215,6 @@ export default function LandlordPortal() {
                       <td>{p.month} {p.year}</td>
                       <td className="font-semibold text-primary">{fmt(p.amount)}</td>
                       <td>{p.method || "—"}</td>
-                      <td className="text-xs text-slate-500">{p.note || "—"}</td>
                     </tr>
                   ))}
                 </tbody>

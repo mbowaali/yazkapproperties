@@ -1,8 +1,9 @@
 "use client";
-import { useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 
 type Step = 1 | 2 | 3;
+type Agreement = { version: number; title: string; body: string };
 
 const NATIONALITIES = [
   "Emirati","Afghan","Bangladeshi","Egyptian","Ethiopian","Filipino","Ghanaian","Indian",
@@ -27,6 +28,20 @@ export default function Register() {
   const [msg, setMsg] = useState("");
   const [ok, setOk] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [agreement, setAgreement] = useState<Agreement | null>(null);
+  const [agreementLoading, setAgreementLoading] = useState(true);
+  const [agreementAccepted, setAgreementAccepted] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/contracts/current")
+      .then(r => {
+        if (!r.ok) throw new Error("Could not load tenant rules");
+        return r.json();
+      })
+      .then(({ agreement: current }) => setAgreement(current))
+      .catch(() => setAgreement(null))
+      .finally(() => setAgreementLoading(false));
+  }, []);
 
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm(f => ({ ...f, [k]: e.target.value }));
@@ -53,6 +68,8 @@ export default function Register() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    if (!agreement) { setMsg("Tenant rules are not published yet. Please contact property management."); return; }
+    if (!agreementAccepted) { setMsg("Please read and acknowledge the tenant rules to continue."); return; }
     setBusy(true); setMsg("");
 
     // 1. Register account
@@ -69,6 +86,9 @@ export default function Register() {
         emergency_contact_name: form.emergency_contact_name,
         emergency_contact_phone: form.emergency_contact_phone,
         emergency_contact_relation: form.emergency_contact_relation,
+        accepted_contract_version: agreement.version,
+        signature_name: form.full_name,
+        accepted: agreementAccepted,
       }),
     });
     const json = await res.json();
@@ -102,7 +122,7 @@ export default function Register() {
     await fetch("/api/auth/logout", { method: "POST" });
 
     setBusy(false); setOk(true);
-    setMsg("✅ Registration complete! Your account is pending approval by the landlord. You will be able to login once approved.");
+    setMsg("✅ Registration complete! Your account is pending approval by property management. You will be able to sign in once approved.");
   }
 
   const inputCls = "input";
@@ -113,7 +133,7 @@ export default function Register() {
       <div className="mx-auto w-full max-w-2xl">
         <div className="mb-6 text-center">
           <h1 className="text-2xl font-bold text-primary-dark sm:text-3xl">Tenant Registration</h1>
-          <p className="mt-1.5 text-sm text-slate-500">Complete all steps — the landlord reviews and approves every account.</p>
+          <p className="mt-1.5 text-sm text-slate-500">Complete all steps and review the current tenant rules before submitting.</p>
         </div>
 
         {/* Step indicator */}
@@ -242,7 +262,34 @@ export default function Register() {
             {/* ── STEP 3: Documents ── */}
             {step === 3 && (
               <div className="card space-y-5">
-                <h2 className="font-semibold text-primary-dark">Documents & Photo</h2>
+                <h2 className="font-semibold text-primary-dark">Tenant Rules, Signature & Documents</h2>
+                {agreementLoading ? (
+                  <p className="text-sm text-slate-500">Loading tenant rules…</p>
+                ) : agreement ? (
+                  <section className="space-y-3 rounded-lg border border-slate-200 p-4">
+                    <div>
+                      <h3 className="font-semibold text-slate-800">{agreement.title}</h3>
+                      <p className="text-xs text-slate-500">Version {agreement.version}</p>
+                    </div>
+                    <div className="max-h-64 overflow-y-auto whitespace-pre-wrap rounded-md bg-slate-50 p-3 text-sm leading-6 text-slate-700">
+                      {agreement.body}
+                    </div>
+                    <label className="flex items-start gap-2 text-sm text-slate-700">
+                      <input type="checkbox" className="mt-1" checked={agreementAccepted}
+                        onChange={e => setAgreementAccepted(e.target.checked)} />
+                      <span>I have read these rules and agree to acknowledge version {agreement.version}.</span>
+                    </label>
+                    <div>
+                      <label className={labelCls}>Electronic signature</label>
+                      <input className={inputCls} value={form.full_name} readOnly aria-label="Electronic signature using your registered full name" />
+                      <p className="mt-1 text-xs text-slate-500">Your registered full name will be recorded as your signature.</p>
+                    </div>
+                  </section>
+                ) : (
+                  <p className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                    Tenant rules are not available yet. Registration will be enabled after property management publishes them.
+                  </p>
+                )}
                 <p className="text-xs text-slate-500">Upload JPG, PNG or PDF — max 5MB each. All documents are optional but help speed up approval.</p>
 
                 {/* Profile photo */}
@@ -295,7 +342,7 @@ export default function Register() {
                   ← Back
                 </button>
               )}
-              <button type="submit" className="btn-primary flex-1" disabled={busy}>
+              <button type="submit" className="btn-primary flex-1" disabled={busy || (step === 3 && (agreementLoading || !agreement || !agreementAccepted))}>
                 {busy ? "Submitting…" : step < 3 ? "Next →" : "Submit Registration"}
               </button>
             </div>

@@ -8,12 +8,16 @@ export async function GET() {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const [expenses, transactions, landlordPayments] = await Promise.all([
-    sql`SELECT id, date, year, month, category, description, amount, method, notes
-        FROM expenses ORDER BY date DESC LIMIT 1000`,
-    sql`SELECT id, tenant_name, date, type, amount, currency, method, status, note
-        FROM transactions ORDER BY date DESC LIMIT 1000`,
-    sql`SELECT id, date, year, month, amount, method, note
-        FROM landlord_payments ORDER BY date DESC`,
+    sql`SELECT date_trunc('month', date)::date AS date, category,
+        SUM(amount) AS amount, COUNT(*) AS item_count
+      FROM expenses GROUP BY date_trunc('month', date)::date, category
+      ORDER BY date DESC LIMIT 500`,
+    sql`SELECT date_trunc('month', date)::date AS date, currency,
+        SUM(amount) AS amount, COUNT(*) AS payment_count
+      FROM transactions GROUP BY date_trunc('month', date)::date, currency
+      ORDER BY date DESC LIMIT 120`,
+    sql`SELECT date, year, month, amount, method
+      FROM landlord_payments ORDER BY date DESC`,
   ]);
 
   return NextResponse.json({

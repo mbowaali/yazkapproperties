@@ -19,6 +19,7 @@ const ALLOWED_TABLES: Record<string, "admin" | "tenant"> = {
   bank_accounts: "admin",
   users: "admin",
   laundry_usage: "admin",
+  laundry_collections: "admin",
   tenant_requests: "tenant",
   tenant_events: "tenant",
   receipts: "tenant",
@@ -30,6 +31,28 @@ const TENANT_WRITABLE = ["tenant_requests", "tenant_documents"];
 
 function isValidIdentifier(s: string) {
   return /^[a-z_][a-z0-9_]*$/.test(s);
+}
+
+function isMissingAgreementTable(error: unknown) {
+  return typeof error === "object" && error !== null && "code" in error && error.code === "42P01";
+}
+
+async function tenantNeedsAgreement(userId: number) {
+  try {
+    const { rows: current } = await sql`
+      SELECT version FROM tenant_contract_versions ORDER BY version DESC LIMIT 1
+    `;
+    if (!current.length) return false;
+
+    const { rows: signatures } = await sql`
+      SELECT id FROM tenant_contract_signatures
+      WHERE user_id = ${userId} AND version = ${current[0].version} LIMIT 1
+    `;
+    return !signatures.length;
+  } catch (error) {
+    if (isMissingAgreementTable(error)) return false;
+    throw error;
+  }
 }
 
 function addTenantFilter(table: string, userId: number): { clause: string; value: number | null } {
@@ -62,8 +85,14 @@ export async function GET(req: Request) {
   if (!table || !ALLOWED_TABLES[table] || !isValidIdentifier(table))
     return NextResponse.json({ error: "Invalid table" }, { status: 400 });
 
-  if (ALLOWED_TABLES[table] === "admin" && session.role !== "admin")
+  if (
+    (ALLOWED_TABLES[table] === "admin" && session.role !== "admin") ||
+    (ALLOWED_TABLES[table] === "tenant" && session.role !== "admin" && session.role !== "tenant")
+  )
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
+  if (session.role === "tenant" && await tenantNeedsAgreement(session.id))
+    return NextResponse.json({ error: "Please acknowledge the latest tenant rules first" }, { status: 403 });
 
   const safeCols = select === "*" ? "*" : select.split(",").filter(c => isValidIdentifier(c.trim())).join(",");
   let query = `SELECT ${safeCols} FROM ${table}`;
@@ -93,6 +122,12 @@ export async function POST(req: Request) {
   const { table, payload } = await req.json();
   if (!table || !ALLOWED_TABLES[table] || !isValidIdentifier(table))
     return NextResponse.json({ error: "Invalid table" }, { status: 400 });
+
+  if (session.role !== "admin" && session.role !== "tenant")
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
+  if (session.role === "tenant" && await tenantNeedsAgreement(session.id))
+    return NextResponse.json({ error: "Please acknowledge the latest tenant rules first" }, { status: 403 });
 
   // Tenants can only write to TENANT_WRITABLE tables, and only for themselves
   if (session.role !== "admin") {

@@ -4,6 +4,16 @@ import { fmt } from "@/lib/currency";
 import { ReceiptsTab, RequestsTab, DocumentsTab, ProfileTab } from "@/components/tenant/TenantTabs";
 
 type Tab = "overview" | "payments" | "invoices" | "receipts" | "requests" | "events" | "documents" | "profile";
+type Agreement = { version: number; title: string; body: string; published_at: string };
+type ContractState = {
+  agreement: Agreement | null;
+  signature: { version: number; signature_name: string; signed_at: string } | null;
+};
+type Adjustment = {
+  id: number; adjustment_type: "refund" | "discount"; amount: number;
+  currency: string; effective_date: string; reason: string;
+  status: "pending" | "completed" | "cancelled";
+};
 
 export default function TenantDashboard({ userId }: { userId: number }) {
   const [tab, setTab] = useState<Tab>("overview");
@@ -15,7 +25,14 @@ export default function TenantDashboard({ userId }: { userId: number }) {
   const [events, setEvents] = useState<any[]>([]);
   const [docs, setDocs] = useState<any[]>([]);
   const [announcements, setAnnouncements] = useState<any[]>([]);
-  const [landlord, setLandlord] = useState<Record<string, string>>({});
+  const [adjustments, setAdjustments] = useState<Adjustment[]>([]);
+  const [manager, setManager] = useState<Record<string, string>>({});
+  const [contract, setContract] = useState<ContractState | null>(null);
+  const [contractLoading, setContractLoading] = useState(true);
+  const [contractUnavailable, setContractUnavailable] = useState(false);
+  const [contractAccepted, setContractAccepted] = useState(false);
+  const [contractBusy, setContractBusy] = useState(false);
+  const [contractMessage, setContractMessage] = useState("");
 
   const fetchAll = () => {
     fetch("/api/tenant/profile").then(r => r.json()).then(({ data }) => setProfile(data));
@@ -26,7 +43,16 @@ export default function TenantDashboard({ userId }: { userId: number }) {
     fetch("/api/db?table=tenant_events&orderBy=event_date&limit=50").then(r => r.json()).then(({ data }) => setEvents(data ?? []));
     fetch("/api/tenant/upload").then(r => r.json()).then(({ data }) => setDocs(data ?? []));
     fetch("/api/db?table=announcements&limit=20").then(r => r.json()).then(({ data }) => setAnnouncements(data ?? []));
-    fetch("/api/admin/settings").then(r => r.json()).then(({ data }) => setLandlord(data ?? {}));
+    fetch("/api/tenant/adjustments").then(r => r.json()).then(({ data }) => setAdjustments(data ?? []));
+    fetch("/api/admin/settings").then(r => r.json()).then(({ data }) => setManager(data ?? {}));
+    fetch("/api/contracts/current")
+      .then(r => {
+        if (!r.ok) throw new Error("Could not load tenant rules");
+        return r.json();
+      })
+      .then(data => setContract(data))
+      .catch(() => setContractUnavailable(true))
+      .finally(() => setContractLoading(false));
   };
 
   useEffect(() => { fetchAll(); }, [userId]);
@@ -50,6 +76,67 @@ export default function TenantDashboard({ userId }: { userId: number }) {
   const totalPaid = tx.reduce((s, t) => s + Number(t.amount ?? 0), 0);
   const totalOwed = inv.filter(i => i.status !== "paid").reduce((s, i) => s + Number(i.total ?? 0), 0);
   const pendingInv = inv.filter(i => i.status !== "paid").length;
+  const birthdayParts = new Intl.DateTimeFormat("en", {
+    timeZone: "Asia/Dubai", month: "2-digit", day: "2-digit",
+  }).formatToParts(new Date());
+  const todayInDubai = `${birthdayParts.find(part => part.type === "month")?.value}-${birthdayParts.find(part => part.type === "day")?.value}`;
+  const hasBirthdayToday = profile?.date_of_birth?.slice(5, 10) === todayInDubai;
+
+  const signLatestContract = async () => {
+    if (!contract?.agreement || !profile?.full_name || !contractAccepted) return;
+    setContractBusy(true);
+    setContractMessage("");
+    const response = await fetch("/api/contracts/sign", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        version: contract.agreement.version,
+        signature_name: profile.full_name,
+        accepted: true,
+      }),
+    });
+    const result = await response.json();
+    setContractBusy(false);
+    if (!response.ok) {
+      setContractMessage(result.error ?? "Could not record your acknowledgement.");
+      return;
+    }
+    setContract({ ...contract, signature: result.signature });
+    fetchAll();
+  };
+
+  if (contractLoading) return <p className="p-10 text-center text-sm text-slate-500">Loading your portal…</p>;
+  if (contractUnavailable) return <p className="p-10 text-center text-sm text-danger">Tenant rules could not be loaded. Please contact property management.</p>;
+  if (contract?.agreement && contract.signature?.version !== contract.agreement.version) {
+    return (
+      <main className="container-page max-w-3xl py-8 sm:py-12">
+        <div className="card space-y-5">
+          <div>
+            <p className="text-xs font-semibold uppercase text-primary">Version {contract.agreement.version}</p>
+            <h1 className="mt-1 text-xl font-bold text-primary-dark">{contract.agreement.title}</h1>
+            <p className="mt-1 text-sm text-slate-500">Please review the current rules to continue to your tenant dashboard.</p>
+          </div>
+          <div className="max-h-[55vh] overflow-y-auto whitespace-pre-wrap rounded-md bg-slate-50 p-4 text-sm leading-6 text-slate-700">
+            {contract.agreement.body}
+          </div>
+          <div>
+            <label className="label">Electronic signature</label>
+            <input className="input" value={profile?.full_name ?? ""} readOnly aria-label="Electronic signature using your registered full name" />
+            <p className="mt-1 text-xs text-slate-500">Your registered full name will be recorded with the acknowledgement.</p>
+          </div>
+          <label className="flex items-start gap-2 text-sm text-slate-700">
+            <input type="checkbox" className="mt-1" checked={contractAccepted} onChange={e => setContractAccepted(e.target.checked)} />
+            <span>I have read these rules and agree to acknowledge version {contract.agreement.version}.</span>
+          </label>
+          {contractMessage && <p className="text-sm text-danger" role="alert">{contractMessage}</p>}
+          <button type="button" className="btn-primary" disabled={contractBusy || !contractAccepted || !profile?.full_name} onClick={signLatestContract}>
+            {contractBusy ? "Recording…" : "Sign & Continue"}
+          </button>
+          <button type="button" className="btn-ghost" onClick={handleSignOut}>Sign Out</button>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <div className="container-page py-6 sm:py-10">
@@ -104,43 +191,40 @@ export default function TenantDashboard({ userId }: { userId: number }) {
             ))}
           </div>
 
-          {/* Landlord card */}
-          {(landlord.landlord_name || landlord.landlord_photo || landlord.admin_name || landlord.admin_photo) && (
+          {hasBirthdayToday && (
+            <div className="overflow-hidden rounded-lg border border-amber-200 bg-gradient-to-r from-rose-50 via-amber-50 to-sky-50 p-4 sm:p-5">
+              <div className="flex items-center gap-4">
+                {profile.photo_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={profile.photo_url} alt="" className="h-16 w-16 shrink-0 rounded-full border-2 border-white object-cover shadow-sm" />
+                ) : (
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-white text-3xl shadow-sm" aria-hidden>🎂</div>
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className="font-bold text-slate-900">Happy birthday, {profile.full_name?.split(" ")[0] ?? "Tenant"}! 🎉</p>
+                  <p className="mt-1 text-sm text-slate-700">Wishing you a joyful day and a wonderful year ahead. From Yazid and the Yazkap Properties team.</p>
+                </div>
+                <span className="hidden shrink-0 text-2xl sm:block" aria-hidden>🎈 ✨ 🎁</span>
+              </div>
+            </div>
+          )}
+
+          {/* Manager card */}
+          {(manager.admin_name || manager.admin_photo) && (
             <div className="card">
-              <h2 className="section-title mb-3">🏢 Meet Your Management</h2>
+              <h2 className="section-title mb-3">🏢 Your Property Manager</h2>
               <div className="flex flex-col sm:flex-row gap-4">
-                {/* Admin / Manager */}
-                {(landlord.admin_name || landlord.admin_photo) && (
-                  <div className="flex items-center gap-3 flex-1">
-                    {landlord.admin_photo ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={landlord.admin_photo} alt="Manager" className="h-14 w-14 rounded-2xl object-cover border border-slate-200 shrink-0" />
-                    ) : (
-                      <div className="h-14 w-14 rounded-2xl bg-primary-50 flex items-center justify-center text-2xl shrink-0">👤</div>
-                    )}
-                    <div>
-                      <p className="font-bold text-slate-800 text-sm">{landlord.admin_name ?? "Property Manager"}</p>
-                      <p className="text-xs text-slate-500">Property Manager</p>
-                      {landlord.admin_bio && <p className="mt-0.5 text-xs text-slate-600">{landlord.admin_bio}</p>}
-                    </div>
-                  </div>
+                {manager.admin_photo ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={manager.admin_photo} alt="Yazid Ntulume" className="h-14 w-14 rounded-2xl object-cover border border-slate-200 shrink-0" />
+                ) : (
+                  <div className="h-14 w-14 rounded-2xl bg-primary-50 flex items-center justify-center text-2xl shrink-0">👤</div>
                 )}
-                {/* Building Landlord */}
-                {(landlord.landlord_name || landlord.landlord_photo) && (
-                  <div className="flex items-center gap-3 flex-1">
-                    {landlord.landlord_photo ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={landlord.landlord_photo} alt="Landlord" className="h-14 w-14 rounded-2xl object-cover border border-slate-200 shrink-0" />
-                    ) : (
-                      <div className="h-14 w-14 rounded-2xl bg-slate-50 flex items-center justify-center text-2xl shrink-0">🏠</div>
-                    )}
-                    <div>
-                      <p className="font-bold text-slate-800 text-sm">{landlord.landlord_name ?? "Ahmed Nady"}</p>
-                      <p className="text-xs text-slate-500">Building Owner</p>
-                      {landlord.landlord_bio && <p className="mt-0.5 text-xs text-slate-600">{landlord.landlord_bio}</p>}
-                    </div>
-                  </div>
-                )}
+                <div>
+                  <p className="font-bold text-slate-800 text-sm">Yazid Ntulume</p>
+                  <p className="text-xs text-slate-500">Property Manager</p>
+                  {manager.admin_bio && <p className="mt-0.5 text-xs text-slate-600">{manager.admin_bio}</p>}
+                </div>
               </div>
             </div>
           )}
@@ -223,6 +307,31 @@ export default function TenantDashboard({ userId }: { userId: number }) {
             </table>
           </div>
         </div>
+      )}
+
+      {tab === "payments" && (
+        <section className="card !p-0 overflow-hidden">
+          <div className="border-b border-slate-100 px-5 py-4">
+            <h2 className="section-title">Refunds & Discounts</h2>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="table-clean min-w-[560px]">
+              <thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Reason</th><th>Status</th></tr></thead>
+              <tbody>
+                {adjustments.length === 0 && <tr><td colSpan={5} className="py-8 text-center text-sm text-slate-500">No refunds or discounts recorded.</td></tr>}
+                {adjustments.map(adjustment => (
+                  <tr key={adjustment.id}>
+                    <td>{adjustment.effective_date?.slice(0, 10)}</td>
+                    <td className="capitalize">{adjustment.adjustment_type}</td>
+                    <td className="font-semibold">{fmt(adjustment.amount)}</td>
+                    <td>{adjustment.reason}</td>
+                    <td className="capitalize">{adjustment.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
       )}
 
       {/* ── INVOICES ── */}

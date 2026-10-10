@@ -373,6 +373,7 @@ export function ProfileTab({ profile, onRefresh }: { profile: any; onRefresh: ()
   const startEdit = () => {
     setForm({
       phone: profile?.phone ?? "",
+      date_of_birth: profile?.date_of_birth?.slice(0, 10) ?? "",
       emergency_contact_name: profile?.emergency_contact_name ?? "",
       emergency_contact_phone: profile?.emergency_contact_phone ?? "",
       emergency_contact_relation: profile?.emergency_contact_relation ?? "",
@@ -456,15 +457,16 @@ export function ProfileTab({ profile, onRefresh }: { profile: any; onRefresh: ()
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
                 { k: "phone", label: "Phone" },
+                { k: "date_of_birth", label: "Date of Birth", type: "date" },
                 { k: "employer", label: "Employer" },
                 { k: "job_title", label: "Job Title" },
                 { k: "emergency_contact_name", label: "Emergency Name" },
                 { k: "emergency_contact_phone", label: "Emergency Phone" },
                 { k: "emergency_contact_relation", label: "Emergency Relation" },
-              ].map(({ k, label }) => (
+              ].map(({ k, label, type }) => (
                 <div key={k}>
                   <label className="label">{label}</label>
-                  <input className="input" type="text" value={form[k] ?? ""}
+                  <input className="input" type={type ?? "text"} value={form[k] ?? ""}
                     onChange={e => setForm((f: any) => ({ ...f, [k]: e.target.value }))} />
                 </div>
               ))}

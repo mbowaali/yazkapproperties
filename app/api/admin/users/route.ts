@@ -9,7 +9,7 @@ export async function GET() {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { rows } = await sql`
-    SELECT id, email, full_name, phone, emirates_id, employer, job_title, role, approved, created_at
+    SELECT id, email, full_name, phone, unit_label, emirates_id, employer, job_title, role, approved, created_at
     FROM users WHERE role = 'tenant' ORDER BY created_at DESC
   `;
   return NextResponse.json({ data: rows });

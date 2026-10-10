@@ -11,7 +11,7 @@ export default function ExpensesPage() {
       orderBy="date"
       sumField="amount"
       yearField="date"
-      note={<>📌 Payments to Ahmed Nady (landlord rent) belong on the <strong>🔑 Landlord</strong> page, not here, so profit is calculated correctly.</>}
+      note={<>📌 Landlord rent payments belong on the <strong>🔑 Landlord</strong> page, not here, so profit is calculated correctly.</>}
       fields={[
         { key: "date", label: "Date", type: "date", required: true, defaultValue: "today" },
         { key: "category", label: "Category", type: "select", options: ["Utilities", "Electricity", "Water", "Internet", "Cleaning", "Security", "Repairs", "Maintenance", "Supplies", "Government Fees", "Transport", "Staff", "Other"], defaultValue: "Other" },
