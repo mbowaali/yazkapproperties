@@ -21,6 +21,7 @@ const NAV = [
   ["👤 Tenant Accounts", "/admin/accounts"],
   ["👥 Employees", "/admin/employees"],
   ["📄 Tenant Rules", "/admin/contracts"],
+  ["❓ FAQs", "/admin/faqs"],
   ["⚙️ Settings", "/admin/settings"],
 ];
 

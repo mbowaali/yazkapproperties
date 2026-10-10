@@ -1,307 +1,97 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
-import { fmt } from "@/lib/currency";
-import { calculateFinancialSummary, rentRoll, type FinancialAdjustment, type LaundryCollection, type Tenant } from "@/lib/finance";
-import { exportToExcel } from "@/lib/excel";
-import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
-  PieChart, Pie, Cell, Legend,
-} from "recharts";
+import { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { DocumentArrowDownIcon } from "@heroicons/react/24/outline";
 
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const PIE_COLORS = ["#0F4C81", "#F5B301", "#16A34A", "#DC2626", "#7CAAD5", "#4D8BC2", "#D99E00", "#A9C9E4", "#2A6DA8", "#FFC93C", "#072742", "#0D4370"];
-
-// date-only strings ("2026-01-01") parse as UTC midnight; extracting from the
-// string keeps the year/month stable in every timezone
-const yearOf = (d: string | null) => (d && /^\d{4}-\d{2}-\d{2}/.test(d) ? Number(d.slice(0, 4)) : null);
-const monthOf = (d: string | null) => (d && /^\d{4}-\d{2}-\d{2}/.test(d) ? Number(d.slice(5, 7)) - 1 : null);
-
-type Tx = { date: string | null; amount: number; tenant_name: string | null; type?: string | null; status?: string | null };
-type Exp = { date: string | null; category: string; amount: number };
-type LP = { date: string | null; amount: number };
+type Inputs = {
+  startDate: string;
+  endDate: string;
+  format: "pdf" | "excel";
+};
 
 export default function ReportsPage() {
-  const [tx, setTx] = useState<Tx[]>([]);
-  const [exp, setExp] = useState<Exp[]>([]);
-  const [lp, setLp] = useState<LP[]>([]);
-  const [laundry, setLaundry] = useState<LaundryCollection[]>([]);
-  const [adjustments, setAdjustments] = useState<FinancialAdjustment[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [year, setYear] = useState<number>(new Date().getFullYear());
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  useEffect(() => { (async () => {
-    const fetchTable = async (table: string, select: string) => {
-      const res = await fetch(`/api/db?table=${table}&select=${select}&limit=5000`);
-      const json = await res.json();
-      return { data: json.data ?? [], error: json.error ?? null };
-    };
-    const [t, e, l, laundryResponse, adjustmentResponse] = await Promise.all([
-      fetchTable("transactions", "date,amount,tenant_name,type,status"),
-      fetchTable("expenses", "date,category,amount"),
-      fetchTable("landlord_payments", "date,amount"),
-      fetchTable("laundry_collections", "collection_month,total_amount"),
-      fetch("/api/admin/adjustments").then(async response => ({ ...(await response.json()), error: response.ok ? null : "Failed to load adjustments" })),
-    ]);
-    if (t.error || e.error || l.error || laundryResponse.error || adjustmentResponse.error) {
-      setError(t.error?.message ?? e.error?.message ?? l.error?.message ?? laundryResponse.error?.message ?? adjustmentResponse.error ?? "Failed to load data");
-    } else {
-      setTx((t.data ?? []) as Tx[]);
-      setExp((e.data ?? []) as Exp[]);
-      setLp((l.data ?? []) as LP[]);
-      setLaundry((laundryResponse.data ?? []) as LaundryCollection[]);
-      setAdjustments((adjustmentResponse.data ?? []) as FinancialAdjustment[]);
-      const years = [...new Set((t.data ?? []).map((r: Tx) => yearOf(r.date) ?? 0))].filter(Boolean) as number[];
-      if (years.length) setYear(Math.max(...years));
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    setIsGenerating(true);
+    try {
+      const { startDate, endDate, format } = data;
+      const query = new URLSearchParams({ startDate, endDate, format }).toString();
+      const response = await fetch(`/api/admin/reports/financial?${query}`);
+
+      if (!response.ok) {
+        throw new Error("Failed to generate report");
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `financial-report-${startDate}-to-${endDate}.${format}`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error generating report:", error);
+      alert("Failed to generate report. Please check the console for details.");
+    } finally {
+      setIsGenerating(false);
     }
-    setLoading(false);
-  })(); }, []);
-
-  const inYear = <T extends { date: string | null }>(rows: T[], y: number) =>
-    rows.filter((r) => r.date && yearOf(r.date) === y);
-
-  const financials = useMemo(
-    () => calculateFinancialSummary(year, tx, exp, lp, laundry, adjustments),
-    [year, tx, exp, lp, laundry, adjustments]
-  );
-
-  const monthly = useMemo(() =>
-    MONTHS.map((m, i) => {
-      const inMonth = <T extends { date: string | null }>(rows: T[]) =>
-        inYear(rows, year).filter((r) => monthOf(r.date) === i);
-      const monthTransactions = inMonth(tx);
-      const monthExpenses = inMonth(exp);
-      const monthLandlordPayments = inMonth(lp);
-      const monthLaundry = laundry.filter(row => monthOf(row.collection_month) === i && yearOf(row.collection_month) === year);
-      const monthAdjustments = adjustments.filter(row => monthOf(row.effective_date) === i && yearOf(row.effective_date) === year);
-      const totals = calculateFinancialSummary(year, monthTransactions, monthExpenses, monthLandlordPayments, monthLaundry, monthAdjustments);
-      return {
-        month: m,
-        Collected: totals.collected + totals.laundryCollected,
-        Outflows: totals.expenses + totals.landlordPayments + totals.refunds + totals.discounts,
-      };
-    }), [tx, exp, lp, laundry, adjustments, year]);
-
-  const byCategory = useMemo(() => {
-    const map = new Map<string, number>();
-    for (const r of inYear(exp, year)) map.set(r.category, (map.get(r.category) ?? 0) + Number(r.amount));
-    return [...map.entries()]
-      .map(([name, value]) => ({ name, value: Math.round(value * 100) / 100 }))
-      .sort((a, b) => b.value - a.value);
-  }, [exp, year]);
-
-  const topTenants = useMemo(() => {
-    const map = new Map<string, number>();
-    for (const r of inYear(tx, year)) {
-      const name = r.tenant_name || "Unknown";
-      map.set(name, (map.get(name) ?? 0) + Number(r.amount));
-    }
-    return [...map.entries()]
-      .map(([name, value]) => ({ name, value: Math.round(value * 100) / 100 }))
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 8);
-  }, [tx, year]);
-
-  const yearly = useMemo(() => {
-    const years = new Set<number>([
-      ...tx.map((r) => (yearOf(r.date) ?? 0)),
-      ...exp.map((r) => (yearOf(r.date) ?? 0)),
-      ...lp.map((r) => (yearOf(r.date) ?? 0)),
-      ...laundry.map((r) => (yearOf(r.collection_month) ?? 0)),
-      ...adjustments.map((r) => (yearOf(r.effective_date) ?? 0)),
-    ]);
-    return [...years].filter(Boolean).sort((a, b) => b - a).map((y) => {
-      const totals = calculateFinancialSummary(y, tx, exp, lp, laundry, adjustments);
-      return { year: y, ...totals };
-    });
-  }, [tx, exp, lp, laundry, adjustments]);
-
-  const years = useMemo(() =>
-    [...new Set(tx.map((r) => (yearOf(r.date) ?? 0)))].filter(Boolean).sort((a, b) => b - a) as number[],
-  [tx]);
-
-  const [tenants, setTenants] = useState<Tenant[]>([]);
-  useEffect(() => { (async () => {
-    const res = await fetch("/api/db?table=tenants&select=code,full_name,monthly_rent,entry_date,status&limit=2000");
-    const json = await res.json();
-    setTenants((json.data ?? []) as Tenant[]);
-  })(); }, []);
-
-  const roll = useMemo(() => rentRoll(tenants, year, tx), [tenants, year, tx]);
-
-  if (loading) return <p className="py-16 text-center text-sm text-slate-500">Loading reports…</p>;
-  if (error) return (
-    <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-danger">{error}</div>
-  );
-
-  const kpis = [
-    { label: "Cash collected", value: fmt(financials.collected), cls: "text-success" },
-    { label: "Laundry collections", value: fmt(financials.laundryCollected), cls: "text-teal-700" },
-    { label: "Operating expenses", value: fmt(financials.expenses), cls: "text-danger" },
-    { label: "Landlord payments", value: fmt(financials.landlordPayments), cls: "text-primary" },
-    { label: "Refunds & discounts", value: fmt(financials.refunds + financials.discounts), cls: "text-amber-700" },
-    { label: "Net profit", value: fmt(financials.netProfit), cls: "text-success" },
-    { label: "Net loss", value: fmt(financials.netLoss), cls: "text-danger" },
-  ];
+  };
 
   return (
-    <div>
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-bold text-primary-dark">📈 Reports</h1>
-          <p className="mt-1 text-sm text-slate-500">Financial analytics computed live from transactions, expenses and landlord payments</p>
-        </div>
-        <select className="input sm:max-w-[9rem]" value={year} onChange={(e) => setYear(Number(e.target.value))} aria-label="Report year">
-          {years.map((y) => <option key={y} value={y}>{y}</option>)}
-        </select>
-      </div>
-
-      <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {kpis.map((k) => (
-          <div key={k.label} className="card card-hover">
-            <p className="text-sm font-medium text-slate-500">{k.label} · {year}</p>
-            <p className={`mt-2 text-2xl font-bold ${k.cls}`}>{k.value}</p>
+    <div className="page-container">
+      <h1 className="text-2xl font-semibold mb-6">Reports</h1>
+      <div className="card">
+        <h2 className="section-title mb-4">Financial Report</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="startDate" className="label">Start Date</label>
+              <input
+                id="startDate"
+                type="date"
+                {...register("startDate", { required: "Start date is required" })}
+                className="input"
+              />
+              {errors.startDate && <p className="error-message">{errors.startDate.message}</p>}
+            </div>
+            <div>
+              <label htmlFor="endDate" className="label">End Date</label>
+              <input
+                id="endDate"
+                type="date"
+                {...register("endDate", { required: "End date is required" })}
+                className="input"
+              />
+              {errors.endDate && <p className="error-message">{errors.endDate.message}</p>}
+            </div>
           </div>
-        ))}
-      </div>
-
-      <div className="card mt-6">
-        <p className="section-title">Monthly cash flow — {year}</p>
-        <p className="mt-1 text-xs text-slate-400">Settled rent and laundry receipts vs all cash outflows per month (AED)</p>
-        <div className="mt-4 h-72 w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={monthly} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
-              <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94A3B8" />
-              <YAxis tick={{ fontSize: 11 }} stroke="#94A3B8" tickFormatter={(v: number) => `${Math.round(v / 1000)}k`} />
-              <Tooltip formatter={(v: any) => fmt(Number(v))} />
-              <Legend wrapperStyle={{ fontSize: 12 }} />
-              <Bar dataKey="Collected" fill="#0F4C81" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="Outflows" fill="#DC2626" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-2">
-        <div className="card">
-          <p className="section-title">Expenses by category — {year}</p>
-          {byCategory.length === 0 ? (
-            <p className="py-10 text-center text-sm text-slate-500">No expenses recorded in {year}.</p>
-          ) : (
-            <div className="mt-4 h-72 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie data={byCategory} dataKey="value" nameKey="name" innerRadius={55} outerRadius={95} paddingAngle={2}>
-                    {byCategory.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
-                  </Pie>
-                  <Tooltip formatter={(v: any) => fmt(Number(v))} />
-                  <Legend wrapperStyle={{ fontSize: 12 }} />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          )}
-        </div>
-
-        <div className="card">
-          <p className="section-title">Top tenants by revenue — {year}</p>
-          {topTenants.length === 0 ? (
-            <p className="py-10 text-center text-sm text-slate-500">No transactions recorded in {year}.</p>
-          ) : (
-            <div className="mt-4 h-72 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={topTenants} layout="vertical" margin={{ top: 0, right: 16, left: 8, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
-                  <XAxis type="number" tick={{ fontSize: 11 }} stroke="#94A3B8" tickFormatter={(v: number) => `${Math.round(v / 1000)}k`} />
-                  <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 11 }} stroke="#94A3B8" />
-                  <Tooltip formatter={(v: any) => fmt(Number(v))} />
-                  <Bar dataKey="value" name="Paid" fill="#F5B301" radius={[0, 4, 4, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="card mt-6 !p-0 overflow-hidden">
-        <div className="flex flex-wrap items-center justify-between gap-3 px-5 pt-5">
           <div>
-            <p className="section-title">Rent roll &amp; arrears — {year}</p>
-            <p className="mt-1 text-xs text-slate-400">
-              Expected = contract rent × months of occupancy. Negative balance = tenant behind (arrears); positive = ahead.
-            </p>
+            <label htmlFor="format" className="label">Format</label>
+            <select
+              id="format"
+              {...register("format", { required: "Format is required" })}
+              className="input"
+            >
+              <option value="pdf">PDF</option>
+              <option value="excel">Excel</option>
+            </select>
+            {errors.format && <p className="error-message">{errors.format.message}</p>}
           </div>
-          <button
-            className="btn-ghost no-print !min-h-0 px-4 py-2 text-sm"
-            onClick={() => exportToExcel(roll.rows.map((r) => ({
-              Code: r.code, Tenant: r.tenant, Status: r.status, "Monthly rent": r.monthlyRent,
-              Expected: r.expected, Collected: r.collected, Balance: r.balance,
-            })), `rent-roll-${year}`)}
-            disabled={roll.rows.length === 0}
-          >
-            ⬇ Export rent roll
-          </button>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="table-clean min-w-[680px]">
-            <thead>
-              <tr><th>Code</th><th>Tenant</th><th>Status</th><th>Expected</th><th>Collected</th><th>Balance</th></tr>
-            </thead>
-            <tbody>
-              {roll.rows.length === 0 && (
-                <tr><td colSpan={6} className="py-6 text-center text-sm text-slate-500">No tenants on the roster.</td></tr>
-              )}
-              {roll.rows.map((r) => (
-                <tr key={r.code}>
-                  <td>{r.code}</td>
-                  <td className="font-medium">{r.tenant}</td>
-                  <td><span className={r.status === "active" ? "pill-paid" : "text-slate-400 text-xs"}>{r.status}</span></td>
-                  <td>{fmt(r.expected)}</td>
-                  <td>{fmt(r.collected)}</td>
-                  <td className={r.balance < 0 ? "font-semibold text-danger" : "font-semibold text-success"}>{fmt(r.balance)}</td>
-                </tr>
-              ))}
-              <tr className="bg-slate-50 font-bold">
-                <td colSpan={3}>Totals</td>
-                <td>{fmt(roll.expectedTotal)}</td>
-                <td>{fmt(roll.collectedTotal)}</td>
-                <td>
-                  <span className={roll.arrearsTotal > 0 ? "text-danger" : "text-success"}>
-                    {roll.arrearsTotal > 0 ? `${fmt(roll.arrearsTotal)} arrears` : "no arrears"}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div className="card mt-6 !p-0 overflow-hidden">
-        <p className="section-title px-5 pt-5">Year-by-year summary</p>
-        <div className="overflow-x-auto">
-          <table className="table-clean min-w-[560px]">
-            <thead>
-              <tr>
-                <th>Year</th><th>Cash collected</th><th>Laundry</th><th>Expenses</th><th>Landlord</th><th>Refunds</th><th>Discounts</th><th>Net profit</th><th>Net loss</th>
-              </tr>
-            </thead>
-            <tbody>
-              {yearly.map((y) => (
-                <tr key={y.year} className={y.year === year ? "bg-primary-50/60 font-semibold" : ""}>
-                  <td>{y.year}</td>
-                  <td>{fmt(y.collected)}</td>
-                  <td>{fmt(y.laundryCollected)}</td>
-                  <td>{fmt(y.expenses)}</td>
-                  <td>{fmt(y.landlordPayments)}</td>
-                  <td>{fmt(y.refunds)}</td>
-                  <td>{fmt(y.discounts)}</td>
-                  <td className="text-success">{fmt(y.netProfit)}</td>
-                  <td className="text-danger">{fmt(y.netLoss)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+          <div className="flex justify-end">
+            <button type="submit" className="btn-primary" disabled={isGenerating}>
+              <DocumentArrowDownIcon className="h-5 w-5 mr-2" />
+              {isGenerating ? "Generating..." : "Download Report"}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

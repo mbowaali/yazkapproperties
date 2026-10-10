@@ -13,12 +13,23 @@ export default function InvoicesPage() {
       sumField="total"
       yearField="due_date"
       extraRowAction={(row) => (
-        <Link
-          href={`/admin/invoices/${row.id}`}
-          className="mr-1.5 text-sm font-semibold text-primary hover:underline"
-        >
-          PDF
-        </Link>
+        <>
+          <Link
+            href={`/admin/invoices/${row.id}`}
+            className="mr-1.5 text-sm font-semibold text-primary hover:underline"
+          >
+            PDF
+          </Link>
+          {row.status === 'paid' && (
+            <a
+              href={`/api/admin/invoices/${row.id}/receipt`}
+              download
+              className="text-sm font-semibold text-green-600 hover:underline"
+            >
+              Receipt
+            </a>
+          )}
+        </>
       )}
       fields={[
         { key: "invoice_no", label: "Invoice #", required: true, placeholder: "INV-2026-001" },
