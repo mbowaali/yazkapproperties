@@ -38,6 +38,21 @@ export default function FaqPage() {
               <strong>Identification:</strong> If the machine locks again, we will check the footage and the usage logs to identify the last person at the machine. That individual will be held responsible for the full repair costs.
             </p>
           </div>
+
+          <div>
+            <h2 className="font-semibold text-slate-800">What are the bank details for rent payment?</h2>
+            <p className="mt-1 text-sm text-slate-600">
+              Please use the following details for bank transfers:
+              <br />
+              <strong>IBAN:</strong> AE88 0260 0002 1471 9079 501
+              <br />
+              <strong>Account Number:</strong> 0214719079501
+              <br />
+              <strong>Swift Code:</strong> EBILAEAD
+              <br />
+              <strong>Routing Number:</strong> 202620103
+            </p>
+          </div>
         </div>
       </div>
     </main>
