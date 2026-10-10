@@ -27,6 +27,9 @@ export default function Header() {
           <Link href="/" className={`rounded-lg px-3 py-2 text-sm font-medium transition hover:bg-primary-50 hover:text-primary ${pathname === "/" ? "text-primary" : "text-slate-600"}`}>
             Vacancies
           </Link>
+          <Link href="/faq" className={`rounded-lg px-3 py-2 text-sm font-medium transition hover:bg-primary-50 hover:text-primary ${pathname === "/faq" ? "text-primary" : "text-slate-600"}`}>
+            FAQ
+          </Link>
           {!loading && (
             <>
               {user ? (
@@ -53,6 +56,9 @@ export default function Header() {
         <nav className="border-t border-slate-100 bg-white px-4 pb-4 pt-2 md:hidden">
           <Link href="/" onClick={() => setOpen(false)} className={`block rounded-lg px-3 py-3 text-sm font-medium ${pathname === "/" ? "bg-primary-50 text-primary" : "text-slate-600 hover:bg-slate-50"}`}>
             Vacancies
+          </Link>
+          <Link href="/faq" onClick={() => setOpen(false)} className={`block rounded-lg px-3 py-3 text-sm font-medium ${pathname === "/faq" ? "bg-primary-50 text-primary" : "text-slate-600 hover:bg-slate-50"}`}>
+            FAQ
           </Link>
           {!loading && (
             <>

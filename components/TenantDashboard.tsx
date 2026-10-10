@@ -252,17 +252,35 @@ export default function TenantDashboard({ userId }: { userId: number }) {
           )}
 
           {/* Announcements */}
-          {announcements.length > 0 && (
-            <div className="card">
-              <h2 className="section-title mb-3">📢 Building Notices</h2>
-              {announcements.map((n, i) => (
-                <div key={i} className="border-b border-slate-100 py-3 last:border-0">
-                  <p className="font-semibold text-slate-800">{n.title}</p>
-                  {n.body && <p className="mt-0.5 text-sm text-slate-600">{n.body}</p>}
-                </div>
-              ))}
+          <div className="card">
+            <h2 className="section-title mb-3">📢 Building Notices</h2>
+            <div className="border-b border-slate-100 py-3 last:border-0">
+              <p className="font-semibold text-slate-800">Reminder: Proper Use of Kitchen Appliances</p>
+              <p className="mt-0.5 text-sm text-slate-600">
+                Please don’t cook beans in the rice cooker. Please use the pressure cooker on the gas stove instead.
+              </p>
             </div>
-          )}
+            <div className="border-b border-slate-100 py-3 last:border-0">
+              <p className="font-semibold text-slate-800">Important Notice Regarding Washing Machine Usage</p>
+              <p className="mt-0.5 text-sm text-slate-600">
+                The washing machine recently broke down because foreign coins were used instead of UAE Dirhams. This causes the machine to shut down for everyone.
+                <br />
+                <strong>Zero Tolerance:</strong> Do not attempt to use any currency other than UAE Dirhams.
+                <br />
+                <strong>Camera Surveillance:</strong> We have CCTV cameras installed in the laundry area. While we are not checking the footage for this first incident, we will review the recordings if this happens again.
+                <br />
+                <strong>Identification:</strong> If the machine locks again, we will check the footage and the usage logs to identify the last person at the machine. That individual will be held responsible for the full repair costs.
+                <br />
+                Please follow the rules so the laundry service remains available for everyone.
+              </p>
+            </div>
+            {announcements.map((n, i) => (
+              <div key={i} className="border-b border-slate-100 py-3 last:border-0">
+                <p className="font-semibold text-slate-800">{n.title}</p>
+                {n.body && <p className="mt-0.5 text-sm text-slate-600">{n.body}</p>}
+              </div>
+            ))}
+          </div>
 
           {/* Upcoming events */}
           {events.length > 0 && (
