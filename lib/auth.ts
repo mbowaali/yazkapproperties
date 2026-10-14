@@ -39,9 +39,10 @@ export async function checkSession(): Promise<SessionUser | null> {
   return getSession();
 }
 
-export async function checkAdmin(): Promise<boolean> {
-  const session = await getSession();
-  return session?.role === "admin";
+export async function checkAdmin(session?: SessionUser | null): Promise<boolean> {
+  // If session is provided, use it; otherwise get it from cookies
+  const currentSession = session || await getSession();
+  return currentSession?.role === "admin";
 }
 
 export { COOKIE };
