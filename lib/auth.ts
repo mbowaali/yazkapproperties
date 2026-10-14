@@ -34,4 +34,14 @@ export async function getSession(): Promise<SessionUser | null> {
   }
 }
 
+// Added for API route authentication
+export async function checkSession(): Promise<SessionUser | null> {
+  return getSession();
+}
+
+export async function checkAdmin(): Promise<boolean> {
+  const session = await getSession();
+  return session?.role === "admin";
+}
+
 export { COOKIE };
