@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     const idValues = tenantIds.map(Number);
     const placeholders = idValues.map((_, i) => `$${i + 1}`).join(", ");
     const { rows: tenants } = await sql.query(
-      `SELECT id, full_name, email, phone, unit_label 
+      `SELECT id, full_name, email, phone
        FROM tenants 
        WHERE id IN (${placeholders}) AND email IS NOT NULL AND email != ''`,
       idValues
@@ -96,7 +96,7 @@ export async function POST(request: Request) {
         VALUES (
           ${session.id}, 
           ${session.full_name || 'Admin'}, 
-          ${channel === 'sms' ? 'sms' : 'email'}, 
+          ${channel}, 
           ${`Invitation sent to ${tenant.full_name} for their account setup. Link: ${inviteLink}`},
           true
         )
@@ -108,11 +108,11 @@ export async function POST(request: Request) {
         let whatsappSent = false;
 
        if (channel === "email" || channel === "both") {
-          if (tenant.email) {
+           if (tenant.email) {
             const emailResult = await sendInviteEmail(
               tenant.email,
               tenant.full_name,
-              tenant.unit_label,
+              undefined,
               inviteLink
             );
             emailSent = emailResult.success;
@@ -124,7 +124,7 @@ export async function POST(request: Request) {
             const smsResult = await sendInviteSMS(
               tenant.phone,
               tenant.full_name,
-              tenant.unit_label,
+              undefined,
               inviteLink
             );
             smsSent = smsResult.success;
@@ -136,7 +136,7 @@ export async function POST(request: Request) {
             const whatsappResult = await sendInviteWhatsApp(
               tenant.phone,
               tenant.full_name,
-              tenant.unit_label,
+              undefined,
               inviteLink
             );
             whatsappSent = whatsappResult.success;
