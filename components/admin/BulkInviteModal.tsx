@@ -6,7 +6,6 @@ interface TenantOption {
   full_name: string;
   email: string | null;
   phone: string | null;
-  unit_label: string | null;
   status: string | null;
 }
 
@@ -24,18 +23,41 @@ export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkI
   const [result, setResult] = useState<{ sent: number; skipped: number; results: Array<{ status: string; emailSent?: boolean; smsSent?: boolean; whatsappSent?: boolean; reason?: string }> } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Searchable tenant list
+  // Tenant list synced from the database
+  const [tenants, setTenants] = useState<TenantOption[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [allTenants, setAllTenants] = useState<TenantOption[]>([]);
-  const [searchResults, setSearchResults] = useState<TenantOption[]>([]);
-  const [searchLoading, setSearchLoading] = useState(false);
+  const [tenantsLoading, setTenantsLoading] = useState(true);
 
-  // Selected tenants for invite (starts with the passed-in tenantIds)
+  // Selected tenant IDs (starts with pre-selected from the table)
   const [selectedIds, setSelectedIds] = useState<number[]>(tenantIds);
 
   useEffect(() => {
     setSelectedIds(tenantIds);
   }, [tenantIds]);
+
+  // Load all existing tenants from the database on open
+  useEffect(() => {
+    setTenantsLoading(true);
+    fetch("/api/admin/tenants/search")
+      .then((res) => res.json())
+      .then((data) => {
+        setTenants(data.tenants || []);
+        setTenantsLoading(false);
+      })
+      .catch(() => {
+        setTenants([]);
+        setTenantsLoading(false);
+      });
+  }, []);
+
+  const filteredTenants = tenants.filter((t) => {
+    const q = searchQuery.toLowerCase();
+    return (
+      t.full_name.toLowerCase().includes(q) ||
+      (t.email ?? "").toLowerCase().includes(q) ||
+      (t.phone ?? "").toLowerCase().includes(q)
+    );
+  });
 
   const toggleSelection = (id: number) => {
     setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
@@ -43,26 +65,13 @@ export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkI
 
   const isSelected = (id: number) => selectedIds.includes(id);
 
-  const searchTenants = async (q: string) => {
-    if (!q.trim()) {
-      setSearchResults([]);
-      return;
-    }
-    setSearchLoading(true);
-    try {
-      const res = await fetch(`/api/admin/tenants/search?q=${encodeURIComponent(q)}`);
-      const data = await res.json();
-      setSearchResults(data.tenants || []);
-    } catch {
-      setSearchResults([]);
-    } finally {
-      setSearchLoading(false);
-    }
+  const selectAllVisible = () => {
+    setSelectedIds([...new Set([...selectedIds, ...filteredTenants.map((t) => t.id)])]);
   };
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-    searchTenants(e.target.value);
+  const deselectAllVisible = () => {
+    const visibleIds = new Set(filteredTenants.map((t) => t.id));
+    setSelectedIds(selectedIds.filter((id) => !visibleIds.has(id)));
   };
 
   const sendInvites = async () => {
@@ -125,13 +134,15 @@ export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkI
     }
   };
 
+  const allVisibleSelected = filteredTenants.length > 0 && filteredTenants.every((t) => isSelected(t.id));
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-2 max-h-[90vh] flex flex-col overflow-hidden">
         <div className="p-6 border-b border-slate-200">
           <h2 className="text-xl font-bold text-slate-900 mb-1">Send Account Invites</h2>
           <p className="text-slate-600 text-sm">
-            Select tenants and send them account setup invites by email or WhatsApp.
+            Select existing tenants from the database and send them account setup invites by email or WhatsApp.
           </p>
         </div>
 
@@ -166,27 +177,59 @@ export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkI
             </div>
           </div>
 
-          {/* Tenant search & selection */}
+          {/* Tenant list synced from database */}
           <div className="mb-6">
-            <div className="flex items-center gap-2 mb-3">
-              <label className="text-sm font-medium text-slate-700">Select Tenants</label>
-              <span className="text-xs text-slate-500">({selectedIds.length} selected)</span>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-medium text-slate-700">Select Tenants</label>
+                <span className="text-xs text-slate-500">({selectedIds.length} selected)</span>
+              </div>
+              {filteredTenants.length > 0 && (
+                <div className="flex gap-2">
+                  <button
+                    onClick={deselectAllVisible}
+                    className="text-xs text-slate-500 hover:text-slate-700 underline"
+                  >
+                    Deselect all visible
+                  </button>
+                  <button
+                    onClick={selectAllVisible}
+                    className={`text-xs font-medium rounded px-2 py-1 ${
+                      allVisibleSelected ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-700"
+                    }`}
+                  >
+                    {allVisibleSelected ? "Selected" : "Select all visible"}
+                  </button>
+                </div>
+              )}
             </div>
+
             <div className="relative mb-3">
               <input
                 type="text"
-                placeholder="Type a name, email, or phone to find a tenant…"
+                placeholder="Search by name, email, or phone…"
                 value={searchQuery}
-                onChange={handleSearchChange}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full input pl-9"
               />
               <div className="absolute left-3 top-1/2 -mt-2 text-slate-400">🔍</div>
-              {searchLoading && <span className="absolute right-3 top-1/2 -mt-2 text-sm">Searching…</span>}
             </div>
 
-            {searchResults.length > 0 && (
-              <div className="border border-slate-200 rounded-lg max-h-60 overflow-y-auto bg-white z-10">
-                {searchResults.map((t) => (
+            {tenantsLoading && (
+              <div className="h-48 flex items-center justify-center text-slate-500 text-sm">
+                Loading tenants from database…
+              </div>
+            )}
+
+            {!tenantsLoading && filteredTenants.length === 0 && (
+              <div className="h-48 flex items-center justify-center text-slate-500 text-sm">
+                No tenants found matching your search.
+              </div>
+            )}
+
+            {!tenantsLoading && filteredTenants.length > 0 && (
+              <div className="border border-slate-200 rounded-lg max-h-96 overflow-y-auto bg-white">
+                {filteredTenants.map((t) => (
                   <button
                     key={t.id}
                     onClick={() => toggleSelection(t.id)}
@@ -197,8 +240,8 @@ export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkI
                     <div className="flex-1">
                       <p className="font-medium text-slate-900">{t.full_name}</p>
                       <p className="text-xs text-slate-500 truncate max-w-xs">
-                        {t.email ?? t.phone ?? "No contact info"}
-                        {t.unit_label ? ` · ${t.unit_label}` : ""}
+                        ID: {t.id} · {t.email ?? t.phone ?? "No contact info"}
+                        {t.status ? ` · ${t.status}` : ""}
                       </p>
                     </div>
                     <span className={`text-xs font-medium rounded-full px-2 py-0.5 ${
@@ -212,15 +255,15 @@ export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkI
                 ))}
               </div>
             )}
-
-            {selectedIds.length > 0 && (
-              <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
-                <p className="text-sm text-blue-800 font-medium">
-                  {selectedIds.length} tenant{selectedIds.length !== 1 ? "s" : ""} selected for invite
-                </p>
-              </div>
-            )}
           </div>
+
+          {selectedIds.length > 0 && (
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+              <p className="text-sm text-blue-800 font-medium">
+                {selectedIds.length} tenant{selectedIds.length !== 1 ? "s" : ""} selected for invite
+              </p>
+            </div>
+          )}
 
           {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">

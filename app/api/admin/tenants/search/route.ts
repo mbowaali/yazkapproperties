@@ -13,19 +13,25 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const q = (searchParams.get("q") || "").trim();
 
-    if (!q) {
-      return NextResponse.json({ tenants: [] });
+    if (q) {
+      const { rows } = await sql.query(
+        `SELECT id, full_name, email, phone, status
+         FROM tenants
+         WHERE full_name ILIKE $1 OR email ILIKE $1 OR phone ILIKE $1
+         ORDER BY full_name
+         LIMIT 20`,
+        [`%${q}%`]
+      );
+      return NextResponse.json({ tenants: rows });
     }
 
+    // No query: return all existing tenants so the admin can browse and select
     const { rows } = await sql.query(
-      `SELECT id, full_name, email, phone, unit_label, status
+      `SELECT id, full_name, email, phone, status
        FROM tenants
-       WHERE full_name ILIKE $1 OR email ILIKE $1 OR phone ILIKE $1
        ORDER BY full_name
-       LIMIT 20`,
-      [`%${q}%`]
+       LIMIT 100`
     );
-
     return NextResponse.json({ tenants: rows });
   } catch (error) {
     console.error("Error searching tenants:", error);
