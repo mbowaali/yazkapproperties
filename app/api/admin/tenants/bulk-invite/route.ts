@@ -2,7 +2,7 @@ import { sql } from "@/lib/db";
 import { NextResponse } from "next/server";
 import { checkSession, checkAdmin } from "@/lib/auth";
 import { createHash, randomUUID } from "crypto";
-import { sendInviteEmail, sendInviteSMS } from "@/lib/email";
+import { sendInviteEmail, sendInviteSMS, sendInviteWhatsApp } from "@/lib/email";
 
 // Generate a secure invite token and its hash for storage
 function generateInviteToken() {
@@ -102,44 +102,58 @@ export async function POST(request: Request) {
         )
       `;
 
-      // Send the actual invite communications using our services
-       let emailSent = false;
-       let smsSent = false;
+       // Send the actual invite communications using our services
+        let emailSent = false;
+        let smsSent = false;
+        let whatsappSent = false;
 
        if (channel === "email" || channel === "both") {
-         if (tenant.email) {
-           const emailResult = await sendInviteEmail(
-             tenant.email,
-             tenant.full_name,
-             tenant.unit_label,
-             inviteLink
-           );
-           emailSent = emailResult.success;
-         }
-       }
+          if (tenant.email) {
+            const emailResult = await sendInviteEmail(
+              tenant.email,
+              tenant.full_name,
+              tenant.unit_label,
+              inviteLink
+            );
+            emailSent = emailResult.success;
+          }
+        }
 
-       if (channel === "sms" || channel === "both") {
-         if (tenant.phone) {
-           const smsResult = await sendInviteSMS(
-             tenant.phone,
-             tenant.full_name,
-             tenant.unit_label,
-             inviteLink
-           );
-           smsSent = smsResult.success;
-         }
-       }
+        if (channel === "sms" || channel === "both") {
+          if (tenant.phone) {
+            const smsResult = await sendInviteSMS(
+              tenant.phone,
+              tenant.full_name,
+              tenant.unit_label,
+              inviteLink
+            );
+            smsSent = smsResult.success;
+          }
+        }
 
-       // Mark as sent if either email or SMS was sent, or if services aren't configured yet
-       const anyCommunicationSent = emailSent || smsSent || (!process.env.RESEND_API_KEY && !process.env.TWILIO_ACCOUNT_SID);
+        if (channel === "whatsapp" || channel === "both") {
+          if (tenant.phone) {
+            const whatsappResult = await sendInviteWhatsApp(
+              tenant.phone,
+              tenant.full_name,
+              tenant.unit_label,
+              inviteLink
+            );
+            whatsappSent = whatsappResult.success;
+          }
+        }
+
+       // Mark as sent if any communication was sent, or if services aren't configured yet
+       const anyCommunicationSent = emailSent || smsSent || whatsappSent || (!process.env.RESEND_API_KEY && !process.env.TWILIO_ACCOUNT_SID);
        inviteResults.push({ 
-         tenantId: tenant.id, 
-         inviteId: newInvite[0].id, 
-         status: anyCommunicationSent ? "sent" : "failed",
-         channel,
-         emailSent,
-         smsSent
-       });
+          tenantId: tenant.id, 
+          inviteId: newInvite[0].id, 
+          status: anyCommunicationSent ? "sent" : "failed",
+          channel,
+          emailSent,
+          smsSent,
+          whatsappSent
+        });
     }
 
     return NextResponse.json({ 

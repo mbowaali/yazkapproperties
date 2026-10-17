@@ -92,6 +92,38 @@ export async function sendInviteSMS(
   }
 }
 
+export async function sendInviteWhatsApp(
+  to: string,
+  tenantName: string,
+  unitLabel: string,
+  inviteLink: string
+) {
+  const appName = process.env.NEXT_PUBLIC_APP_NAME || 'Yazkap Properties';
+  const fromWhatsApp = process.env.TWILIO_WHATSAPP_FROM;
+
+  if (!twilioClient || !fromWhatsApp) {
+    console.warn('Twilio WhatsApp not configured. Skipping actual WhatsApp send.');
+    return { success: false, error: 'WhatsApp service not configured' };
+  }
+
+  const toWhatsApp = to.startsWith('whatsapp:') ? to : `whatsapp:${to}`;
+  const fromWhatsAppFormatted = fromWhatsApp.startsWith('whatsapp:') ? fromWhatsApp : `whatsapp:${fromWhatsApp}`;
+
+  try {
+    const message = await twilioClient.messages.create({
+      body: `${appName}: Hi ${tenantName}, set up your tenant account for ${unitLabel}. Complete your setup here: ${inviteLink} (expires in 7 days)`,
+      from: fromWhatsAppFormatted,
+      to: toWhatsApp,
+    });
+
+    console.log(`Invite WhatsApp sent to ${to}`, message.sid);
+    return { success: true, data: message };
+  } catch (error) {
+    console.error('Failed to send WhatsApp:', error);
+    return { success: false, error };
+  }
+}
+
 // Send web push notification to a user if they have an active subscription
 export async function sendWebPushNotification(
   userId: number,

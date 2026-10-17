@@ -1,5 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+interface TenantOption {
+  id: number;
+  full_name: string;
+  email: string | null;
+  phone: string | null;
+  unit_label: string | null;
+  status: string | null;
+}
 
 interface BulkInviteModalProps {
   tenantIds: number[];
@@ -7,16 +16,63 @@ interface BulkInviteModalProps {
   onSuccess: () => void;
 }
 
+type Channel = "email" | "sms" | "whatsapp" | "both";
+
 export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkInviteModalProps) {
-  const [channel, setChannel] = useState<"email" | "sms" | "both">("email");
+  const [channel, setChannel] = useState<Channel>("email");
   const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState<{ sent: number; skipped: number; results: Array<{ status: string; emailSent?: boolean; smsSent?: boolean; reason?: string }> } | null>(null);
+  const [result, setResult] = useState<{ sent: number; skipped: number; results: Array<{ status: string; emailSent?: boolean; smsSent?: boolean; whatsappSent?: boolean; reason?: string }> } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // Searchable tenant list
+  const [searchQuery, setSearchQuery] = useState("");
+  const [allTenants, setAllTenants] = useState<TenantOption[]>([]);
+  const [searchResults, setSearchResults] = useState<TenantOption[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+
+  // Selected tenants for invite (starts with the passed-in tenantIds)
+  const [selectedIds, setSelectedIds] = useState<number[]>(tenantIds);
+
+  useEffect(() => {
+    setSelectedIds(tenantIds);
+  }, [tenantIds]);
+
+  const toggleSelection = (id: number) => {
+    setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+  };
+
+  const isSelected = (id: number) => selectedIds.includes(id);
+
+  const searchTenants = async (q: string) => {
+    if (!q.trim()) {
+      setSearchResults([]);
+      return;
+    }
+    setSearchLoading(true);
+    try {
+      const res = await fetch(`/api/admin/tenants/search?q=${encodeURIComponent(q)}`);
+      const data = await res.json();
+      setSearchResults(data.tenants || []);
+    } catch {
+      setSearchResults([]);
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    searchTenants(e.target.value);
+  };
+
   const sendInvites = async () => {
+    if (selectedIds.length === 0) {
+      setError("Please select at least one tenant to invite.");
+      return;
+    }
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const response = await fetch("/api/admin/tenants/bulk-invite", {
         method: "POST",
@@ -24,13 +80,13 @@ export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkI
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          tenantIds,
+          tenantIds: selectedIds,
           channel,
         }),
       });
 
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.error || "Failed to send invites");
       }
@@ -40,11 +96,10 @@ export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkI
         skipped: data.skipped,
         results: data.results || [],
       });
-      
+
       setTimeout(() => {
         onSuccess();
       }, 3000);
-      
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unknown error occurred");
     } finally {
@@ -52,98 +107,154 @@ export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkI
     }
   };
 
-  return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
-        <h2 className="text-xl font-bold mb-4">Send Bulk Account Invites</h2>
-        <p className="text-slate-600 mb-6">
-          You're about to send account setup invites to {tenantIds.length} selected tenant{tenantIds.length !== 1 ? 's' : ''}.
-        </p>
+  const channelLabel = (c: Channel) => {
+    switch (c) {
+      case "email": return "📧 Email Only";
+      case "sms": return "📱 SMS Only";
+      case "whatsapp": return "💬 WhatsApp Only";
+      case "both": return "📧 + 📱 + 💬 All Channels";
+    }
+  };
 
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-slate-700 mb-2">
-            Communication Channel
-          </label>
-          <div className="space-y-2">
-            <label className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-slate-50">
-              <input
-                type="radio"
-                name="channel"
-                value="email"
-                checked={channel === "email"}
-                onChange={(e) => setChannel(e.target.value as "email")}
-                className="h-4 w-4 text-blue-600"
-              />
-              <div>
-                <p className="font-medium">📧 Email Only</p>
-                <p className="text-xs text-slate-500">Send invites via email only</p>
-              </div>
-            </label>
-            
-            <label className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-slate-50">
-              <input
-                type="radio"
-                name="channel"
-                value="sms"
-                checked={channel === "sms"}
-                onChange={(e) => setChannel(e.target.value as "sms")}
-                className="h-4 w-4 text-blue-600"
-              />
-              <div>
-                <p className="font-medium">📱 SMS Only</p>
-                <p className="text-xs text-slate-500">Send invites via SMS text message</p>
-              </div>
-            </label>
-            
-            <label className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-slate-50">
-              <input
-                type="radio"
-                name="channel"
-                value="both"
-                checked={channel === "both"}
-                onChange={(e) => setChannel(e.target.value as "both")}
-                className="h-4 w-4 text-blue-600"
-              />
-              <div>
-                <p className="font-medium">📧 + 📱 Both Channels</p>
-                <p className="text-xs text-slate-500">Send invites via both email and SMS</p>
-              </div>
-            </label>
-          </div>
+  const channelDesc = (c: Channel) => {
+    switch (c) {
+      case "email": return "Send invites via email only";
+      case "sms": return "Send invites via SMS text message";
+      case "whatsapp": return "Send invites via WhatsApp message";
+      case "both": return "Send invites via email, SMS, and WhatsApp";
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-2 max-h-[90vh] flex flex-col overflow-hidden">
+        <div className="p-6 border-b border-slate-200">
+          <h2 className="text-xl font-bold text-slate-900 mb-1">Send Account Invites</h2>
+          <p className="text-slate-600 text-sm">
+            Select tenants and send them account setup invites by email or WhatsApp.
+          </p>
         </div>
 
-        {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-            {error}
+        <div className="p-6 overflow-y-auto flex-1">
+          {/* Channel selection */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-slate-700 mb-3">Communication Channel</label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {["email", "sms", "whatsapp", "both"].map((c) => (
+                <label
+                  key={c}
+                  className={`flex items-center gap-3 p-3 border rounded-lg cursor-pointer transition-colors ${
+                    channel === c
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-slate-200 hover:bg-slate-50"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="channel"
+                    value={c}
+                    checked={channel === c}
+                    onChange={() => setChannel(c as Channel)}
+                    className="h-4 w-4 text-blue-600 shrink-0"
+                  />
+                  <div>
+                    <p className="font-medium text-slate-900">{channelLabel(c as Channel)}</p>
+                    <p className="text-xs text-slate-500">{channelDesc(c as Channel)}</p>
+                  </div>
+                </label>
+              ))}
+            </div>
           </div>
-        )}
 
-        {result && (
-          <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
-            ✅ Successfully sent {result.sent} invites! {result.skipped > 0 && `${result.skipped} skipped (already have active invites).`}
-            {result.results.filter(r => r.status === "failed").length > 0 && (
-              <div className="mt-2 text-red-600">
-                ⚠️ {result.results.filter(r => r.status === "failed").length} invites failed to send.
-                Check server logs for details.
+          {/* Tenant search & selection */}
+          <div className="mb-6">
+            <div className="flex items-center gap-2 mb-3">
+              <label className="text-sm font-medium text-slate-700">Select Tenants</label>
+              <span className="text-xs text-slate-500">({selectedIds.length} selected)</span>
+            </div>
+            <div className="relative mb-3">
+              <input
+                type="text"
+                placeholder="Type a name, email, or phone to find a tenant…"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="w-full input pl-9"
+              />
+              <div className="absolute left-3 top-1/2 -mt-2 text-slate-400">🔍</div>
+              {searchLoading && <span className="absolute right-3 top-1/2 -mt-2 text-sm">Searching…</span>}
+            </div>
+
+            {searchResults.length > 0 && (
+              <div className="border border-slate-200 rounded-lg max-h-60 overflow-y-auto bg-white z-10">
+                {searchResults.map((t) => (
+                  <button
+                    key={t.id}
+                    onClick={() => toggleSelection(t.id)}
+                    className={`w-full flex items-center justify-between p-3 text-left border-b border-slate-50 hover:bg-slate-50 last:border-b-0 ${
+                      isSelected(t.id) ? "bg-blue-50 border-blue-100" : ""
+                    }`}
+                  >
+                    <div className="flex-1">
+                      <p className="font-medium text-slate-900">{t.full_name}</p>
+                      <p className="text-xs text-slate-500 truncate max-w-xs">
+                        {t.email ?? t.phone ?? "No contact info"}
+                        {t.unit_label ? ` · ${t.unit_label}` : ""}
+                      </p>
+                    </div>
+                    <span className={`text-xs font-medium rounded-full px-2 py-0.5 ${
+                      isSelected(t.id)
+                        ? "bg-blue-100 text-blue-700"
+                        : "bg-slate-100 text-slate-500"
+                    }`}>
+                      {isSelected(t.id) ? "Selected" : "Add"}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {selectedIds.length > 0 && (
+              <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+                <p className="text-sm text-blue-800 font-medium">
+                  {selectedIds.length} tenant{selectedIds.length !== 1 ? "s" : ""} selected for invite
+                </p>
               </div>
             )}
           </div>
-        )}
 
-        <div className="flex gap-3 justify-end">
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+              {error}
+            </div>
+          )}
+
+          {result && (
+            <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
+              ✅ Successfully sent {result.sent} invite{result.sent !== 1 ? "s" : ""}!{' '}
+              {result.skipped > 0 && `${result.skipped} skipped (already have active invites).`}
+              {result.results.filter((r) => r.status === "failed").length > 0 && (
+                <div className="mt-2 text-red-600 text-sm">
+                  ⚠️ {result.results.filter((r) => r.status === "failed").length} invite{result.results.filter((r) => r.status === "failed").length !== 1 ? "s" : ""} failed to send.
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="p-6 border-t border-slate-200 bg-slate-50 flex gap-3 justify-end">
           <button
             onClick={onClose}
-            disabled={isLoading}
-            className="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+            disabled={isLoading || !!result}
+            className="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-200 disabled:opacity-50"
           >
             Cancel
           </button>
           <button
             onClick={sendInvites}
-            disabled={isLoading || !!result}
+            disabled={isLoading || !!result || selectedIds.length === 0}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
           >
-            {isLoading ? "Sending..." : "Send Invites"}
+            {isLoading ? "Sending…" : "Send Invites"}
           </button>
         </div>
       </div>
