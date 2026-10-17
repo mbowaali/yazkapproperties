@@ -1,5 +1,7 @@
 "use client";
-import AdminTable, { Field } from "@/components/admin/AdminTable";
+import { useState } from "react";
+import AdminTable, { Field, BulkAction } from "@/components/admin/AdminTable";
+import BulkInviteModal from "@/components/admin/BulkInviteModal";
 
 const fields: Field[] = [
   { key: "photo_url", label: "Photo", type: "photo" },
@@ -23,18 +25,48 @@ const filterFields: Field[] = [
   },
 ];
 
+const bulkActions: BulkAction[] = [
+  {
+    id: "bulk-invite",
+    label: "📨 Send Account Invites",
+    description: "Invite selected tenants to set up their accounts",
+  },
+];
+
 export default function TenantsPage() {
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [selectedTenants, setSelectedTenants] = useState<number[]>([]);
+
+  const handleBulkAction = (actionId: string, selectedIds: number[]) => {
+    if (actionId === "bulk-invite") {
+      setSelectedTenants(selectedIds);
+      setShowInviteModal(true);
+    }
+  };
+
   return (
-    <AdminTable
-      table="tenants"
-      title="👥 Tenants"
-      subtitle="Roster imported from the Excel master + tenants added here"
-      itemLabel="tenant"
-      orderBy="full_name"
-      orderAsc
-      sumField="monthly_rent"
-      fields={fields}
-      filterFields={filterFields}
-    />
+    <>
+      <AdminTable
+        table="tenants"
+        title="👥 Tenants"
+        subtitle="Roster imported from the Excel master + tenants added here"
+        itemLabel="tenant"
+        orderBy="full_name"
+        orderAsc
+        sumField="monthly_rent"
+        fields={fields}
+        filterFields={filterFields}
+        bulkActions={bulkActions}
+        onBulkAction={handleBulkAction}
+      />
+      
+      {showInviteModal && (
+        <BulkInviteModal
+          tenantIds={selectedTenants}
+          onClose={() => setShowInviteModal(false)}
+          onSuccess={() => setShowInviteModal(false)}
+        />
+      )}
+    </>
   );
 }

@@ -19,6 +19,7 @@ const NAV = [
   ["💬 Team Chat", "/admin/chat"],
   ["🤖 Tenant Help Bot", "/admin/chatbot"],
   ["👤 Tenant Accounts", "/admin/accounts"],
+  ["📨 Account Invites", "/admin/invites"],
   ["👥 Employees", "/admin/employees"],
   ["📄 Tenant Rules", "/admin/contracts"],
   ["❓ FAQs", "/admin/faqs"],

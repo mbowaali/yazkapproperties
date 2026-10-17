@@ -18,7 +18,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 
     const { rows } = await sql`
       UPDATE faqs
-      SET question = ${question}, answer = ${answer}
+      SET question = ${question}, answer = ${answer}, updated_at = NOW()
       WHERE id = ${Number(id)}
       RETURNING *
     `;

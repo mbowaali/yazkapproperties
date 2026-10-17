@@ -28,12 +28,26 @@ export default function ChatbotFAQsPage() {
     event.preventDefault();
     setSaving(true);
     setError("");
-    const response = await fetch("/api/admin/chatbot", {
-      method: editingId ? "PATCH" : "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editingId ? { id: editingId, ...form } : form),
-    });
-    const result = await response.json();
+    let response: Response;
+    try {
+      response = await fetch("/api/admin/chatbot", {
+        method: editingId ? "PATCH" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editingId ? { id: editingId, ...form } : form),
+      });
+    } catch {
+      setSaving(false);
+      setError("Network error. Please try again.");
+      return;
+    }
+    let result: { error?: string };
+    try {
+      result = await response.json();
+    } catch {
+      setSaving(false);
+      setError(`Server error (${response.status}). Please try again.`);
+      return;
+    }
     setSaving(false);
     if (!response.ok) { setError(result.error ?? "Could not save this answer."); return; }
     setForm(EMPTY_FORM);

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { fmt } from "@/lib/currency";
+import { downloadReceipt } from "@/components/admin/AdminTable";
 
 export function ReceiptsTab({ receipts, onRefresh }: { receipts: any[]; onRefresh: () => void }) {
   const [showForm, setShowForm] = useState(false);
@@ -385,13 +386,28 @@ export function ProfileTab({ profile, onRefresh }: { profile: any; onRefresh: ()
 
   const save = async () => {
     setBusy(true); setMsg("");
-    const res = await fetch("/api/tenant/profile", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+    let res: Response;
+    try {
+      res = await fetch("/api/tenant/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+    } catch {
+      setBusy(false);
+      setMsg("❌ Network error. Please try again.");
+      return;
+    }
+    let json: { error?: string };
+    try {
+      json = await res.json();
+    } catch {
+      setBusy(false);
+      setMsg(`❌ Server error (${res.status}). Please try again.`);
+      return;
+    }
     setBusy(false);
-    if (!res.ok) { setMsg("❌ Failed to save"); return; }
+    if (!res.ok) { setMsg("❌ " + (json.error ?? "Failed to save")); return; }
     setMsg("✅ Profile updated.");
     setEditing(false);
     onRefresh();

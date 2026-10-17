@@ -63,12 +63,26 @@ export default function EmployeeModule({ module }: { module: Module }) {
       if (value === "") value = null;
       payload[field.key] = value;
     }
-    const response = await fetch("/api/employee/data", {
-      method: editing ? "PUT" : "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editing ? { table: module.table, id: editing, payload } : { table: module.table, payload }),
-    });
-    const result = await response.json();
+    let response: Response;
+    try {
+      response = await fetch("/api/employee/data", {
+        method: editing ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editing ? { table: module.table, id: editing, payload } : { table: module.table, payload }),
+      });
+    } catch {
+      setBusy(false);
+      setError("Network error. Please try again.");
+      return;
+    }
+    let result: { error?: string };
+    try {
+      result = await response.json();
+    } catch {
+      setBusy(false);
+      setError(`Server error (${response.status}). Please try again.`);
+      return;
+    }
     setBusy(false);
     if (!response.ok) { setError(result.error ?? "Could not save changes."); return; }
     setShowForm(false);
@@ -80,11 +94,26 @@ export default function EmployeeModule({ module }: { module: Module }) {
     event.preventDefault();
     if (!replyRow) return;
     setBusy(true);
-    const response = await fetch("/api/employee/data", {
-      method: "PUT", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ table: "tenant_requests", id: replyRow.id, payload: { status: "in-progress", admin_reply: reply.trim() } }),
-    });
-    const result = await response.json();
+    setError("");
+    let response: Response;
+    try {
+      response = await fetch("/api/employee/data", {
+        method: "PUT", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ table: "tenant_requests", id: replyRow.id, payload: { status: "in-progress", admin_reply: reply.trim() } }),
+      });
+    } catch {
+      setBusy(false);
+      setError("Network error. Please try again.");
+      return;
+    }
+    let result: { error?: string };
+    try {
+      result = await response.json();
+    } catch {
+      setBusy(false);
+      setError(`Server error (${response.status}). Please try again.`);
+      return;
+    }
     setBusy(false);
     if (!response.ok) { setError(result.error ?? "Could not send the reply."); return; }
     setReplyRow(null);

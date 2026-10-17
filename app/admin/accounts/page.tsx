@@ -1,7 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 type User = { id: number; email: string; full_name: string | null; phone: string | null; emirates_id: string | null; employer: string | null; unit_label: string | null; role: string; approved: boolean; created_at: string; setup_completed_at: string | null; invite_expires_at: string | null };
+
+type ExistingTenant = { id: number; full_name: string; email: string; phone: string | null; unit_label: string | null };
 
 export default function AccountsPage() {
   const [users, setUsers] = useState<User[]>([]);
@@ -13,12 +15,72 @@ export default function AccountsPage() {
   const [inviteUrl, setInviteUrl] = useState("");
   const [copied, setCopied] = useState(false);
   const [inviteForm, setInviteForm] = useState({ full_name: "", email: "", phone: "", unit_label: "" });
+  const [existingTenants, setExistingTenants] = useState<ExistingTenant[]>([]);
+  const [filteredTenants, setFilteredTenants] = useState<ExistingTenant[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const load = () =>
     fetch("/api/admin/users").then(r => r.json()).then(({ data }) => {
       setUsers(data ?? []);
       setLoading(false);
     });
+
+  // Load existing tenants from database when invite form opens
+  const loadExistingTenants = async () => {
+    try {
+      const response = await fetch("/api/admin/tenants/list");
+      if (response.ok) {
+        const { data } = await response.json();
+        setExistingTenants(data ?? []);
+      }
+    } catch (error) {
+      console.error("Failed to load existing tenants:", error);
+    }
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Filter tenants as user types
+  useEffect(() => {
+    if (inviteForm.full_name.trim().length > 0 && existingTenants.length > 0) {
+      const filtered = existingTenants.filter(tenant => 
+        tenant.full_name.toLowerCase().includes(inviteForm.full_name.toLowerCase())
+      );
+      setFilteredTenants(filtered.slice(0, 5)); // Show max 5 results
+      setShowDropdown(filtered.length > 0);
+    } else {
+      setFilteredTenants([]);
+      setShowDropdown(false);
+    }
+  }, [inviteForm.full_name, existingTenants]);
+
+  // Load existing tenants when showInvite changes
+  useEffect(() => {
+    if (showInvite) {
+      loadExistingTenants();
+    }
+  }, [showInvite]);
+
+  // Select tenant from dropdown and auto-fill all fields
+  const selectTenant = (tenant: ExistingTenant) => {
+    setInviteForm({
+      full_name: tenant.full_name,
+      email: tenant.email,
+      phone: tenant.phone ?? "",
+      unit_label: tenant.unit_label ?? "",
+    });
+    setShowDropdown(false);
+  };
 
   useEffect(() => { load(); }, []);
 

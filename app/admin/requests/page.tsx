@@ -28,12 +28,28 @@ export default function AdminRequestsPage() {
 
   const save = async () => {
     setBusy(true);
-    await fetch("/api/admin/requests", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: selected.id, status, admin_reply: reply }),
-    });
+    let res: Response;
+    try {
+      res = await fetch("/api/admin/requests", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: selected.id, status, admin_reply: reply }),
+      });
+    } catch {
+      setBusy(false);
+      setMsg("❌ Network error. Please try again.");
+      return;
+    }
+    let json: { error?: string };
+    try {
+      json = await res.json();
+    } catch {
+      setBusy(false);
+      setMsg(`❌ Server error (${res.status}). Please try again.`);
+      return;
+    }
     setBusy(false);
+    if (!res.ok) { setMsg("❌ " + (json.error ?? "Failed to send reply")); return; }
     setSelected(null);
     setMsg("✅ Reply sent.");
     load();

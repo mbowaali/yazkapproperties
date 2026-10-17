@@ -68,12 +68,27 @@ export default function LaundryPage() {
     if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(form.month)) { setFormErr("Choose a valid month"); return; }
     if (!Number.isInteger(form.coin_count) || form.coin_count < 0) { setFormErr("Enter a whole-number coin count of zero or more"); return; }
     setSaving(true);
-    const res = await fetch("/api/admin/laundry-collections", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-    const json = await res.json();
+    setFormErr("");
+    let res: Response;
+    try {
+      res = await fetch("/api/admin/laundry-collections", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+    } catch {
+      setSaving(false);
+      setFormErr("Network error. Please try again.");
+      return;
+    }
+    let json: { error?: string };
+    try {
+      json = await res.json();
+    } catch {
+      setSaving(false);
+      setFormErr(`Server error (${res.status}). Please try again.`);
+      return;
+    }
     setSaving(false);
     if (!res.ok) { setFormErr(json.error ?? "Could not save monthly collection"); return; }
     setShowForm(false);

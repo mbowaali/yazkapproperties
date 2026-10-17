@@ -30,32 +30,54 @@ export default function AdminSettingsPage() {
 
   const saveAdmin = async () => {
     setBusy(true); setMsg("");
-    const fd = new FormData();
-    if (adminFile) fd.append("file", adminFile);
-    fd.append("name", form.name);
-    fd.append("bio", form.bio);
-    fd.append("key_prefix", "admin");
-    const res = await fetch("/api/admin/landlord-photo", { method: "POST", body: fd });
-    // Also save admin_name / admin_bio via settings API
-    await fetch("/api/admin/settings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ admin_name: form.name, admin_bio: form.bio }),
-    });
-    if (adminFile) {
-      // store as admin_photo key
-      const buf = await adminFile.arrayBuffer();
-      const b64 = btoa(String.fromCharCode(...new Uint8Array(buf)));
-      const dataUrl = `data:${adminFile.type};base64,${b64}`;
-      await fetch("/api/admin/settings", {
+    try {
+      const fd = new FormData();
+      if (adminFile) fd.append("file", adminFile);
+      fd.append("name", form.name);
+      fd.append("bio", form.bio);
+      fd.append("key_prefix", "admin");
+      const res = await fetch("/api/admin/landlord-photo", { method: "POST", body: fd });
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        setMsg("❌ " + (json.error ?? "Failed to save"));
+        setBusy(false);
+        return;
+      }
+      // Also save admin_name / admin_bio via settings API
+      const settingsRes = await fetch("/api/admin/settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ admin_photo: dataUrl }),
+        body: JSON.stringify({ admin_name: form.name, admin_bio: form.bio }),
       });
+      if (!settingsRes.ok) {
+        const json = await settingsRes.json().catch(() => ({}));
+        setMsg("❌ " + (json.error ?? "Failed to save profile"));
+        setBusy(false);
+        return;
+      }
+      if (adminFile) {
+        // store as admin_photo key
+        const buf = await adminFile.arrayBuffer();
+        const b64 = btoa(String.fromCharCode(...new Uint8Array(buf)));
+        const dataUrl = `data:${adminFile.type};base64,${b64}`;
+        const photoRes = await fetch("/api/admin/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ admin_photo: dataUrl }),
+        });
+        if (!photoRes.ok) {
+          const json = await photoRes.json().catch(() => ({}));
+          setMsg("❌ " + (json.error ?? "Failed to save photo"));
+          setBusy(false);
+          return;
+        }
+      }
+      setBusy(false);
+      setMsg("✅ Your profile saved — tenants will see your photo and name.");
+    } catch {
+      setBusy(false);
+      setMsg("❌ Network error. Please try again.");
     }
-    setBusy(false);
-    if (!res.ok) { setMsg("❌ Failed to save"); return; }
-    setMsg("✅ Your profile saved — tenants will see your photo and name.");
   };
 
   return (

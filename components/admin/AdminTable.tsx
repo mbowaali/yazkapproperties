@@ -1,9 +1,11 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
+import { generateAndDownloadReceipt } from "@/lib/receipts";
 import { fmt } from "@/lib/currency";
 import { exportToExcel, importFromExcel } from "@/lib/excel";
+
+declare const jsPDF: any;
+declare const autoTable: any;
 
 export type FieldType = "text" | "number" | "date" | "select" | "textarea" | "checkbox" | "photo";
 
@@ -18,6 +20,12 @@ export interface Field {
   hideInTable?: boolean;
   placeholder?: string;
   defaultValue?: string | number | boolean;
+}
+
+export interface BulkAction {
+  id: string;
+  label: string;
+  description: string;
 }
 
 const PILL_GREEN = ["paid", "active", "done", "good", "refunded", "resolved"];
@@ -71,32 +79,118 @@ export const downloadReceipt = async (invoiceId: number) => {
     const { invoice, items } = await response.json();
 
     const doc = new jsPDF();
-
-    doc.setFontSize(20);
-    doc.text("Receipt", 105, 20, { align: "center" });
-
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    
+    // Add header with company branding
+    doc.setFillColor(30, 64, 175); // Deep blue primary color
+    doc.rect(0, 0, pageWidth, 45, "F");
+    
+    // Company name
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(24);
+    doc.setFont("helvetica", "bold");
+    doc.text("Yazkap Properties", pageWidth / 2, 25, { align: "center" });
     doc.setFontSize(12);
-    doc.text(`Receipt #: ${invoice.invoice_no}`, 14, 40);
-    doc.text(`Date: ${new Date(invoice.paid_at).toLocaleDateString()}`, 14, 46);
+    doc.setFont("helvetica", "normal");
+    doc.text("Premium Property Management Solutions", pageWidth / 2, 33, { align: "center" });
+    
+    // Receipt title badge
+    doc.setFillColor(22, 163, 74); // Green for success
+    doc.roundedRect(pageWidth - 60, 15, 50, 18, 3, "F");
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "bold");
+    doc.text("PAID", pageWidth - 35, 27, { align: "center" });
 
-    doc.text("Billed To:", 14, 60);
-    doc.text(invoice.tenant_name, 14, 66);
-    doc.text(`Unit: ${invoice.unit_name}`, 14, 72);
+    // Receipt metadata section
+    doc.setTextColor(51, 51, 51);
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+    doc.text("RECEIPT", 14, 60);
+    doc.setFont("helvetica", "normal");
+    
+    // Receipt number and dates
+    doc.text(`Receipt #: ${invoice.invoice_no}`, 14, 68);
+    doc.text(`Issue Date: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, 14, 75);
+    if (invoice.paid_at) {
+      doc.text(`Payment Date: ${new Date(invoice.paid_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, 14, 82);
+    }
 
+    // Billed to section with background
+    doc.setFillColor(248, 250, 252);
+    doc.roundedRect(14, 90, pageWidth - 28, 45, 4, "F");
+    
+    doc.setFont("helvetica", "bold");
+    doc.text("Bill To:", 20, 102);
+    doc.setFont("helvetica", "normal");
+    doc.text(invoice.tenant_name || "Tenant Name", 20, 110);
+    doc.text(`Unit: ${invoice.unit_name || "Property Unit"}`, 20, 118);
+    if (invoice.tenant_email) {
+      doc.text(invoice.tenant_email, 20, 126);
+    }
+
+    // Payment items table
     autoTable(doc, {
-      startY: 80,
-      head: [["Description", "Amount"]],
-      body: items.map((item: any) => [item.description, `AED ${item.amount.toFixed(2)}`]),
+      startY: 145,
+      head: [["Description", "Quantity", "Unit Price", "Total"]],
+      body: items.map((item: any) => [
+        item.description,
+        item.quantity || 1,
+        `AED ${(item.amount / (item.quantity || 1)).toFixed(2)}`,
+        `AED ${item.amount.toFixed(2)}`
+      ]),
+      theme: "grid",
+      headStyles: { 
+        fillColor: [30, 64, 175],
+        textColor: 255,
+        fontStyle: 'bold'
+      },
+      alternateRowStyles: { fillColor: [248, 250, 252] },
       foot: [
-        ["Total", `AED ${invoice.total.toFixed(2)}`],
-        ["Amount Paid", `AED ${invoice.amount_paid.toFixed(2)}`],
-        ["Balance", `AED ${(invoice.total - invoice.amount_paid).toFixed(2)}`],
+        [
+          { content: "", colSpan: 3 },
+          { content: "Subtotal", styles: { fontStyle: 'bold' } }
+        ],
+        [
+          { content: "", colSpan: 3 },
+          { content: `AED ${invoice.total.toFixed(2)}`, styles: { fontStyle: 'bold' } }
+        ],
+        [
+          { content: "", colSpan: 3 },
+          { content: "Amount Paid", styles: { fontStyle: 'bold', fillColor: [220, 252, 231] } }
+        ],
+        [
+          { content: "", colSpan: 3 },
+          { content: `AED ${invoice.amount_paid?.toFixed(2) || invoice.total.toFixed(2)}`, styles: { fontStyle: 'bold', fillColor: [220, 252, 231] } }
+        ],
+        [
+          { content: "", colSpan: 3 },
+          { content: "Balance", styles: { fontStyle: 'bold', fillColor: [254, 242, 242] } }
+        ],
+        [
+          { content: "", colSpan: 3 },
+          { 
+            content: `AED ${(invoice.total - (invoice.amount_paid || invoice.total)).toFixed(2)}`, 
+            styles: { fontStyle: 'bold', fillColor: [254, 242, 242] } 
+          }
+        ]
       ],
-      theme: "striped",
-      headStyles: { fillColor: [22, 163, 74] },
+      footStyles: { halign: 'right' }
     });
 
-    doc.save(`receipt-${invoice.invoice_no}.pdf`);
+    // Add footer with contact information
+    const footerY = pageHeight - 30;
+    doc.setFillColor(241, 245, 249);
+    doc.rect(0, footerY, pageWidth, 30, "F");
+    
+    doc.setTextColor(107, 114, 128);
+    doc.setFontSize(9);
+    doc.text("Yazkap Properties | 123 Business Avenue, Dubai, UAE", pageWidth / 2, footerY + 10, { align: "center" });
+    doc.text("contact@yazkapproperties.com | +971 4 123 4567 | www.yazkapproperties.com", pageWidth / 2, footerY + 17, { align: "center" });
+    doc.text("Thank you for your business!", pageWidth / 2, footerY + 24, { align: "center" });
+
+    // Save the PDF
+    doc.save(`Yazkap-Receipt-${invoice.invoice_no}.pdf`);
 
   } catch (error) {
     console.error("Error generating receipt:", error);
@@ -106,7 +200,7 @@ export const downloadReceipt = async (invoiceId: number) => {
 
 export default function AdminTable({
   table, title, subtitle, itemLabel, fields,
-  orderBy, orderAsc = false, sumField, yearField, note, extraRowAction, filterFields,
+  orderBy, orderAsc = false, sumField, yearField, note, extraRowAction, filterFields, bulkActions, onBulkAction,
 }: {
   table: string;
   title: string;
@@ -120,6 +214,8 @@ export default function AdminTable({
   note?: React.ReactNode;
   extraRowAction?: (row: Record<string, any>) => React.ReactNode;
   filterFields?: Field[];
+  bulkActions?: BulkAction[];
+  onBulkAction?: (actionId: string, selectedIds: number[]) => void;
 }) {
   const cols = fields.filter((f) => !f.hideInTable);
   const [rows, setRows] = useState<Record<string, any>[]>([]);
@@ -136,6 +232,22 @@ export default function AdminTable({
   const [formError, setFormError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [importState, setImportState] = useState<{ busy: boolean; msg: string; ok: boolean } | null>(null);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [showBulkMenu, setShowBulkMenu] = useState(false);
+
+  const toggleSelectAll = () => {
+    if (selectedIds.length === rows.length) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(rows.map((r: any) => r.id));
+    }
+  };
+
+  const toggleSelect = (id: number) => {
+    setSelectedIds(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  };
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -237,6 +349,7 @@ export default function AdminTable({
       else payload[f.key] = v === "" ? null : v;
     }
     setSaving(true);
+    setFormError("");
     // photo fields: keep existing URL or skip File (no storage in Vercel Postgres)
     for (const f of fields) {
       if (f.type !== "photo") continue;
@@ -245,12 +358,26 @@ export default function AdminTable({
     }
     const method = editingId ? "PUT" : "POST";
     const body = editingId ? { table, id: editingId, payload } : { table, payload };
-    const res = await fetch("/api/db", {
-      method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
-    });
-    const json = await res.json();
+    let res: Response;
+    try {
+      res = await fetch("/api/db", {
+        method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
+      });
+    } catch {
+      setFormError("Network error. Please try again.");
+      setSaving(false);
+      return;
+    }
+    let json: { error?: string };
+    try {
+      json = await res.json();
+    } catch {
+      setFormError(`Server error (${res.status}). Please try again.`);
+      setSaving(false);
+      return;
+    }
     setSaving(false);
-    if (json.error) { setFormError(json.error); return; }
+    if (!res.ok || json.error) { setFormError(json.error ?? `Save failed (${res.status})`); return; }
     setShowForm(false);
     load();
   };
@@ -405,6 +532,48 @@ export default function AdminTable({
       )}
 
       <div className="card mt-4 !p-0 overflow-hidden">
+        {selectedIds.length > 0 && bulkActions && onBulkAction && (
+          <div className="p-4 border-b border-slate-100 bg-blue-50 flex items-center justify-between">
+            <p className="text-blue-700">
+              <strong>{selectedIds.length}</strong> item{selectedIds.length !== 1 ? 's' : ''} selected
+            </p>
+            <div className="relative">
+              <button
+                onClick={() => setShowBulkMenu(!showBulkMenu)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Bulk Actions ▾
+              </button>
+              {showBulkMenu && (
+                <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border z-10">
+                  {bulkActions.map(action => (
+                    <button
+                      key={action.id}
+                      onClick={() => {
+                        onBulkAction(action.id, selectedIds);
+                        setSelectedIds([]);
+                        setShowBulkMenu(false);
+                      }}
+                      className="w-full text-left p-3 hover:bg-slate-50 first:rounded-t-lg last:rounded-b-lg"
+                    >
+                      <p className="font-medium">{action.label}</p>
+                      <p className="text-xs text-slate-500">{action.description}</p>
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => {
+                      setSelectedIds([]);
+                      setShowBulkMenu(false);
+                    }}
+                    className="w-full text-left p-3 hover:bg-slate-50 text-red-600"
+                  >
+                    Clear selection
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
         <div className="flex flex-col gap-3 border-b border-slate-100 p-4 sm:flex-row sm:items-center">
           <input
             type="search"
@@ -458,6 +627,16 @@ export default function AdminTable({
           <table className="table-clean min-w-[640px]">
             <thead>
               <tr>
+                {bulkActions && onBulkAction && (
+                  <th scope="col">
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.length === rows.length && rows.length > 0}
+                      onChange={toggleSelectAll}
+                      className="h-4 w-4 rounded border-slate-300"
+                    />
+                  </th>
+                )}
                 {cols.map((f) => (
                   <th key={f.key} scope="col">
                     <button onClick={() => toggleSort(f.key)} className="inline-flex items-center gap-1 hover:text-primary">
@@ -475,6 +654,16 @@ export default function AdminTable({
               )}
               {!loading && visible.map((row) => (
                 <tr key={row.id}>
+                  {bulkActions && onBulkAction && (
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={selectedIds.includes(row.id)}
+                        onChange={() => toggleSelect(row.id)}
+                        className="h-4 w-4 rounded border-slate-300"
+                      />
+                    </td>
+                  )}
                   {cols.map((f) => <td key={f.key}>{cell(f, row)}</td>)}
                   <td className="whitespace-nowrap text-right">
                     {extraRowAction?.(row)}

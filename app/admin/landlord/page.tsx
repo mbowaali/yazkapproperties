@@ -27,13 +27,28 @@ export default function LandlordPage() {
 
   const save = async () => {
     setBusy(true); setMsg("");
-    const fd = new FormData();
-    if (file) fd.append("file", file);
-    fd.append("name", form.name);
-    fd.append("bio", form.bio);
-    const res = await fetch("/api/admin/landlord-photo", { method: "POST", body: fd });
+    let res: Response;
+    try {
+      const fd = new FormData();
+      if (file) fd.append("file", file);
+      fd.append("name", form.name);
+      fd.append("bio", form.bio);
+      res = await fetch("/api/admin/landlord-photo", { method: "POST", body: fd });
+    } catch {
+      setBusy(false);
+      setMsg("❌ Network error. Please try again.");
+      return;
+    }
+    let json: { error?: string };
+    try {
+      json = await res.json();
+    } catch {
+      setBusy(false);
+      setMsg(`❌ Server error (${res.status}). Please try again.`);
+      return;
+    }
     setBusy(false);
-    if (!res.ok) { setMsg("❌ Failed to save"); return; }
+    if (!res.ok) { setMsg("❌ " + (json.error ?? "Failed to save")); return; }
     setMsg("✅ Landlord profile saved — tenants will see this in their portal.");
   };
 

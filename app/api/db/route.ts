@@ -3,6 +3,7 @@ import { sql } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 
 const ALLOWED_TABLES: Record<string, "admin" | "tenant"> = {
+  // Core tables
   tenants: "admin",
   units: "tenant",
   profiles: "admin",
@@ -24,10 +25,22 @@ const ALLOWED_TABLES: Record<string, "admin" | "tenant"> = {
   tenant_events: "tenant",
   receipts: "tenant",
   tenant_documents: "tenant",
+  
+  // Additional admin tables
+  tenant_adjustments: "admin",
+  employee_permissions: "admin",
+  faqs: "admin",
+  tenant_setup_invites: "admin",
+  app_settings: "admin",
+  chatbot_responses: "admin",
+  tenant_contract_versions: "admin",
+  tenant_contract_signatures: "admin",
+  events: "admin",
+  requests: "admin",
 };
 
 // Tables tenants can write to (their own rows only)
-const TENANT_WRITABLE = ["tenant_requests", "tenant_documents"];
+const TENANT_WRITABLE = ["tenant_requests", "tenant_documents", "tenant_contract_signatures"];
 
 function isValidIdentifier(s: string) {
   return /^[a-z_][a-z0-9_]*$/.test(s);
@@ -65,6 +78,8 @@ function addTenantFilter(table: string, userId: number): { clause: string; value
     tenant_requests: "user_id = $1",
     receipts: "user_id = $1",
     tenant_documents: "user_id = $1",
+    tenant_setup_invites: "user_id = $1",
+    tenant_contract_signatures: "user_id = $1",
   };
   const clause = map[table] ?? "";
   const needsId = clause.includes("$1");

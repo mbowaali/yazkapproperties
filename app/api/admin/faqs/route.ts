@@ -26,8 +26,8 @@ export async function POST(request: Request) {
     }
 
     const { rows } = await sql`
-      INSERT INTO faqs (question, answer)
-      VALUES (${question}, ${answer})
+      INSERT INTO faqs (question, answer, updated_at)
+      VALUES (${question}, ${answer}, NOW())
       RETURNING *
     `;
 

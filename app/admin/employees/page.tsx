@@ -43,12 +43,26 @@ export default function EmployeesPage() {
   const save = async () => {
     setBusy(true); setMsg("");
     const isNew = !editing?.id;
-    const res = await fetch("/api/admin/employees", {
-      method: isNew ? "POST" : "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(isNew ? form : { id: editing.id, ...form }),
-    });
-    const json = await res.json();
+    let res: Response;
+    try {
+      res = await fetch("/api/admin/employees", {
+        method: isNew ? "POST" : "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(isNew ? form : { id: editing.id, ...form }),
+      });
+    } catch {
+      setBusy(false);
+      setMsg("❌ Network error. Please try again.");
+      return;
+    }
+    let json: { error?: string };
+    try {
+      json = await res.json();
+    } catch {
+      setBusy(false);
+      setMsg(`❌ Server error (${res.status}). Please try again.`);
+      return;
+    }
     setBusy(false);
     if (!res.ok || json.error) { setMsg("❌ " + (json.error || "Failed")); return; }
     setMsg("✅ Saved");
