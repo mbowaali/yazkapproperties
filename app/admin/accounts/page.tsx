@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 
 type User = { id: number; email: string; full_name: string | null; phone: string | null; emirates_id: string | null; employer: string | null; unit_label: string | null; role: string; approved: boolean; created_at: string; setup_completed_at: string | null; invite_expires_at: string | null };
 
-type ExistingTenant = { id: number; full_name: string; email: string; phone: string | null; unit_label: string | null };
+type ExistingTenant = { id: number; full_name: string; email: string | null; phone: string | null; status: string | null };
 
 export default function AccountsPage() {
   const [users, setUsers] = useState<User[]>([]);
@@ -16,8 +16,9 @@ export default function AccountsPage() {
   const [copied, setCopied] = useState(false);
   const [inviteForm, setInviteForm] = useState({ full_name: "", email: "", phone: "", unit_label: "" });
   const [existingTenants, setExistingTenants] = useState<ExistingTenant[]>([]);
-  const [filteredTenants, setFilteredTenants] = useState<ExistingTenant[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [tenantSearchLoading, setTenantSearchLoading] = useState(false);
+  const [tenantSearchError, setTenantSearchError] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const load = () =>
@@ -25,19 +26,6 @@ export default function AccountsPage() {
       setUsers(data ?? []);
       setLoading(false);
     });
-
-  // Load existing tenants from database when invite form opens
-  const loadExistingTenants = async () => {
-    try {
-      const response = await fetch("/api/admin/tenants/list");
-      if (response.ok) {
-        const { data } = await response.json();
-        setExistingTenants(data ?? []);
-      }
-    } catch (error) {
-      console.error("Failed to load existing tenants:", error);
-    }
-  };
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -50,34 +38,57 @@ export default function AccountsPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Filter tenants as user types
+  // Search the tenant roster as the name is typed instead of filtering a stale local list.
   useEffect(() => {
-    if (inviteForm.full_name.trim().length > 0 && existingTenants.length > 0) {
-      const filtered = existingTenants.filter(tenant => 
-        tenant.full_name.toLowerCase().includes(inviteForm.full_name.toLowerCase())
-      );
-      setFilteredTenants(filtered.slice(0, 5)); // Show max 5 results
-      setShowDropdown(filtered.length > 0);
-    } else {
-      setFilteredTenants([]);
-      setShowDropdown(false);
+    const query = inviteForm.full_name.trim();
+    if (!showInvite || !query) {
+      setExistingTenants([]);
+      setTenantSearchLoading(false);
+      setTenantSearchError("");
+      return;
     }
-  }, [inviteForm.full_name, existingTenants]);
 
-  // Load existing tenants when showInvite changes
-  useEffect(() => {
-    if (showInvite) {
-      loadExistingTenants();
-    }
-  }, [showInvite]);
+    setExistingTenants([]);
+    setTenantSearchLoading(true);
+    setTenantSearchError("");
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(async () => {
+      try {
+        const params = new URLSearchParams({ q: query });
+        const response = await fetch(`/api/admin/tenants/search?${params}`, {
+          signal: controller.signal,
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || "Failed to search existing tenants.");
+        }
+        if (!Array.isArray(data.tenants)) {
+          throw new Error("The tenant search returned an invalid response.");
+        }
+        setExistingTenants(data.tenants);
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setExistingTenants([]);
+          setTenantSearchError(error instanceof Error ? error.message : "Failed to search existing tenants.");
+        }
+      } finally {
+        if (!controller.signal.aborted) setTenantSearchLoading(false);
+      }
+    }, 250);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [inviteForm.full_name, showInvite]);
 
   // Select tenant from dropdown and auto-fill all fields
   const selectTenant = (tenant: ExistingTenant) => {
     setInviteForm({
       full_name: tenant.full_name,
-      email: tenant.email,
+      email: tenant.email ?? "",
       phone: tenant.phone ?? "",
-      unit_label: tenant.unit_label ?? "",
+      unit_label: "",
     });
     setShowDropdown(false);
   };
@@ -150,7 +161,48 @@ export default function AccountsPage() {
               <div>
                 <label className="label" htmlFor="invite-name">Full name</label>
                 <input id="invite-name" className="input" value={inviteForm.full_name} required maxLength={180}
-                  onChange={event => setInviteForm({ ...inviteForm, full_name: event.target.value })} />
+                  autoComplete="off"
+                  aria-autocomplete="list"
+                  aria-expanded={showDropdown}
+                  aria-controls="existing-tenant-results"
+                  onFocus={() => setShowDropdown(true)}
+                  onChange={event => {
+                    setInviteForm({ ...inviteForm, full_name: event.target.value });
+                    setShowDropdown(true);
+                  }} />
+                {showDropdown && inviteForm.full_name.trim() && (
+                  <div
+                    id="existing-tenant-results"
+                    className="relative z-10 mt-1 max-h-56 overflow-y-auto rounded-lg border border-slate-200 bg-white shadow-lg"
+                    ref={dropdownRef}
+                    role="listbox"
+                    aria-label="Existing tenant matches"
+                  >
+                    {tenantSearchLoading ? (
+                      <p className="px-3 py-2 text-sm text-slate-500">Searching existing tenants…</p>
+                    ) : tenantSearchError ? (
+                      <p className="px-3 py-2 text-sm text-danger" role="alert">{tenantSearchError}</p>
+                    ) : existingTenants.length > 0 ? (
+                      existingTenants.slice(0, 5).map(tenant => (
+                        <button
+                          key={tenant.id}
+                          type="button"
+                          role="option"
+                          aria-selected="false"
+                          className="block w-full border-b border-slate-100 px-3 py-2 text-left last:border-0 hover:bg-slate-50"
+                          onClick={() => selectTenant(tenant)}
+                        >
+                          <span className="block text-sm font-medium text-slate-800">{tenant.full_name}</span>
+                          <span className="block truncate text-xs text-slate-500">
+                            {[tenant.email, tenant.phone, tenant.status].filter(Boolean).join(" · ") || "No contact details"}
+                          </span>
+                        </button>
+                      ))
+                    ) : (
+                      <p className="px-3 py-2 text-sm text-slate-500">No existing tenant found. Continue entering a new tenant.</p>
+                    )}
+                  </div>
+                )}
               </div>
               <div>
                 <label className="label" htmlFor="invite-email">Email</label>
