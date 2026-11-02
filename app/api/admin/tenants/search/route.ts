@@ -18,9 +18,9 @@ export async function GET(request: Request) {
         `SELECT id, full_name, email, phone, status
          FROM tenants
          WHERE full_name ILIKE $1 OR email ILIKE $1 OR phone ILIKE $1
-         ORDER BY full_name
+         ORDER BY CASE WHEN full_name ILIKE $2 THEN 0 ELSE 1 END, full_name
          LIMIT 20`,
-        [`%${q}%`]
+        [`%${q}%`, `${q}%`]
       );
       return NextResponse.json({ tenants: rows });
     }

@@ -27,6 +27,8 @@ export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkI
   const [tenants, setTenants] = useState<TenantOption[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [tenantsLoading, setTenantsLoading] = useState(true);
+  const [tenantResultsQuery, setTenantResultsQuery] = useState<string | null>(null);
+  const [tenantSearchError, setTenantSearchError] = useState<string | null>(null);
 
   // Selected tenant IDs (starts with pre-selected from the table)
   const [selectedIds, setSelectedIds] = useState<number[]>(tenantIds);
@@ -35,30 +37,47 @@ export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkI
     setSelectedIds(tenantIds);
   }, [tenantIds]);
 
-  // Load all existing tenants from the database on open
+  // Search the database as the query changes; the empty query returns the initial browse list.
   useEffect(() => {
     setTenantsLoading(true);
-    fetch("/api/admin/tenants/search")
-      .then((res) => res.json())
-      .then((data) => {
-        setTenants(data.tenants || []);
-        setTenantsLoading(false);
-      })
-      .catch(() => {
-        setTenants([]);
-        setTenantsLoading(false);
-      });
-  }, []);
+    setTenantSearchError(null);
+    const query = searchQuery.trim();
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(async () => {
+      try {
+        const params = new URLSearchParams();
+        if (query) params.set("q", query);
 
-  const filteredTenants = tenants.filter((t) => {
-    const q = searchQuery.toLowerCase();
-    return (
-      t.full_name.toLowerCase().includes(q) ||
-      (t.email ?? "").toLowerCase().includes(q) ||
-      (t.phone ?? "").toLowerCase().includes(q)
-    );
-  });
+        const response = await fetch(`/api/admin/tenants/search?${params}`, {
+          signal: controller.signal,
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || "Failed to load tenants");
+        }
+        if (!Array.isArray(data.tenants)) {
+          throw new Error("The tenant search returned an invalid response");
+        }
+        setTenants(data.tenants);
+        setTenantResultsQuery(query);
+      } catch (err) {
+        if (!controller.signal.aborted) {
+          setTenants([]);
+          setTenantResultsQuery(query);
+          setTenantSearchError(err instanceof Error ? err.message : "Failed to load tenants");
+        }
+      } finally {
+        if (!controller.signal.aborted) setTenantsLoading(false);
+      }
+    }, 250);
 
+    return () => {
+      window.clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [searchQuery]);
+
+  const isTenantSearchLoading = tenantsLoading || tenantResultsQuery !== searchQuery.trim();
   const toggleSelection = (id: number) => {
     setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   };
@@ -66,12 +85,12 @@ export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkI
   const isSelected = (id: number) => selectedIds.includes(id);
 
   const selectAllVisible = () => {
-    setSelectedIds([...new Set([...selectedIds, ...filteredTenants.map((t) => t.id)])]);
+    setSelectedIds((prev) => [...new Set([...prev, ...tenants.map((t) => t.id)])]);
   };
 
   const deselectAllVisible = () => {
-    const visibleIds = new Set(filteredTenants.map((t) => t.id));
-    setSelectedIds(selectedIds.filter((id) => !visibleIds.has(id)));
+    const visibleIds = new Set(tenants.map((t) => t.id));
+    setSelectedIds((prev) => prev.filter((id) => !visibleIds.has(id)));
   };
 
   const sendInvites = async () => {
@@ -134,7 +153,7 @@ export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkI
     }
   };
 
-  const allVisibleSelected = filteredTenants.length > 0 && filteredTenants.every((t) => isSelected(t.id));
+  const allVisibleSelected = tenants.length > 0 && tenants.every((t) => isSelected(t.id));
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -184,7 +203,7 @@ export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkI
                 <label className="text-sm font-medium text-slate-700">Select Tenants</label>
                 <span className="text-xs text-slate-500">({selectedIds.length} selected)</span>
               </div>
-              {filteredTenants.length > 0 && (
+              {tenants.length > 0 && (
                 <div className="flex gap-2">
                   <button
                     onClick={deselectAllVisible}
@@ -211,25 +230,32 @@ export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkI
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full input pl-9"
+                aria-label="Search tenants by name, email, or phone"
               />
               <div className="absolute left-3 top-1/2 -mt-2 text-slate-400">🔍</div>
             </div>
 
-            {tenantsLoading && (
-              <div className="h-48 flex items-center justify-center text-slate-500 text-sm">
-                Loading tenants from database…
+            {tenantSearchError && (
+              <div role="alert" className="mb-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                {tenantSearchError}
               </div>
             )}
 
-            {!tenantsLoading && filteredTenants.length === 0 && (
+            {isTenantSearchLoading && (
+              <div className="h-48 flex items-center justify-center text-slate-500 text-sm">
+                {searchQuery.trim() ? "Searching tenants in database…" : "Loading tenants from database…"}
+              </div>
+            )}
+
+            {!isTenantSearchLoading && !tenantSearchError && tenants.length === 0 && (
               <div className="h-48 flex items-center justify-center text-slate-500 text-sm">
                 No tenants found matching your search.
               </div>
             )}
 
-            {!tenantsLoading && filteredTenants.length > 0 && (
+            {!isTenantSearchLoading && !tenantSearchError && tenants.length > 0 && (
               <div className="border border-slate-200 rounded-lg max-h-96 overflow-y-auto bg-white">
-                {filteredTenants.map((t) => (
+                {tenants.map((t) => (
                   <button
                     key={t.id}
                     onClick={() => toggleSelection(t.id)}
@@ -254,6 +280,11 @@ export default function BulkInviteModal({ tenantIds, onClose, onSuccess }: BulkI
                   </button>
                 ))}
               </div>
+            )}
+            {!searchQuery.trim() && !isTenantSearchLoading && tenants.length === 100 && (
+              <p className="mt-2 text-xs text-slate-500">
+                Showing the first 100 tenants. Search by name, email, or phone to find records across the database.
+              </p>
             )}
           </div>
 
