@@ -4,6 +4,8 @@ import { useEffect, useState, useRef } from "react";
 type User = { id: number; email: string; full_name: string | null; phone: string | null; emirates_id: string | null; employer: string | null; unit_label: string | null; role: string; approved: boolean; created_at: string; setup_completed_at: string | null; invite_expires_at: string | null };
 
 type ExistingTenant = { id: number; full_name: string; email: string | null; phone: string | null; status: string | null };
+type InviteChannel = "email" | "whatsapp" | "both";
+type InviteDelivery = { channel: InviteChannel; emailSent: boolean; whatsappSent: boolean };
 
 export default function AccountsPage() {
   const [users, setUsers] = useState<User[]>([]);
@@ -15,6 +17,8 @@ export default function AccountsPage() {
   const [inviteUrl, setInviteUrl] = useState("");
   const [copied, setCopied] = useState(false);
   const [inviteForm, setInviteForm] = useState({ full_name: "", email: "", phone: "", unit_label: "" });
+  const [inviteChannel, setInviteChannel] = useState<InviteChannel>("email");
+  const [inviteDelivery, setInviteDelivery] = useState<InviteDelivery | null>(null);
   const [existingTenants, setExistingTenants] = useState<ExistingTenant[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [tenantSearchLoading, setTenantSearchLoading] = useState(false);
@@ -114,18 +118,35 @@ export default function AccountsPage() {
     setInviteBusy(true);
     setError("");
     setMsg("");
-    const response = await fetch("/api/admin/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(inviteForm),
-    });
-    const result = await response.json();
-    setInviteBusy(false);
-    if (!response.ok) { setError(result.error ?? "Could not create setup link."); return; }
-    setInviteUrl(result.setup_url);
-    setInviteForm({ full_name: "", email: "", phone: "", unit_label: "" });
-    setMsg("Tenant account created. Share the one-time setup link with them.");
-    load();
+    try {
+      const response = await fetch("/api/admin/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...inviteForm, channel: inviteChannel }),
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error ?? "Could not create setup link.");
+      }
+
+      setInviteUrl(result.setup_url);
+      setInviteDelivery(result.delivery);
+      setInviteForm({ full_name: "", email: "", phone: "", unit_label: "" });
+      const emailSent = inviteChannel === "whatsapp" || result.delivery.emailSent;
+      const whatsappSent = inviteChannel === "email" || result.delivery.whatsappSent;
+      const allSent = emailSent && whatsappSent;
+      const anySent = result.delivery.emailSent || result.delivery.whatsappSent;
+      setMsg(allSent
+        ? "✅ Tenant account created and setup link sent."
+        : anySent
+          ? "⚠️ Invite was only sent through one selected channel. Check delivery status below."
+          : "⚠️ Tenant account created, but the message could not be sent. Copy or share the link below.");
+      load();
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Could not create setup link.");
+    } finally {
+      setInviteBusy(false);
+    }
   };
 
   const shareInvite = async () => {
@@ -147,7 +168,15 @@ export default function AccountsPage() {
           {showInvite ? "Close invite" : "Create tenant invite"}
         </button>
       </div>
-      {msg && <p className="mt-3 rounded-lg bg-green-50 px-4 py-3 text-sm font-medium text-green-800" role="status">{msg}</p>}
+      {msg && (
+        <p
+          className={`mt-3 rounded-lg px-4 py-3 text-sm font-medium ${
+            msg.startsWith("✅") ? "bg-green-50 text-green-800" :
+            msg.startsWith("⚠️") ? "bg-amber-50 text-amber-800" : "bg-slate-50 text-slate-700"
+          }`}
+          role="status"
+        >{msg}</p>
+      )}
       {error && <p className="mt-3 rounded-lg bg-red-50 px-4 py-3 text-sm text-danger" role="alert">{error}</p>}
 
       {showInvite && (
@@ -219,12 +248,49 @@ export default function AccountsPage() {
                 <input id="invite-unit" className="input" value={inviteForm.unit_label}
                   onChange={event => setInviteForm({ ...inviteForm, unit_label: event.target.value })} />
               </div>
+              <div>
+                <label className="label" htmlFor="invite-channel">Send setup link by</label>
+                <select
+                  id="invite-channel"
+                  className="input"
+                  value={inviteChannel}
+                  onChange={event => setInviteChannel(event.target.value as InviteChannel)}
+                >
+                  <option value="email">Email</option>
+                  <option value="whatsapp">WhatsApp</option>
+                  <option value="both">Email and WhatsApp</option>
+                </select>
+                {(inviteChannel === "whatsapp" || inviteChannel === "both") && (
+                  <p className="mt-1 text-xs text-slate-500">A valid WhatsApp-enabled phone number is required.</p>
+                )}
+              </div>
               <div className="sm:col-span-2">
-                <button type="submit" className="btn-primary" disabled={inviteBusy}>{inviteBusy ? "Creating…" : "Create secure setup link"}</button>
+                <button
+                  type="submit"
+                  className="btn-primary"
+                  disabled={inviteBusy || ((inviteChannel === "whatsapp" || inviteChannel === "both") && !inviteForm.phone.trim())}
+                >
+                  {inviteBusy ? "Creating and sending…" : "Create account and send invite"}
+                </button>
               </div>
             </form>
           ) : (
             <div className="space-y-3">
+              {inviteDelivery && (
+                <p className={`rounded-lg px-3 py-2 text-sm ${
+                  inviteDelivery.emailSent || inviteDelivery.whatsappSent
+                    ? "bg-green-50 text-green-800"
+                    : "bg-amber-50 text-amber-800"
+                }`}>
+                  {inviteDelivery.emailSent && inviteDelivery.whatsappSent
+                    ? "Sent by email and WhatsApp."
+                    : inviteDelivery.emailSent
+                      ? "Sent by email."
+                      : inviteDelivery.whatsappSent
+                        ? "Sent by WhatsApp."
+                        : `Could not send by ${inviteDelivery.channel === "both" ? "email or WhatsApp" : inviteDelivery.channel}. Use the link below to share it manually.`}
+                </p>
+              )}
               <label className="label" htmlFor="setup-link">Secure setup link · expires in 7 days</label>
               <div className="flex flex-col gap-2 sm:flex-row">
                 <input id="setup-link" className="input font-mono text-sm" value={inviteUrl} readOnly onFocus={event => event.target.select()} />

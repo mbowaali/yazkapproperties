@@ -3,6 +3,7 @@ import { sql } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 import bcrypt from "bcryptjs";
 import { createHash, randomBytes } from "crypto";
+import { sendInviteEmail, sendInviteWhatsApp } from "@/lib/email";
 
 // Admin: list all tenant users (for approval management)
 export async function GET() {
@@ -34,10 +35,15 @@ export async function POST(req: Request) {
   const email = String(body.email ?? "").trim().toLowerCase();
   const phone = String(body.phone ?? "").trim();
   const unitLabel = String(body.unit_label ?? "").trim();
+  const channel = body.channel;
   if (!fullName || fullName.length > 180 || !/^\S+@\S+\.\S+$/.test(email) || email.length > 320)
     return NextResponse.json({ error: "Enter a tenant name and valid email address" }, { status: 400 });
   if (phone.length > 40 || unitLabel.length > 120)
     return NextResponse.json({ error: "Phone or unit information is too long" }, { status: 400 });
+  if (!["email", "whatsapp", "both"].includes(channel))
+    return NextResponse.json({ error: "Choose email, WhatsApp, or both for invite delivery" }, { status: 400 });
+  if ((channel === "whatsapp" || channel === "both") && !phone)
+    return NextResponse.json({ error: "A phone number is required to send the invite by WhatsApp" }, { status: 400 });
 
   const token = randomBytes(32).toString("base64url");
   const tokenHash = createHash("sha256").update(token).digest("hex");
@@ -55,8 +61,27 @@ export async function POST(req: Request) {
       )
       SELECT user_id AS id FROM created_invite
     `;
-    const setupUrl = new URL(`/complete-profile?token=${encodeURIComponent(token)}`, new URL(req.url).origin).toString();
-    return NextResponse.json({ id: rows[0].id, setup_url: setupUrl, expires_in_days: 7 });
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || new URL(req.url).origin;
+    const setupUrl = new URL(`/complete-profile?token=${encodeURIComponent(token)}`, appUrl).toString();
+    const [emailResult, whatsappResult] = await Promise.all([
+      channel === "email" || channel === "both"
+        ? sendInviteEmail(email, fullName, unitLabel || "your property", setupUrl)
+        : Promise.resolve({ success: false }),
+      channel === "whatsapp" || channel === "both"
+        ? sendInviteWhatsApp(phone, fullName, unitLabel || "your property", setupUrl)
+        : Promise.resolve({ success: false }),
+    ]);
+
+    return NextResponse.json({
+      id: rows[0].id,
+      setup_url: setupUrl,
+      expires_in_days: 7,
+      delivery: {
+        channel,
+        emailSent: emailResult.success,
+        whatsappSent: whatsappResult.success,
+      },
+    });
   } catch (error) {
     if (typeof error === "object" && error !== null && "code" in error && error.code === "23505")
       return NextResponse.json({ error: "An account with this email already exists" }, { status: 409 });

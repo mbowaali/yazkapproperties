@@ -6,6 +6,16 @@ const twilioClient = process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_T
   ? twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
   : null;
 
+function escapeHtml(value: string) {
+  return value.replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  })[character]!);
+}
+
 // Configure web push if we have the keys
 if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY && process.env.VAPID_SUBJECT) {
   webPush.setVapidDetails(
@@ -23,6 +33,10 @@ export async function sendInviteEmail(
 ) {
   const appName = process.env.NEXT_PUBLIC_APP_NAME || 'Yazkap Properties';
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+  const safeAppName = escapeHtml(appName);
+  const safeTenantName = escapeHtml(tenantName);
+  const safeUnitLabel = escapeHtml(unitLabel);
+  const safeInviteLink = escapeHtml(inviteLink);
 
   if (!process.env.RESEND_API_KEY) {
     console.warn('RESEND_API_KEY not configured. Skipping actual email send.');
@@ -37,15 +51,15 @@ export async function sendInviteEmail(
       subject: `Complete your account setup for ${appName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2>Welcome to ${appName}!</h2>
-          <p>Hi ${tenantName},</p>
-          <p>You've been invited to set up your tenant account for your unit at ${unitLabel}.</p>
+          <h2>Welcome to ${safeAppName}!</h2>
+          <p>Hi ${safeTenantName},</p>
+          <p>You've been invited to set up your tenant account for your unit at ${safeUnitLabel}.</p>
           <p>Please click the link below to complete your account setup:</p>
-          <p><a href="${inviteLink}" style="display: inline-block; background-color: #0070f3; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px;">Set Up Your Account</a></p>
+          <p><a href="${safeInviteLink}" style="display: inline-block; background-color: #0070f3; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px;">Set Up Your Account</a></p>
           <p>This link will expire in 7 days.</p>
           <p>If you need help, please contact our support team.</p>
           <hr>
-          <p style="color: #666; font-size: 12px;">${appName} - Property Management</p>
+          <p style="color: #666; font-size: 12px;">${safeAppName} - Property Management</p>
         </div>
       `,
     });
